@@ -1,9 +1,15 @@
 /* ============================================================
-   GREENNEXT — FOOTER
+   GREENNEXT — ENTERPRISE FOOTER CSS
+   Dark-green enterprise theme, logo with tagline, quick enquiry,
+   WhatsApp link, social placeholders, and dynamic copyright year.
    ============================================================ */
+
 .site-footer {
   background: var(--color-dark);
   color: rgba(255, 255, 255, 0.7);
+  border-top: 1px solid rgba(0, 201, 122, 0.15);
+  position: relative;
+  z-index: 10;
 }
 
 .footer-cta-bar {
@@ -20,11 +26,23 @@
   padding: var(--space-6) var(--container-padding);
 }
 
+.footer-cta-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
 .footer-main {
   display: grid;
-  grid-template-columns: 1.6fr repeat(4, 1fr);
+  grid-template-columns: 1.4fr 1fr 1fr 1fr 1.2fr;
   gap: var(--space-8);
   padding: var(--space-16) var(--container-padding);
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
 }
 
 .footer-tagline {
@@ -32,15 +50,47 @@
   font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--color-accent);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .footer-brand-desc {
   margin-top: var(--space-4);
   font-size: var(--font-size-sm);
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.65);
   max-width: 320px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.footer-social-link {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.footer-social-link:hover {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.footer-social-link svg {
+  width: 18px;
+  height: 18px;
 }
 
 .footer-col-title {
@@ -48,7 +98,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   margin-bottom: var(--space-4);
 }
 
@@ -60,12 +110,28 @@
 
 .footer-links a {
   font-size: var(--font-size-sm);
-  color: rgba(255, 255, 255, 0.6);
-  transition: color var(--transition-fast);
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .footer-links a:hover {
   color: var(--color-accent);
+  transform: translateX(3px);
+}
+
+.footer-whatsapp-link {
+  color: #25D366 !important;
+  font-weight: 600;
+}
+
+.footer-whatsapp-link svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
 }
 
 .footer-bottom {
@@ -73,11 +139,11 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: var(--space-3);
+  gap: var(--space-4);
   padding: var(--space-6) var(--container-padding);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   font-size: var(--font-size-xs);
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .footer-bottom-links {
@@ -86,7 +152,8 @@
 }
 
 .footer-bottom-links a {
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
   transition: color var(--transition-fast);
 }
 
@@ -94,7 +161,7 @@
   color: var(--color-accent);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .footer-main {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -107,6 +174,7 @@
 @media (max-width: 640px) {
   .footer-main {
     grid-template-columns: 1fr;
+    padding: var(--space-10) var(--container-padding);
   }
 
   .footer-cta-inner {
@@ -117,5 +185,6 @@
   .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--space-3);
   }
 }

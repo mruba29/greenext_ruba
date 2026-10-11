@@ -1,0 +1,377 @@
+/* ============================================================
+   GREENNEXT — HERO SLIDER CSS
+   Elegant full-width image carousel with cinematic typography,
+   fluid transitions, and accessible controls.
+   ============================================================ */
+
+.hero-slider {
+  position: relative;
+  width: 100%;
+  min-height: clamp(680px, 92vh, 920px);
+  display: flex;
+  align-items: center;
+  background: var(--color-dark);
+  overflow: hidden;
+  color: white;
+}
+
+@media (min-width: 1200px) {
+  .hero-slider {
+    min-height: clamp(720px, 94vh, 940px);
+  }
+}
+
+.hero-slider-track {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(1.02);
+  transition: opacity 280ms ease, visibility 280ms ease, transform 400ms ease;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: scale(1);
+  z-index: 2;
+  transition: opacity 450ms ease 80ms, visibility 450ms ease 80ms, transform 650ms ease;
+}
+
+/* Cinematic high-contrast overlay for guaranteed legibility */
+.hero-slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(6, 35, 23, 0.96) 0%,
+    rgba(7, 44, 29, 0.90) 42%,
+    rgba(8, 48, 32, 0.70) 70%,
+    rgba(8, 48, 32, 0.35) 100%
+  );
+  z-index: 1;
+}
+
+/* Subtle animated grid background in overlay */
+.hero-slide-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 201, 122, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 201, 122, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.hero-slide-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  padding-top: calc(var(--nav-height) + var(--space-8));
+  padding-bottom: var(--space-16);
+  padding-left: clamp(28px, 5vw, 68px);
+  padding-right: clamp(28px, 5vw, 68px);
+}
+
+.hero-slide-inner {
+  max-width: 740px;
+}
+
+.hero-slide-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 14px;
+  background: rgba(0, 201, 122, 0.14);
+  border: 1px solid rgba(0, 201, 122, 0.35);
+  border-radius: var(--radius-full);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-5);
+  backdrop-filter: blur(8px);
+}
+
+.hero-slide-eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent);
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 0.7; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.hero-slide-title {
+  color: #FFFFFF;
+  margin-bottom: var(--space-5);
+  font-size: clamp(2rem, 4.2vw, 3.75rem);
+  line-height: 1.12;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+}
+
+.hero-slide-desc {
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+  margin-bottom: var(--space-8);
+  max-width: 620px;
+}
+
+.hero-slide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.hero-whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 12px 20px;
+  background: rgba(37, 211, 102, 0.16);
+  border: 1px solid rgba(37, 211, 102, 0.4);
+  border-radius: var(--radius-full);
+  color: #25D366;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  backdrop-filter: blur(6px);
+}
+
+.hero-whatsapp-btn:hover {
+  background: rgba(37, 211, 102, 0.28);
+  border-color: #25D366;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+}
+
+.hero-whatsapp-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* Feature tags / mini indicators per slide */
+.hero-slide-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.hero-slide-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  backdrop-filter: blur(6px);
+}
+
+.hero-slide-tag svg {
+  width: 14px;
+  height: 14px;
+  color: var(--color-accent);
+}
+
+/* Navigation controls */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(13, 31, 21, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  backdrop-filter: blur(8px);
+}
+
+.slider-arrow:hover {
+  background: var(--color-primary);
+  border-color: var(--color-accent);
+  color: white;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 4px 20px rgba(0, 201, 122, 0.35);
+}
+
+.slider-arrow:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.slider-arrow--prev {
+  left: clamp(12px, 2vw, 36px);
+}
+
+.slider-arrow--next {
+  right: clamp(12px, 2vw, 36px);
+}
+
+.slider-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Indicators / Dots bar */
+.slider-indicators {
+  position: absolute;
+  bottom: var(--space-8);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 8px 16px;
+  background: rgba(13, 31, 21, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(10px);
+}
+
+.slider-indicator {
+  position: relative;
+  width: 38px;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.slider-indicator:hover {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.slider-indicator.active {
+  width: 54px;
+  background: var(--color-accent);
+  box-shadow: 0 0 10px rgba(0, 201, 122, 0.6);
+}
+
+.slider-indicator-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Autoplay progress line inside active indicator */
+.slider-indicator.active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.4);
+  animation: indicatorProgress 5.5s linear;
+}
+
+.hero-slider.paused .slider-indicator.active::after {
+  animation-play-state: paused;
+}
+
+@keyframes indicatorProgress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+@media (max-width: 768px) {
+  .hero-slider {
+    min-height: clamp(580px, 86vh, 760px);
+  }
+
+  .hero-slide-content {
+    padding-top: calc(var(--nav-height) + var(--space-4));
+    padding-bottom: var(--space-12);
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  .hero-slide-title {
+    font-size: clamp(1.65rem, 6.2vw, 2.25rem);
+    line-height: 1.18;
+    margin-bottom: var(--space-3);
+  }
+
+  .hero-slide-desc {
+    font-size: clamp(0.92rem, 3.6vw, 1.05rem);
+    line-height: 1.55;
+    margin-bottom: var(--space-5);
+  }
+
+  .slider-arrow {
+    display: none; /* Rely on touch/swipe and bottom indicators on mobile for clean viewport */
+  }
+
+  .slider-indicators {
+    bottom: var(--space-3);
+  }
+
+  .hero-slide-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+  }
+
+  .hero-slide-actions .btn,
+  .hero-slide-actions .hero-whatsapp-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: var(--font-size-sm);
+  }
+}

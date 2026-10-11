@@ -3,3 +3,6 @@ package-lock.json
 .verify-scratch/
 *.log
 .kilo/
+data/enquiries.json
+.env
+.env.local

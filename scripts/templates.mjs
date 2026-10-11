@@ -2,7 +2,7 @@ import { icon } from './icons.mjs';
 import { nav, footerData, finalCTA, formConfigs, careersFormConfig, tagline, heroImg } from './data.mjs';
 import { curveDivider, blobDecor, processFlow, miniFlowHorizontal, dashboardMock, locationsMapVisual } from './visuals.mjs';
 
-const CURRENT_YEAR = 2026;
+const CURRENT_YEAR = new Date().getFullYear();
 
 function link(base, href) {
   if (!href || href.startsWith('#') || /^https?:\/\//.test(href)) return href;
@@ -72,6 +72,9 @@ export function headerAndNav(base) {
         <ul class="nav-menu">${desktopNav(base)}</ul>
       </nav>
       <div class="nav-right">
+        <a class="nav-whatsapp-btn" href="#" data-whatsapp="true" aria-label="Chat with GreenNext on WhatsApp" title="Chat on WhatsApp">
+          ${icon('whatsapp')}
+        </a>
         <a class="nav-cta" href="${link(base, 'contact.html')}">Talk to an Expert <span class="btn-arrow">&rarr;</span></a>
         <button class="nav-hamburger" id="gn-hamburger" aria-label="Open menu" aria-expanded="false">
           <span class="hamburger-bar"></span><span class="hamburger-bar"></span><span class="hamburger-bar"></span>
@@ -82,6 +85,9 @@ export function headerAndNav(base) {
   <div class="nav-mobile-drawer" id="gn-mobile-drawer">
     ${mobileNav(base)}
     <div class="mobile-nav-divider"></div>
+    <a class="mobile-nav-whatsapp" href="#" data-whatsapp="true" style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);color:#25D366;font-weight:600;text-decoration:none;">
+      ${icon('whatsapp')} Chat on WhatsApp
+    </a>
     <a class="mobile-nav-cta" href="${link(base, 'contact.html')}">Talk to an Expert &rarr;</a>
   </div>`;
 }
@@ -100,6 +106,94 @@ const HERO_MINI_STATS = [
   { icon: 'bolt', label: 'Energy Efficient', sub: 'Greener Tomorrow' },
   { icon: 'shield', label: '24/7 Monitoring', sub: 'Reliable Always' },
 ];
+
+export function heroSlider(base = '') {
+  const slides = [
+    {
+      img: 'assets/img/hero-banner.png',
+      eyebrow: 'AI DATA CENTER INFRASTRUCTURE',
+      headline: 'Building the Intelligent Infrastructure Behind Tomorrow’s Enterprises.',
+      description: 'GreenNext designs and delivers resilient, AI-ready data centers, intelligent automation, and energy-efficient digital infrastructure for forward-looking enterprises.',
+      primary: { text: 'Talk to an Expert', href: 'contact.html' },
+      secondary: { text: 'Explore Solutions', href: 'solutions/index.html' },
+      tags: [
+        { icon: 'server', text: 'AI Optimized' },
+        { icon: 'bolt', text: 'Energy Efficient' },
+        { icon: 'shield', text: '24/7 Monitoring' },
+      ],
+    },
+    {
+      img: 'assets/img/control-room.webp',
+      eyebrow: 'INTELLIGENT AUTOMATION',
+      headline: 'Smarter Infrastructure. Intelligent Operations.',
+      description: 'Automate telemetry, optimize cooling in real time, and eliminate operational blind spots with end-to-end AI workload monitoring and predictive management.',
+      primary: { text: 'Discover Our Capabilities', href: 'capabilities/index.html' },
+      secondary: { text: 'Talk to an Expert', href: 'contact.html' },
+      tags: [
+        { icon: 'cpu', text: 'Autonomous Telemetry' },
+        { icon: 'spark', text: 'Predictive Alerts' },
+        { icon: 'shield', text: 'Closed-Loop Tuning' },
+      ],
+    },
+    {
+      img: 'assets/img/solar-panels.webp',
+      eyebrow: 'SUSTAINABLE DIGITAL FUTURE',
+      headline: 'Powering Digital Growth, Sustainably.',
+      description: 'Pioneering clean computing architectures that integrate renewable energy sources, minimize power usage effectiveness, and drive carbon-conscious scalability.',
+      primary: { text: 'Explore Our Solutions', href: 'solutions/index.html' },
+      secondary: { text: 'Talk to an Expert', href: 'contact.html' },
+      tags: [
+        { icon: 'bolt', text: 'Solar & Clean Grid' },
+        { icon: 'spark', text: 'High-Efficiency PUE' },
+        { icon: 'network', text: 'Responsible Growth' },
+      ],
+    },
+  ];
+
+  return `
+  <section class="hero-slider" aria-roledescription="carousel" aria-label="GreenNext Infrastructure Solutions">
+    <div class="hero-slider-track">
+      ${slides.map((s, idx) => `
+        <div class="hero-slide${idx === 0 ? ' active' : ''}" style="background-image:url('${link(base, s.img)}');" role="group" aria-roledescription="slide" aria-label="${idx + 1} of ${slides.length}" aria-hidden="${idx === 0 ? 'false' : 'true'}">
+          <div class="hero-slide-overlay"></div>
+          <div class="container hero-slide-content">
+            <div class="hero-slide-inner reveal visible">
+              <div class="hero-slide-eyebrow">
+                <span class="hero-slide-eyebrow-dot"></span>
+                <span>${s.eyebrow}</span>
+              </div>
+              <h1 class="hero-slide-title">${s.headline}</h1>
+              <p class="hero-slide-desc">${s.description}</p>
+              <div class="hero-slide-actions">
+                ${cta(s.primary.text, s.primary.href, { variant: 'primary', size: 'lg', base })}
+                ${cta(s.secondary.text, s.secondary.href, { variant: 'ghost', size: 'lg', base })}
+                <a class="hero-whatsapp-btn" href="#" data-whatsapp="true">
+                  ${icon('whatsapp')} <span>Chat on WhatsApp</span>
+                </a>
+              </div>
+              <div class="hero-slide-tags">
+                ${s.tags.map(t => `<span class="hero-slide-tag">${icon(t.icon)} ${t.text}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <button class="slider-arrow slider-arrow--prev" aria-label="Previous slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <button class="slider-arrow slider-arrow--next" aria-label="Next slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+
+    <div class="slider-indicators" role="tablist" aria-label="Slide selectors">
+      ${slides.map((_, idx) => `
+        <button class="slider-indicator${idx === 0 ? ' active' : ''}" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" aria-label="Slide ${idx + 1}">
+          <span class="slider-indicator-label">Slide ${idx + 1}</span>
+        </button>`).join('')}
+    </div>
+  </section>`;
+}
 
 export function hero({ variant = 'light', eyebrow, headline, description, primary, secondary, base = '', compact = true, richMedia = false }) {
   if (richMedia) {
@@ -187,10 +281,10 @@ export function cardGrid(base, items, { hrefPrefix, ctaText = 'Learn More', colu
 
 export function metricsStrip() {
   const metrics = [
-    { icon: 'database', value: '4', label: 'Regional Data Center Locations' },
-    { icon: 'shield', value: '24/7', label: 'Intelligent Monitoring' },
-    { icon: 'cpu', value: 'AI', label: 'Powered Operations' },
-    { icon: 'bolt', value: 'Green', label: 'Energy-Efficient Infrastructure' },
+    { icon: 'database', value: '4 Regional Hubs', label: 'Madurai, Coimbatore, Trichy, Mangalore' },
+    { icon: 'shield', value: 'Continuous', label: 'AI Telemetry & Closed-Loop Tuning' },
+    { icon: 'cpu', value: 'AI Workloads', label: 'High-Density Compute Architecture' },
+    { icon: 'bolt', value: 'Low Impact', label: 'PUE & Renewable Energy Optimization' },
   ];
   return `
   <section class="metrics-strip">
@@ -203,7 +297,7 @@ export function metricsStrip() {
           </div>`).join('')}
       </div>
       <div class="metrics-strip-note">
-        A CLEANER DIGITAL TOMORROW <br>FOR A BRIGHTER WORLD <span class="btn-arrow">&rarr;</span>
+        SUSTAINABLE. INTELLIGENT. AHEAD. <br>ENTERPRISE DIGITAL PRESENCE <span class="btn-arrow">&rarr;</span>
       </div>
     </div>
   </section>`;
@@ -226,7 +320,7 @@ function fieldMarkup(field) {
     return `
       <div class="form-field form-field--full">
         <label for="${field.name}">${field.label}${reqMark}</label>
-        <textarea id="${field.name}" name="${field.name}" rows="4" ${req}></textarea>
+        <textarea id="${field.name}" name="${field.name}" rows="4" placeholder="${field.placeholder || ''}" ${req}></textarea>
       </div>`;
   }
   if (field.type === 'file') {
@@ -239,29 +333,86 @@ function fieldMarkup(field) {
   return `
     <div class="form-field">
       <label for="${field.name}">${field.label}${reqMark}</label>
-      <input type="${field.type}" id="${field.name}" name="${field.name}" ${req}>
+      <input type="${field.type}" id="${field.name}" name="${field.name}" placeholder="${field.placeholder || ''}" ${req}>
     </div>`;
 }
 
+export function quickEnquirySection({ base = '', title = 'Quick Enquiry', subtitle = 'Connect with an infrastructure architect in 60 seconds.' } = {}) {
+  return `
+  <div class="quick-enquiry-card reveal">
+    <div class="quick-enquiry-panel">
+      <div class="quick-enquiry-header">
+        <h3 class="quick-enquiry-title">${title}</h3>
+        <p class="quick-enquiry-sub">${subtitle}</p>
+      </div>
+      <form class="quick-enquiry-form" novalidate>
+        <div class="form-field">
+          <label for="qe_name">Name *</label>
+          <input type="text" id="qe_name" name="name" placeholder="Your full name" required>
+        </div>
+        <div class="form-field">
+          <label for="qe_contact">Work Email or Phone *</label>
+          <input type="text" id="qe_contact" name="contact" placeholder="email@company.com or +91..." required>
+        </div>
+        <div class="form-field">
+          <label for="qe_interest">Area of Interest *</label>
+          <select id="qe_interest" name="area_of_interest" required>
+            <option value="" disabled selected>Select Area of Interest</option>
+            <option value="AI Data Centers">AI Data Centers</option>
+            <option value="AI Infrastructure">AI Infrastructure</option>
+            <option value="Energy Efficiency">Energy Efficiency</option>
+            <option value="Intelligent Automation">Intelligent Automation</option>
+            <option value="Digital Infrastructure">Digital Infrastructure</option>
+            <option value="Regional Facilities">Regional Facilities (Madurai, Coimbatore, Trichy, Mangalore)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm"><span>Submit Enquiry</span><span class="btn-arrow">&rarr;</span></button>
+      </form>
+    </div>
+    <div class="form-success">
+      <div class="form-success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h3 class="heading-sm">Enquiry Received</h3>
+      <p class="text-sm text-muted">Thank you. Our solutions team will get in touch with you shortly.</p>
+    </div>
+  </div>`;
+}
+
 export function leadFormSection(bucket, { base = '', prefillLocation } = {}) {
-  const cfg = formConfigs[bucket] || formConfigs.general;
+  const cfg = formConfigs[bucket] || formConfigs.consultation || formConfigs.general;
+  
+  // Base fields complying with Requirement 6A (Long Form)
   const baseFields = [
-    { type: 'text', name: 'full_name', label: 'Full Name', required: true },
-    { type: 'email', name: 'business_email', label: 'Business Email', required: true },
-    { type: 'text', name: 'company_name', label: 'Company Name', required: true },
-    { type: 'tel', name: 'phone', label: 'Phone Number', required: false },
+    { type: 'text', name: 'full_name', label: 'Full Name', required: true, placeholder: 'e.g. John Doe' },
+    { type: 'email', name: 'business_email', label: 'Business Email', required: true, placeholder: 'e.g. name@enterprise.com' },
+    { type: 'text', name: 'company_name', label: 'Company Name', required: true, placeholder: 'e.g. Acme Corp' },
+    { type: 'tel', name: 'phone', label: 'Phone Number', required: true, placeholder: 'e.g. +91 98765 43210' },
     prefillLocation
       ? { type: 'text', name: 'location', label: 'Location', required: true, value: prefillLocation }
-      : { type: 'text', name: 'location', label: 'Location', required: true },
+      : { type: 'text', name: 'location', label: 'Location / City', required: true, placeholder: 'e.g. Madurai, Coimbatore, Bangalore' },
   ];
-  const allFields = [...baseFields, ...cfg.extraFields, { type: 'textarea', name: 'message', label: cfg.messageLabel, required: true }];
+
+  const extraFields = cfg.extraFields || [];
+  const messageField = {
+    type: 'textarea',
+    name: 'project_requirements',
+    label: cfg.messageLabel || 'Project Requirements',
+    required: true,
+    placeholder: 'Outline your compute density, workload scale, cooling targets, or regional deployment timeline...'
+  };
+
+  const allFields = [...baseFields, ...extraFields, messageField];
 
   return `
   <section class="section bg-soft" id="enquiry">
     <div class="container">
       <div class="lead-form-card reveal">
         <div class="lead-form-panel">
-          <div class="section-header">
+          <div class="section-header" style="margin-bottom:var(--space-6);">
+            <div class="demo-mode-badge">
+              <span>⚡ Enterprise Consultation Request • Confidential Advisory</span>
+            </div>
             <h2 class="heading-lg">${cfg.heading}</h2>
             <p class="text-base text-muted">${cfg.description}</p>
           </div>
@@ -277,9 +428,21 @@ export function leadFormSection(bucket, { base = '', prefillLocation } = {}) {
                 }
                 return fieldMarkup(f);
               }).join('')}
+              <div class="form-field--consent">
+                <input type="checkbox" id="consent_${bucket}" name="consent" required>
+                <label for="consent_${bucket}">
+                  I agree to the processing of my contact information in accordance with GreenNext's <a href="${link(base, 'privacy-policy.html')}" target="_blank">Privacy Policy</a>. *
+                </label>
+              </div>
             </div>
             <div class="form-actions">
-              <button type="submit" class="btn btn-primary btn-lg"><span>${cfg.submitLabel}</span><span class="btn-arrow">&rarr;</span></button>
+              <button type="submit" class="btn btn-primary btn-lg">
+                <span>${cfg.submitLabel || 'Submit Request'}</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+              <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:10px 18px;">
+                ${icon('whatsapp')} <span>Prefer WhatsApp? Chat Directly</span>
+              </a>
             </div>
           </form>
         </div>
@@ -288,7 +451,7 @@ export function leadFormSection(bucket, { base = '', prefillLocation } = {}) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
           </div>
           <h3 class="heading-md">Thank you for reaching out to GreenNext.</h3>
-          <p class="text-base text-muted">Your enquiry has been received. Our team will get in touch with you shortly.</p>
+          <p class="text-base text-muted">Your enquiry has been received. Our infrastructure team will get in touch with you shortly.</p>
           <a class="btn btn-secondary btn-lg" href="${link(base, 'index.html')}"><span>Back to Home</span><span class="btn-arrow">&rarr;</span></a>
         </div>
       </div>
@@ -347,6 +510,9 @@ export function finalCTASection(base) {
       <div class="cta-section-actions reveal">
         ${cta(finalCTA.primary.text, finalCTA.primary.href, { variant: 'primary', base })}
         ${cta(finalCTA.secondary.text, finalCTA.secondary.href, { variant: 'ghost', base })}
+        <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:14px 22px;font-size:var(--font-size-base);">
+          ${icon('whatsapp')} <span>Chat on WhatsApp</span>
+        </a>
       </div>
     </div>
   </section>`;
@@ -357,8 +523,16 @@ export function footer(base) {
   <footer class="site-footer">
     <div class="footer-cta-bar">
       <div class="container footer-cta-inner">
-        <span class="heading-sm" style="color:white;">Ready to talk?</span>
-        ${cta('Talk to an Expert', 'contact.html', { variant: 'ghost', size: '', base })}
+        <div>
+          <span class="heading-sm" style="color:white;display:block;">Ready to build smarter infrastructure?</span>
+          <span class="text-sm" style="color:rgba(255,255,255,0.7);">Connect with GreenNext infrastructure architects across Madurai, Coimbatore, Trichy, and Mangalore.</span>
+        </div>
+        <div class="footer-cta-actions">
+          ${cta('Talk to an Expert', 'contact.html', { variant: 'primary', size: '', base })}
+          <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:10px 18px;">
+            ${icon('whatsapp')} <span>WhatsApp Us</span>
+          </a>
+        </div>
       </div>
     </div>
     <div class="container footer-main">
@@ -368,7 +542,15 @@ export function footer(base) {
           <span class="nav-logo-text" style="color:white;">Green<span>Next</span></span>
         </a>
         <p class="footer-tagline">${tagline}</p>
-        <p class="footer-brand-desc">AI-driven infrastructure, data centers, and intelligent automation for the modern enterprise.</p>
+        <p class="footer-brand-desc">AI-driven infrastructure, data centers, and intelligent automation engineered for enterprise performance and sustainability.</p>
+        <div class="footer-socials">
+          <a class="footer-social-link" href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="GreenNext on LinkedIn" title="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 1 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.4 9.74v-8.37H5.06v8.37h2.8z"/></svg>
+          </a>
+          <a class="footer-social-link" href="#" data-whatsapp="true" aria-label="GreenNext WhatsApp Chat" title="WhatsApp">
+            ${icon('whatsapp')}
+          </a>
+        </div>
       </div>
       ${footerData.columns.map(col => `
         <div class="footer-col">
@@ -378,23 +560,114 @@ export function footer(base) {
           </ul>
         </div>`).join('')}
       <div class="footer-col">
-        <h4 class="footer-col-title">Contact</h4>
+        <h4 class="footer-col-title">Contact &amp; Enquiry</h4>
         <ul class="footer-links">
           <li><a href="mailto:hello@greennext.example">hello@greennext.example</a></li>
           <li><a href="tel:+910000000000">+91 00000 00000</a></li>
+          <li><a class="footer-whatsapp-link" href="#" data-whatsapp="true">${icon('whatsapp')} Chat on WhatsApp</a></li>
+          <li><a href="${link(base, 'contact.html')}">Consultation Request &rarr;</a></li>
           <li><a href="${link(base, 'privacy-policy.html')}">Privacy Policy</a></li>
           <li><a href="${link(base, 'terms-and-conditions.html')}">Terms &amp; Conditions</a></li>
         </ul>
       </div>
     </div>
     <div class="container footer-bottom">
-      <span>&copy; ${CURRENT_YEAR} GreenNext. All rights reserved.</span>
+      <span>&copy; <span id="gn-footer-year">${CURRENT_YEAR}</span> GreenNext. All rights reserved.</span>
       <div class="footer-bottom-links">
         <a href="${link(base, 'privacy-policy.html')}">Privacy Policy</a>
         <a href="${link(base, 'terms-and-conditions.html')}">Terms &amp; Conditions</a>
       </div>
     </div>
   </footer>`;
+}
+
+export function welcomeModal(base = '') {
+  return `
+  <div class="gn-modal-backdrop" id="gn-welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-modal-title" aria-hidden="true">
+    <div class="gn-modal gn-modal--welcome">
+      <button class="gn-modal-close" data-dismiss="modal" aria-label="Close welcome modal">&times;</button>
+      <div class="gn-modal-header">
+        <div class="gn-modal-badge">
+          <span class="gn-modal-badge-dot"></span>
+          <span class="gn-welcome-badge-text">Welcome to GreenNext</span>
+        </div>
+        <h2 class="gn-modal-title gn-welcome-title" id="welcome-modal-title">Welcome to GreenNext 🌿</h2>
+      </div>
+      <p class="gn-modal-body gn-welcome-body-text">
+        Discover intelligent infrastructure designed for a smarter, more sustainable future.
+      </p>
+      <div class="gn-modal-tags">
+        <span class="gn-modal-tag">${icon('server')} AI Infrastructure</span>
+        <span class="gn-modal-tag">${icon('bolt')} Energy Optimization</span>
+        <span class="gn-modal-tag">${icon('cpu')} Intelligent Automation</span>
+      </div>
+      <div class="gn-modal-actions">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a class="btn btn-ghost" href="${link(base, 'solutions/index.html')}">Explore GreenNext</a>
+        <a class="btn btn-primary" href="${link(base, 'contact.html')}"><span>Talk to an Expert</span><span class="btn-arrow">&rarr;</span></a>
+      </div>
+    </div>
+  </div>`;
+}
+
+export function exitModal(base = '') {
+  return `
+  <div class="gn-modal-backdrop" id="gn-exit-modal" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title" aria-hidden="true">
+    <div class="gn-modal gn-modal--exit">
+      <button class="gn-modal-close" data-dismiss="modal" aria-label="Close exit modal">&times;</button>
+      <div class="gn-modal-icon-circle">
+        ${icon('spark')}
+      </div>
+      <div class="gn-modal-header">
+        <h2 class="gn-modal-title" id="exit-modal-title">Thank You for Visiting GreenNext! 🌿</h2>
+      </div>
+      <p class="gn-modal-body">
+        We appreciate your interest in intelligent, sustainable infrastructure. We look forward to connecting with you.
+      </p>
+      <div class="gn-modal-actions">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue Exploring</button>
+        <a class="btn btn-primary" href="${link(base, 'contact.html')}"><span>Contact Our Team</span><span class="btn-arrow">&rarr;</span></a>
+      </div>
+    </div>
+  </div>`;
+}
+
+export function thankYouModal(base = '') {
+  return `
+  <div class="gn-modal-backdrop" id="gn-thankyou-modal" role="dialog" aria-modal="true" aria-labelledby="thankyou-modal-title" aria-hidden="true">
+    <div class="gn-modal gn-modal--thankyou">
+      <button class="gn-modal-close" data-dismiss="modal" aria-label="Close thank you modal">&times;</button>
+      <div class="gn-modal-icon-circle" style="width:52px;height:52px;border-radius:var(--radius-xl);background:var(--color-primary);color:white;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-4);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:26px;height:26px;"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <div class="gn-modal-header">
+        <span class="gn-modal-badge"><span class="gn-modal-badge-dot"></span> Request Confirmed</span>
+        <h2 class="gn-modal-title" id="thankyou-modal-title">Thank You, <span class="gn-thankyou-name">Valued Visitor</span>! 🌿</h2>
+      </div>
+      <p class="gn-modal-body">
+        We appreciate your interest in GreenNext infrastructure solutions. Our enterprise solutions team has received your enquiry and will connect with you shortly.
+      </p>
+      <div class="demo-mode-badge" style="display:flex;margin-bottom:var(--space-6);padding:10px 14px;background:var(--color-bg-soft);border:1px solid var(--color-border);border-radius:var(--radius-md);font-size:12px;color:var(--color-text-muted);">
+        <span>ℹ️ Demo Mode: Submission validated locally. To dispatch live webhooks/emails, configure API_ENDPOINT in js/config.js.</span>
+      </div>
+      <div class="gn-modal-actions">
+        <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:10px 16px;">
+          ${icon('whatsapp')} <span>Chat on WhatsApp</span>
+        </a>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+export function floatingWhatsAppWidget(base = '') {
+  return `
+  <aside class="floating-whatsapp" id="floating-whatsapp-container" aria-label="WhatsApp quick chat">
+    <span class="floating-whatsapp-tooltip">Chat with an Infrastructure Specialist</span>
+    <a class="floating-whatsapp-btn" id="floating-whatsapp" href="#" data-whatsapp="true" aria-label="Chat with GreenNext on WhatsApp">
+      ${icon('whatsapp')}
+    </a>
+  </aside>`;
 }
 
 export function page({ base = '', title, metaDesc, bodyHtml, jsExtra = [] }) {
@@ -411,6 +684,8 @@ export function page({ base = '', title, metaDesc, bodyHtml, jsExtra = [] }) {
 <link rel="stylesheet" href="${link(base, 'css/footer.css')}">
 <link rel="stylesheet" href="${link(base, 'css/pages.css')}">
 <link rel="stylesheet" href="${link(base, 'css/visual.css')}">
+<link rel="stylesheet" href="${link(base, 'css/slider.css')}">
+<link rel="stylesheet" href="${link(base, 'css/modals.css')}">
 </head>
 <body>
 ${headerAndNav(base)}
@@ -418,10 +693,17 @@ ${headerAndNav(base)}
 ${bodyHtml}
 </main>
 ${footer(base)}
+${welcomeModal(base)}
+${exitModal(base)}
+${thankYouModal(base)}
+${floatingWhatsAppWidget(base)}
+<script src="${link(base, 'js/config.js')}" defer></script>
 <script src="${link(base, 'js/nav.js')}" defer></script>
 <script src="${link(base, 'js/reveal.js')}" defer></script>
 <script src="${link(base, 'js/forms.js')}" defer></script>
 <script src="${link(base, 'js/motion.js')}" defer></script>
+<script src="${link(base, 'js/slider.js')}" defer></script>
+<script src="${link(base, 'js/modals.js')}" defer></script>
 ${jsExtra.join('\n')}
 </body>
 </html>
@@ -437,6 +719,9 @@ export function aboutSplitSection({ heading, body, floatCardText, base = '', img
         <span class="section-label">About GreenNext</span>
         <h2 class="heading-xl" style="margin-bottom: var(--space-5);">${heading}</h2>
         <p class="text-lg text-muted">${body}</p>
+        <div style="margin-top:var(--space-6);">
+          ${cta('Learn About Our Approach', 'about.html', { variant: 'secondary', size: 'md', base })}
+        </div>
       </div>
       <div class="about-split-visual reveal reveal-right">
         <div class="about-split-visual-panel" style="padding:0;">
@@ -475,14 +760,17 @@ export function intelligenceDashboardSection() {
         <div class="reveal reveal-left">
           <span class="section-label">Intelligent Automation</span>
           <h2 class="heading-xl">Intelligence at the Core</h2>
-          <p class="text-base text-muted" style="margin-top:var(--space-4);">AI transforms data center operations from reactive to proactive.</p>
+          <p class="text-base text-muted" style="margin-top:var(--space-4);margin-bottom:var(--space-6);">AI transforms data center operations from reactive to proactive, continually balancing thermal loads, compute bursts, and energy efficiency.</p>
           ${miniFlowHorizontal(nodes)}
+          <div style="margin-top:var(--space-6);">
+            <a class="btn btn-secondary btn-md" href="capabilities/intelligent-automation.html"><span>See Our Capabilities</span><span class="btn-arrow">&rarr;</span></a>
+          </div>
         </div>
         <div class="reveal reveal-right">
           <div class="dashboard-mock-wrap">
             <div class="section-label" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);color:var(--color-accent);margin-bottom:var(--space-5);">Platform View</div>
             <h3 class="heading-md" style="color:white;margin-bottom:var(--space-2);">A Platform Built to See Everything</h3>
-            <p class="text-sm" style="color:rgba(255,255,255,0.55);margin-bottom:var(--space-6);">A conceptual view of the visibility GreenNext infrastructure is designed to provide.</p>
+            <p class="text-sm" style="color:rgba(255,255,255,0.55);margin-bottom:var(--space-6);">A conceptual view of the continuous visibility GreenNext infrastructure is designed to provide.</p>
             ${dashboardMock()}
           </div>
         </div>
@@ -506,11 +794,11 @@ export function processFlowSection({ eyebrow, heading, steps }) {
 
 export function sustainabilitySection(base, id = 'sustainability') {
   const points = [
-    { icon: 'bolt', text: 'Energy efficiency' },
-    { icon: 'spark', text: 'Intelligent cooling' },
-    { icon: 'cpu', text: 'Smart monitoring' },
-    { icon: 'shield', text: 'Infrastructure optimization' },
-    { icon: 'network', text: 'Responsible digital growth' },
+    { icon: 'bolt', text: 'Renewable energy grid integration and on-site solar support' },
+    { icon: 'spark', text: 'Intelligent liquid and direct-to-chip cooling architectures' },
+    { icon: 'cpu', text: 'Smart monitoring algorithms that dynamically track thermal efficiency' },
+    { icon: 'shield', text: 'Continuous infrastructure optimization designed for lower PUE' },
+    { icon: 'network', text: 'Responsible digital growth across regional technology corridors' },
   ];
   return `
   <section class="section section-relative" id="${id}">
@@ -518,12 +806,16 @@ export function sustainabilitySection(base, id = 'sustainability') {
       <div class="reveal reveal-left" style="order:2;">
         <span class="section-label">Sustainability</span>
         <h2 class="heading-xl" style="margin-bottom:var(--space-5);">Designed for a More Sustainable Digital Future</h2>
-        <ul style="display:flex;flex-direction:column;gap:var(--space-3);">
+        <p class="text-base text-muted" style="margin-bottom:var(--space-4);">We engineer digital infrastructure where computing power and environmental stewardship advance together.</p>
+        <ul style="display:flex;flex-direction:column;gap:var(--space-3);margin-bottom:var(--space-6);">
           ${points.map(p => `<li style="display:flex;align-items:center;gap:var(--space-3);"><span class="flow-node-icon" style="width:32px;height:32px;flex-shrink:0;">${icon(p.icon)}</span><span class="text-base text-muted">${p.text}</span></li>`).join('')}
         </ul>
+        <div>
+          <a class="btn btn-secondary btn-md" href="${link(base, 'solutions/energy-optimization.html')}"><span>Discover Our Approach</span><span class="btn-arrow">&rarr;</span></a>
+        </div>
       </div>
       <div class="reveal reveal-right" style="order:1;">
-        <img src="${link(base, 'assets/img/solar-panels.webp')}" alt="Renewable solar energy infrastructure" loading="lazy" style="width:100%;height:320px;object-fit:cover;border-radius:var(--radius-2xl);">
+        <img src="${link(base, 'assets/img/solar-panels.webp')}" alt="Renewable solar energy infrastructure" loading="lazy" style="width:100%;height:340px;object-fit:cover;border-radius:var(--radius-2xl);">
       </div>
     </div>
   </section>`;
@@ -565,7 +857,7 @@ export function locationsMapSection(base, locations, hrefPrefix = 'locations/') 
             <div class="location-card-body">
               <h3 class="location-card-name">${loc.name}</h3>
               <p class="location-card-desc">${loc.tagline || loc.cardDesc}</p>
-              <a class="location-card-link" href="${link(base, hrefPrefix + loc.slug + '.html')}">Explore <span class="btn-arrow">&rarr;</span></a>
+              <a class="location-card-link" href="${link(base, hrefPrefix + loc.slug + '.html')}">Explore Location <span class="btn-arrow">&rarr;</span></a>
             </div>
           </div>`).join('')}
       </div>
@@ -573,4 +865,138 @@ export function locationsMapSection(base, locations, hrefPrefix = 'locations/') 
   </section>`;
 }
 
+export function benefitsSection(benefits = [], { eyebrow = 'Business Value', heading = 'Tangible Operational & Strategic Benefits', subtitle = '' } = {}) {
+  if (!benefits || !benefits.length) return '';
+  return `
+  <section class="section">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">${eyebrow}</span>
+        <h2 class="heading-xl">${heading}</h2>
+        ${subtitle ? `<p class="text-lg text-muted" style="max-width:720px;margin:var(--space-3) auto 0;">${subtitle}</p>` : ''}
+      </div>
+      <div class="benefits-grid">
+        ${benefits.map((b, i) => `
+          <div class="benefit-card reveal reveal-delay-${(i % 3) + 1}">
+            <div class="benefit-card-header">
+              <div class="benefit-card-icon">${icon(b.icon || 'spark')}</div>
+              ${b.metric ? `<span class="benefit-card-metric">${b.metric}</span>` : ''}
+            </div>
+            <h3 class="benefit-card-title">${b.title}</h3>
+            <p class="benefit-card-desc">${b.desc}</p>
+          </div>`).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+export function useCasesSection(useCases = [], { eyebrow = 'Enterprise Applications', heading = 'Proven Architectural Use Cases', subtitle = '' } = {}) {
+  if (!useCases || !useCases.length) return '';
+  return `
+  <section class="section bg-soft">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">${eyebrow}</span>
+        <h2 class="heading-xl">${heading}</h2>
+        ${subtitle ? `<p class="text-lg text-muted" style="max-width:720px;margin:var(--space-3) auto 0;">${subtitle}</p>` : ''}
+      </div>
+      <div class="use-cases-grid">
+        ${useCases.map((uc, i) => `
+          <div class="use-case-card reveal reveal-delay-${(i % 3) + 1}">
+            ${uc.tag ? `<span class="use-case-badge">${uc.tag}</span>` : ''}
+            <h3 class="use-case-title">${uc.title}</h3>
+            <p class="use-case-desc">${uc.desc}</p>
+            ${uc.points && uc.points.length ? `
+              <ul class="use-case-points">
+                ${uc.points.map(pt => `
+                  <li class="use-case-point">
+                    <span class="use-case-point-icon">${icon('spark')}</span>
+                    <span>${pt}</span>
+                  </li>`).join('')}
+              </ul>` : ''}
+            ${uc.impact ? `<div class="use-case-impact"><span>Outcome:</span> ${uc.impact}</div>` : ''}
+          </div>`).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+export function deepDiveSection({ eyebrow = 'Technical Deep Dive', heading, body, bullets = [], img = 'assets/img/server-hall.webp', alt = '', caption = '', base = '', ctaText = 'Talk to an Expert', ctaHref = 'contact.html', reverse = false } = {}) {
+  return `
+  <section class="section">
+    <div class="container deep-dive-grid${reverse ? ' deep-dive-grid--reverse' : ''}">
+      <div class="reveal reveal-${reverse ? 'right' : 'left'}">
+        ${eyebrow ? `<span class="section-label">${eyebrow}</span>` : ''}
+        <h2 class="heading-xl" style="margin-bottom:var(--space-4);">${heading}</h2>
+        <p class="text-base text-muted" style="margin-bottom:var(--space-4);line-height:1.7;">${body}</p>
+        ${bullets && bullets.length ? `
+          <div class="deep-dive-bullets">
+            ${bullets.map(b => `
+              <div class="deep-dive-bullet">
+                <span class="deep-dive-bullet-icon">${icon('spark')}</span>
+                <span>${b}</span>
+              </div>`).join('')}
+          </div>` : ''}
+        ${ctaText ? `
+          <div style="margin-top:var(--space-6);display:flex;gap:var(--space-4);flex-wrap:wrap;align-items:center;">
+            ${cta(ctaText, ctaHref, { variant: 'primary', size: 'md', base })}
+            <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:11px 18px;font-size:var(--font-size-sm);">
+              ${icon('whatsapp')} <span>WhatsApp</span>
+            </a>
+          </div>` : ''}
+      </div>
+      <div class="reveal reveal-${reverse ? 'left' : 'right'}">
+        <div class="deep-dive-visual">
+          <img src="${link(base, img)}" alt="${alt || heading}" loading="lazy">
+          ${caption ? `<div class="deep-dive-caption">${caption}</div>` : ''}
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+export function faqSection(faqs = [], { eyebrow = 'Frequently Asked Questions', heading = 'Clarity on Architecture & Engagements' } = {}) {
+  if (!faqs || !faqs.length) return '';
+  return `
+  <section class="section section-faq">
+    <div class="container faq-wrap">
+      <div class="section-header section-header--center">
+        <span class="section-label">${eyebrow}</span>
+        <h2 class="heading-xl">${heading}</h2>
+      </div>
+      <div class="faq-list">
+        ${faqs.map(faq => `
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span>${faq.q}</span>
+              <span class="faq-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </span>
+            </summary>
+            <div class="faq-answer">
+              <p>${faq.a}</p>
+            </div>
+          </details>`).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+export function relatedLinksBar(links = [], base = '') {
+  if (!links || !links.length) return '';
+  return `
+  <section class="container" style="padding-bottom:var(--space-8);">
+    <div class="related-nav-bar">
+      <div class="related-nav-title">
+        <span class="nav-logo-icon" style="width:20px;height:20px;">${icon('spark')}</span>
+        <span>Related Solutions &amp; Infrastructure:</span>
+      </div>
+      <div class="related-nav-pills">
+        ${links.map(l => `<a class="related-nav-pill" href="${link(base, l.href)}">${l.label} &rarr;</a>`).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
 export { cta, curveDivider, blobDecor };
+

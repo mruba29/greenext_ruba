@@ -578,22 +578,25 @@
 
 .process-step-icon {
   position: relative;
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
-  background: var(--color-bg-muted);
+  background: #FFFFFF;
   border: 1.5px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);
 }
 
 .process-step:hover .process-step-icon {
-  background: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  border-color: var(--color-primary);
   color: white;
   transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(11, 107, 74, 0.25);
 }
 
 .process-step-icon svg { width: 26px; height: 26px; }
@@ -775,21 +778,35 @@
 
 /* ---------- Dashboard mock ---------- */
 .dashboard-mock {
-  background: var(--color-dark);
+  background: linear-gradient(165deg, #072015 0%, #05160E 100%);
+  border: 1px solid rgba(0, 201, 122, 0.22);
   border-radius: var(--radius-2xl);
   padding: var(--space-8);
-  max-width: 880px;
+  max-width: 920px;
   margin: 0 auto;
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 24px 64px -12px rgba(6, 35, 23, 0.35), 0 0 32px rgba(0, 201, 122, 0.10);
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-mock::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
 }
 
 .dashboard-mock-header {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.65);
   font-size: var(--font-size-xs);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  font-weight: 600;
   margin-bottom: var(--space-6);
 }
 
@@ -798,6 +815,7 @@
   height: 8px;
   border-radius: 50%;
   background: var(--color-accent);
+  box-shadow: 0 0 10px var(--color-accent);
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
@@ -809,7 +827,7 @@
 
 .dashboard-ring-card, .dashboard-spark-card, .dashboard-status-card {
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
   display: flex;
@@ -817,6 +835,13 @@
   align-items: center;
   gap: var(--space-3);
   text-align: center;
+  transition: all var(--transition-base);
+}
+
+.dashboard-ring-card:hover, .dashboard-spark-card:hover, .dashboard-status-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(0, 201, 122, 0.35);
+  transform: translateY(-2px);
 }
 
 .dashboard-ring {

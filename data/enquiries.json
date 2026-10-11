@@ -1,0 +1,20 @@
+[
+  {
+    "enquiryId": "GN-20261011-1521",
+    "submittedAt": "11/10/2026, 21:24:24",
+    "formType": "Long Form",
+    "fullName": "TEST — Arjun Krishnamurthy",
+    "businessEmail": "arjun.k@techcorp.in",
+    "companyName": "TechCorp Solutions Pvt Ltd",
+    "phoneNumber": "'+91 98765 43210",
+    "location": "Coimbatore",
+    "industry": "Technology",
+    "areaOfInterest": "AI Data Centers",
+    "projectRequirements": "TEST SUBMISSION: Planning 5MW AI-ready data center with liquid cooling for ML training workloads.",
+    "expectedTimeline": "3-6 Months",
+    "preferredContactMethod": "Business Email",
+    "message": "—",
+    "consent": "Granted",
+    "status": "New"
+  }
+]

@@ -49,6 +49,10 @@ var COLS_JIRA_TRACKING = [
   'Lead Closure Subtask Key',
   'Operations Handover Subtask Key',
   'Jira Creation Status',
+  'Email Notification Status',
+  'Email Sent Timestamp',
+  'Email Recipient',
+  'Email Error Details',
   'Last Sync Timestamp',
   'Error Details'
 ];
@@ -290,6 +294,10 @@ function handleEnquiryPost(e, preParsedData) {
           subMap['lead_closure'] || '—',
           subMap['operations_handover'] || '—',
           creationStatus,
+          (emailResult && emailResult.status) || 'Pending / Disabled',
+          (emailResult && emailResult.timestamp) || '—',
+          (emailResult && emailResult.recipient) || '—',
+          (emailResult && emailResult.error) || '—',
           timestampStr,
           sanitize(errorDetails, 400)
         ];
@@ -301,12 +309,36 @@ function handleEnquiryPost(e, preParsedData) {
       Logger.log('Jira issue creation skipped/failed: ' + jiraErr.message);
     }
 
+    // Step 4: Automated Lead Notification Email Dispatch
+    var emailResult = null;
+    try {
+      emailResult = sendLeadNotificationEmailFromGas(
+        enquiryId, formType, fullName, email,
+        data.company_name || data.company || '—',
+        phone,
+        data.location || '—',
+        data.industry || '—',
+        data.area_of_interest || data.service || '—',
+        data.project_requirements || data.requirements || '—',
+        data.expected_timeline || data.timeline || '—',
+        data.preferred_contact_method || data.contact_method || '—',
+        data.page_url || '/',
+        data.utm_source || 'Direct / Organic',
+        jiraResult,
+        timestampStr
+      );
+    } catch (emErr) {
+      Logger.log('Lead notification email error: ' + emErr.message);
+      emailResult = { success: false, status: 'failed', error: emErr.message };
+    }
+
     return createJsonResponse({
       success  : true,
       message  : 'Thank you! Your enquiry has been registered successfully.',
       enquiryId: enquiryId,
       timestamp: timestampStr,
-      jira     : jiraResult
+      jira     : jiraResult,
+      email    : emailResult
     });
 
   } catch (err) {

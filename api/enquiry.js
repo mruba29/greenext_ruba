@@ -15,6 +15,7 @@
  */
 
 import { createJiraLeadTask } from './_jira.js';
+import { sendLeadNotificationEmail } from './_email.js';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -293,12 +294,26 @@ export default async function handler(req, res) {
     };
   }
 
-  // 9. Deliver response to website
+  // 9. Automated Lead Notification Email Delivery
+  normalizedLeadData.jira = jiraResult;
+  let emailResult = null;
+  try {
+    emailResult = await sendLeadNotificationEmail(normalizedLeadData);
+  } catch (emErr) {
+    emailResult = {
+      success: false,
+      error: emErr.message,
+      timestamp: new Date().toISOString(),
+    };
+  }
+
+  // 10. Deliver response to website
   res.status(200).json({
     success: true,
     message: 'Enquiry submitted successfully',
     enquiryId,
     leadSaved: leadSavedInSheets,
     jira: jiraResult,
+    email: emailResult,
   });
 }

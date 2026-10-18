@@ -1249,3 +1249,136 @@ function createJiraLeadTaskFromGas(enquiryId, formType, fullName, email, company
     subtaskMap: subtaskMap
   };
 }
+
+
+// ============================================================================
+// 10. AUTOMATED LEAD NOTIFICATION EMAIL ENGINE
+// ============================================================================
+
+/**
+ * Sends a responsive, dark navy HTML lead notification email to the configured administrator.
+ * Uses Google Apps Script MailApp / GmailApp with fallback to Script Properties NOTIFICATION_EMAIL.
+ */
+function sendLeadNotificationEmailFromGas(
+  enquiryId, formType, fullName, email, company, phone,
+  location, industry, interest, requirements, timeline,
+  contactMethod, pageUrl, trafficSource, jiraResult, timestampStr
+) {
+  var props = PropertiesService.getScriptProperties();
+  var adminEmail = props.getProperty('NOTIFICATION_EMAIL') || props.getProperty('ADMIN_EMAIL') || NOTIFICATION_EMAIL || 'ruba.int2027g3@gmail.com';
+
+  if (!adminEmail || adminEmail.indexOf('@') === -1) {
+    return {
+      success: false,
+      status: 'disabled',
+      note: 'NOTIFICATION_EMAIL not configured in Script Properties'
+    };
+  }
+
+  var subject = '[GreenNext] New Lead Received — ' + (fullName || enquiryId);
+  var parentKey = (jiraResult && jiraResult.parentKey) || '—';
+  var parentUrl = (jiraResult && jiraResult.parentUrl) || '';
+  var isQuick = formType.toLowerCase().indexOf('quick') > -1 || formType.toLowerCase().indexOf('short') > -1;
+  var badgeColor = isQuick ? '#10B981' : '#8B5CF6';
+  var badgeBg = isQuick ? 'rgba(16, 185, 129, 0.15)' : 'rgba(139, 92, 246, 0.15)';
+
+  var replyMailto = email ? ('mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent('GreenNext Enquiry — ' + enquiryId) + '&body=' + encodeURIComponent('Hello ' + (fullName || '') + ',\n\nThank you for reaching out to GreenNext regarding our AI Data Center and digital infrastructure solutions.\n\nBest regards,\nGreenNext Team')) : '';
+  var waUrl = 'https://wa.me/919876543210?text=' + encodeURIComponent('Hello ' + (fullName || 'there') + ', thank you for contacting GreenNext regarding ' + (interest || 'Digital Infrastructure') + '. Our team would be happy to discuss your requirements.');
+  var sheetsUrl = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/edit';
+
+  var htmlBody = '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>' +
+    '<body style="margin: 0; padding: 24px 0; background-color: #070B14; font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;">' +
+    '<center>' +
+    '<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; margin: 0 auto; background-color: #0F172A; border-radius: 16px; overflow: hidden; border: 1px solid #1E293B;">' +
+    '<tr><td style="padding: 36px 32px 30px; background: linear-gradient(135deg, #4338CA 0%, #3B82F6 50%, #06B6D4 100%); text-align: left;">' +
+    '<div style="font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #E0E7FF; margin-bottom: 8px;">GREENNEXT DIGITAL INFRASTRUCTURE</div>' +
+    '<h1 style="margin: 0 0 10px 0; font-size: 26px; font-weight: 800; color: #FFFFFF;">New Lead Received</h1>' +
+    '<p style="margin: 0; font-size: 14px; color: #DBEAFE;">A new enterprise prospect submitted an enquiry through the GreenNext AI Data Center portal.</p>' +
+    '</td></tr>' +
+    '<tr><td style="background-color: #131D33; padding: 16px 32px; border-bottom: 1px solid #1E293B;">' +
+    '<table width="100%"><tr>' +
+    '<td><span style="display: inline-block; padding: 4px 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; border-radius: 20px; background-color: ' + badgeBg + '; color: ' + badgeColor + '; border: 1px solid ' + badgeColor + ';">' + formType + '</span>' +
+    '<span style="color: #94A3B8; font-size: 13px; margin-left: 12px;">ID: <strong style="color: #F8FAFC;">' + enquiryId + '</strong></span></td>' +
+    '<td style="text-align: right; font-size: 12px; color: #64748B;">' + timestampStr + '</td>' +
+    '</tr></table>' +
+    '</td></tr>' +
+    '<tr><td style="padding: 28px 32px;">' +
+    '<h2 style="margin: 0 0 12px 0; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #818CF8; border-bottom: 1px solid #1E293B; padding-bottom: 8px;">Contact Information</h2>' +
+    '<table width="100%" cellpadding="6" cellspacing="0" style="margin-bottom: 24px;">' +
+    '<tr><td width="38%" style="font-size: 13px; color: #94A3B8;">Full Name:</td><td style="font-size: 14px; font-weight: 600; color: #F1F5F9;">' + fullName + '</td></tr>' +
+    (email ? '<tr><td style="font-size: 13px; color: #94A3B8;">Business Email:</td><td style="font-size: 14px; color: #38BDF8;"><a href="mailto:' + email + '" style="color: #38BDF8; text-decoration: none;">' + email + '</a></td></tr>' : '') +
+    (phone ? '<tr><td style="font-size: 13px; color: #94A3B8;">Phone Number:</td><td style="font-size: 14px; color: #F1F5F9;">' + phone + '</td></tr>' : '') +
+    (company && company !== '—' ? '<tr><td style="font-size: 13px; color: #94A3B8;">Company Name:</td><td style="font-size: 14px; color: #F1F5F9;">' + company + '</td></tr>' : '') +
+    (location && location !== '—' ? '<tr><td style="font-size: 13px; color: #94A3B8;">Location:</td><td style="font-size: 14px; color: #F1F5F9;">' + location + '</td></tr>' : '') +
+    '</table>' +
+    '<h2 style="margin: 0 0 12px 0; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #818CF8; border-bottom: 1px solid #1E293B; padding-bottom: 8px;">Requirements &amp; Business Context</h2>' +
+    '<table width="100%" cellpadding="6" cellspacing="0" style="margin-bottom: 24px;">' +
+    (interest && interest !== '—' ? '<tr><td width="38%" style="font-size: 13px; color: #94A3B8;">Area of Interest:</td><td style="font-size: 14px; font-weight: 600; color: #A7F3D0;">' + interest + '</td></tr>' : '') +
+    (industry && industry !== '—' ? '<tr><td style="font-size: 13px; color: #94A3B8;">Industry Vertical:</td><td style="font-size: 14px; color: #F1F5F9;">' + industry + '</td></tr>' : '') +
+    (timeline && timeline !== '—' ? '<tr><td style="font-size: 13px; color: #94A3B8;">Expected Timeline:</td><td style="font-size: 14px; color: #F1F5F9;">' + timeline + '</td></tr>' : '') +
+    (requirements && requirements !== '—' ? '<tr><td colspan="2"><div style="font-size: 12px; color: #94A3B8; text-transform: uppercase; margin-bottom: 6px;">Requirements / Message:</div><div style="background-color: #070B14; border: 1px solid #1E293B; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #E2E8F0;">' + requirements + '</div></td></tr>' : '') +
+    '</table>' +
+    '<h2 style="margin: 0 0 12px 0; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #818CF8; border-bottom: 1px solid #1E293B; padding-bottom: 8px;">Submission Metadata</h2>' +
+    '<table width="100%" cellpadding="4" cellspacing="0" style="margin-bottom: 24px;">' +
+    '<tr><td width="38%" style="font-size: 12px; color: #64748B;">Enquiry ID:</td><td style="font-size: 13px; color: #E2E8F0; font-family: monospace;">' + enquiryId + '</td></tr>' +
+    '<tr><td style="font-size: 12px; color: #64748B;">Source Page:</td><td style="font-size: 13px; color: #E2E8F0;">' + pageUrl + '</td></tr>' +
+    '<tr><td style="font-size: 12px; color: #64748B;">Traffic Source:</td><td style="font-size: 13px; color: #E2E8F0;">' + trafficSource + '</td></tr>' +
+    '<tr><td style="font-size: 12px; color: #64748B;">Google Sheets:</td><td style="font-size: 13px; color: #34D399;"><a href="' + sheetsUrl + '" style="color: #34D399; text-decoration: none;">Synchronized &rarr;</a></td></tr>' +
+    (parentKey && parentKey !== '—' ? '<tr><td style="font-size: 12px; color: #64748B;">Jira Lead Issue:</td><td style="font-size: 13px; color: #818CF8;"><a href="' + parentUrl + '" style="color: #818CF8; font-weight: 700; text-decoration: none;">' + parentKey + ' &rarr;</a></td></tr>' : '') +
+    '</table>' +
+    '<div style="background-color: #070B14; border: 1px solid #1E293B; border-radius: 12px; padding: 20px;">' +
+    '<div style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: #CBD5E1; margin-bottom: 14px;">Next Steps &amp; Direct Engagement</div>' +
+    '<table border="0" cellpadding="0" cellspacing="0"><tr>' +
+    (replyMailto ? '<td style="padding-right: 12px; padding-bottom: 8px;"><a href="' + replyMailto + '" style="display: inline-block; background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%); color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none; padding: 12px 22px; border-radius: 8px; border: 1px solid #818CF8;">✉️ Reply to Lead</a></td>' : '') +
+    '<td style="padding-right: 12px; padding-bottom: 8px;"><a href="' + waUrl + '" style="display: inline-block; background-color: #10B981; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none; padding: 12px 22px; border-radius: 8px; border: 1px solid #34D399;">💬 Open WhatsApp</a></td>' +
+    (parentUrl ? '<td style="padding-bottom: 8px;"><a href="' + parentUrl + '" style="display: inline-block; background-color: #1E293B; color: #94A3B8; font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 18px; border-radius: 8px; border: 1px solid #334155;">📌 Jira Lead</a></td>' : '') +
+    '</tr></table></div>' +
+    '</td></tr>' +
+    '<tr><td style="padding: 24px 32px; background-color: #070B14; border-top: 1px solid #1E293B; text-align: center;">' +
+    '<p style="margin: 0 0 6px 0; font-size: 12px; color: #64748B;">Automated enterprise notification by GreenNext Lead Management Engine.</p>' +
+    '<p style="margin: 0; font-size: 11px; color: #475569;">&copy; 2026 GreenNext Digital Infrastructure. Confidential.</p>' +
+    '</td></tr>' +
+    '</table></center></body></html>';
+
+  var plainBody = '[GreenNext] New Lead Received — ' + fullName + ' (' + enquiryId + ')\n' +
+    'Form Type: ' + formType + '\n' +
+    'Submitted At: ' + timestampStr + '\n\n' +
+    'CONTACT INFORMATION\n' +
+    'Full Name: ' + fullName + '\n' +
+    'Email: ' + (email || '—') + '\n' +
+    'Phone: ' + (phone || '—') + '\n' +
+    'Company: ' + company + '\n\n' +
+    'REQUIREMENTS & CONTEXT\n' +
+    'Area of Interest: ' + interest + '\n' +
+    'Requirements: ' + requirements + '\n\n' +
+    'SUBMISSION METADATA\n' +
+    'Enquiry ID: ' + enquiryId + '\n' +
+    'Jira Key: ' + parentKey + '\n\n' +
+    'Direct Reply: ' + replyMailto + '\n' +
+    'WhatsApp Chat: ' + waUrl;
+
+  try {
+    MailApp.sendEmail({
+      to: adminEmail,
+      subject: subject,
+      htmlBody: htmlBody,
+      body: plainBody
+    });
+
+    return {
+      success: true,
+      status: 'sent',
+      recipient: adminEmail,
+      timestamp: timestampStr
+    };
+  } catch (mailErr) {
+    Logger.log('MailApp.sendEmail failed: ' + mailErr.message);
+    return {
+      success: false,
+      status: 'failed',
+      recipient: adminEmail,
+      error: mailErr.message,
+      timestamp: timestampStr
+    };
+  }
+}

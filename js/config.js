@@ -13,7 +13,7 @@ window.GreenNextConfig = {
   // Google Apps Script Web App Deployment URL
   // Paste your deployed Google Apps Script Web App URL here (e.g., 'https://script.google.com/macros/s/AKfycb.../exec').
   // When null or empty, submissions default to the server-side route (/api/enquiry).
-  GOOGLE_APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzUJwJa4KUfebClo3ZnZvevnrodTmGoXbF6ilwZn-sIf6SgMVD4TK4CEhp_iKq2S9A/exec',
+  GOOGLE_APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzoSXPulFt49lQ1ibWJX2CFNw7iiuT4YBAShuiEcckEovty7FauYnspHCuHQmSqFZk/exec',
 
   // Server-side API endpoint for lead capture & consultation requests
   API_ENDPOINT: '/api/enquiry',
@@ -22,7 +22,7 @@ window.GreenNextConfig = {
   ANALYTICS_ENDPOINT: '/api/analytics',
 
   // Analytics Google Apps Script Web App URL (Unified Web App deployment)
-  ANALYTICS_GAS_URL: 'https://script.google.com/macros/s/AKfycbzUJwJa4KUfebClo3ZnZvevnrodTmGoXbF6ilwZn-sIf6SgMVD4TK4CEhp_iKq2S9A/exec',
+  ANALYTICS_GAS_URL: 'https://script.google.com/macros/s/AKfycbzoSXPulFt49lQ1ibWJX2CFNw7iiuT4YBAShuiEcckEovty7FauYnspHCuHQmSqFZk/exec',
 
   // Time & behavior settings
   WELCOME_DELAY_MS: 1000,

@@ -9,9 +9,11 @@ function link(base, href) {
   return base + href;
 }
 
-function cta(text, href, { variant = 'primary', size = 'lg', base = '' } = {}) {
+function cta(text, href, { variant = 'primary', size = 'lg', base = '', openLeadModal = false } = {}) {
   const cls = `btn btn-${variant}${size ? ' btn-' + size : ''}`;
-  return `<a class="${cls}" href="${link(base, href)}"><span>${text}</span><span class="btn-arrow">&rarr;</span></a>`;
+  const shouldOpen = openLeadModal || (text && (text.includes('Talk to an Expert') || text.includes('Request Consultation')));
+  const modalAttr = shouldOpen ? ' data-open-lead-modal="true"' : '';
+  return `<a class="${cls}" href="${link(base, href)}"${modalAttr}><span>${text}</span><span class="btn-arrow">&rarr;</span></a>`;
 }
 
 function dropdownItems(base, children) {
@@ -75,7 +77,7 @@ export function headerAndNav(base) {
         <a class="nav-whatsapp-btn" href="#" data-whatsapp="true" aria-label="Chat with GreenNext on WhatsApp" title="Chat on WhatsApp">
           ${icon('whatsapp')}
         </a>
-        <a class="nav-cta" href="${link(base, 'contact.html')}">Talk to an Expert <span class="btn-arrow">&rarr;</span></a>
+        <a class="nav-cta" href="${link(base, 'contact.html')}" data-open-lead-modal="true">Talk to an Expert <span class="btn-arrow">&rarr;</span></a>
         <button class="nav-hamburger" id="gn-hamburger" aria-label="Open menu" aria-expanded="false">
           <span class="hamburger-bar"></span><span class="hamburger-bar"></span><span class="hamburger-bar"></span>
         </button>
@@ -88,7 +90,7 @@ export function headerAndNav(base) {
     <a class="mobile-nav-whatsapp" href="#" data-whatsapp="true" style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);color:#25D366;font-weight:600;text-decoration:none;">
       ${icon('whatsapp')} Chat on WhatsApp
     </a>
-    <a class="mobile-nav-cta" href="${link(base, 'contact.html')}">Talk to an Expert &rarr;</a>
+    <a class="mobile-nav-cta" href="${link(base, 'contact.html')}" data-open-lead-modal="true">Talk to an Expert &rarr;</a>
   </div>`;
 }
 
@@ -479,7 +481,7 @@ export function careersFormSection(base) {
             <h2 class="heading-lg">${cfg.heading}</h2>
             <p class="text-base text-muted">${cfg.description}</p>
           </div>
-          <form class="lead-form" novalidate>
+          <form class="careers-form lead-form" novalidate>
             <div class="form-grid">
               ${fields.map(fieldMarkup).join('')}
             </div>
@@ -660,14 +662,104 @@ export function thankYouModal(base = '') {
   </div>`;
 }
 
-export function floatingWhatsAppWidget(base = '') {
+export function floatingLeadModal(base = '') {
   return `
-  <aside class="floating-whatsapp" id="floating-whatsapp-container" aria-label="WhatsApp quick chat">
-    <span class="floating-whatsapp-tooltip">Chat with an Infrastructure Specialist</span>
-    <a class="floating-whatsapp-btn" id="floating-whatsapp" href="#" data-whatsapp="true" aria-label="Chat with GreenNext on WhatsApp">
-      ${icon('whatsapp')}
-    </a>
+  <div class="gn-modal-backdrop" id="gn-floating-lead-modal" role="dialog" aria-modal="true" aria-labelledby="floating-lead-title" aria-hidden="true">
+    <div class="gn-modal gn-modal--lead">
+      <button class="gn-modal-close" data-dismiss="modal" aria-label="Close modal">&times;</button>
+      <div class="gn-modal-header" style="margin-bottom:var(--space-4);">
+        <div class="gn-modal-badge">
+          <span class="gn-modal-badge-dot"></span> ⚡ Priority Consultation
+        </div>
+        <h2 class="gn-modal-title" id="floating-lead-title">Request Infrastructure Consultation</h2>
+        <p class="gn-modal-subtitle" style="font-size:var(--font-size-sm);color:var(--color-text-muted);margin:0;">
+          Speak with an enterprise architect regarding AI clusters, thermal efficiency, or regional deployments.
+        </p>
+      </div>
+      <form class="floating-lead-form lead-form" novalidate>
+        <!-- Hidden Metadata Fields -->
+        <input type="hidden" name="form_type" value="Floating Lead Form">
+        <input type="hidden" name="page_url" value="">
+        <input type="hidden" name="page_title" value="">
+        <input type="hidden" name="referrer" value="">
+        <input type="hidden" name="utm_source" value="">
+        <input type="hidden" name="utm_medium" value="">
+        <input type="hidden" name="utm_campaign" value="">
+        <input type="hidden" name="utm_term" value="">
+        <input type="hidden" name="utm_content" value="">
+
+        <div class="form-grid" style="grid-template-columns:1fr 1fr;gap:var(--space-3);">
+          <div class="form-field" style="margin-bottom:0;">
+            <label for="fl_name">Full Name *</label>
+            <input type="text" id="fl_name" name="full_name" placeholder="e.g. Alex Rivera" required>
+          </div>
+          <div class="form-field" style="margin-bottom:0;">
+            <label for="fl_email">Work Email *</label>
+            <input type="email" id="fl_email" name="business_email" placeholder="name@enterprise.com" required>
+          </div>
+          <div class="form-field" style="margin-bottom:0;">
+            <label for="fl_phone">Phone Number *</label>
+            <input type="tel" id="fl_phone" name="phone" placeholder="+91 98765 43210" required>
+          </div>
+          <div class="form-field" style="margin-bottom:0;">
+            <label for="fl_interest">Requirement / Service *</label>
+            <select id="fl_interest" name="area_of_interest" required>
+              <option value="" disabled selected>Select Requirement / Service</option>
+              <option value="AI Data Centers">AI Data Centers</option>
+              <option value="AI Infrastructure">AI Infrastructure</option>
+              <option value="Energy Efficiency">Energy Efficiency & Cooling</option>
+              <option value="Intelligent Automation">Intelligent Automation</option>
+              <option value="Digital Infrastructure">Digital Infrastructure</option>
+              <option value="Regional Facilities">Regional Facilities (Madurai, Coimbatore, Trichy, Mangalore)</option>
+              <option value="General Enterprise Consultation">General Enterprise Consultation</option>
+            </select>
+          </div>
+          <div class="form-field form-field--full" style="grid-column:span 2;margin-bottom:0;">
+            <label for="fl_reqs">Brief Requirements (Optional)</label>
+            <textarea id="fl_reqs" name="project_requirements" rows="2" placeholder="Compute scale, target racks, regional timeline, or key technical goals..."></textarea>
+          </div>
+          <div class="form-field--consent" style="grid-column:span 2;margin-top:var(--space-1);margin-bottom:var(--space-1);display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--color-text-muted);">
+            <input type="checkbox" id="consent_floating" name="consent" required style="margin-top:3px;">
+            <label for="consent_floating">
+              I agree to the processing of my contact information in accordance with GreenNext's <a href="${link(base, 'privacy-policy.html')}" target="_blank">Privacy Policy</a>. *
+            </label>
+          </div>
+        </div>
+        <div class="form-actions" style="margin-top:var(--space-4);display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;">
+          <button type="submit" class="btn btn-primary btn-md">
+            <span>Submit Consultation Request</span>
+            <span class="btn-arrow">&rarr;</span>
+          </button>
+          <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:8px 14px;font-size:var(--font-size-xs);">
+            ${icon('whatsapp')} <span>Prefer WhatsApp?</span>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>`;
+}
+
+export function floatingActionWidgets(base = '') {
+  return `
+  <aside class="floating-actions-container" id="gn-floating-actions" aria-label="Quick Connect Options">
+    <div class="floating-action-item">
+      <span class="floating-action-tooltip">Request Consultation</span>
+      <button type="button" class="floating-lead-btn" id="floating-lead-trigger" data-open-lead-modal="true" aria-label="Request Infrastructure Consultation">
+        ${icon('spark')}
+        <span class="floating-lead-btn-label">Consultation</span>
+      </button>
+    </div>
+    <div class="floating-action-item">
+      <span class="floating-action-tooltip">Chat on WhatsApp</span>
+      <a class="floating-whatsapp-btn" id="floating-whatsapp" href="#" data-whatsapp="true" aria-label="Chat with GreenNext on WhatsApp">
+        ${icon('whatsapp')}
+      </a>
+    </div>
   </aside>`;
+}
+
+export function floatingWhatsAppWidget(base = '') {
+  return floatingActionWidgets(base);
 }
 
 export function page({ base = '', title, metaDesc, bodyHtml, jsExtra = [] }) {
@@ -696,8 +788,10 @@ ${footer(base)}
 ${welcomeModal(base)}
 ${exitModal(base)}
 ${thankYouModal(base)}
-${floatingWhatsAppWidget(base)}
+${floatingLeadModal(base)}
+${floatingActionWidgets(base)}
 <script src="${link(base, 'js/config.js')}" defer></script>
+<script src="${link(base, 'js/analytics.js')}" defer></script>
 <script src="${link(base, 'js/nav.js')}" defer></script>
 <script src="${link(base, 'js/reveal.js')}" defer></script>
 <script src="${link(base, 'js/forms.js')}" defer></script>

@@ -185,7 +185,83 @@
   });
 
   /* ============================================================
-     5. WHATSAPP CLICK BINDINGS
+     5. REUSABLE GLOBAL FLOATING LEAD MODAL CONTROLLER
+     ============================================================ */
+  function getUtmParameters() {
+    var params = new URLSearchParams(window.location.search);
+    return {
+      utm_source: params.get('utm_source') || '',
+      utm_medium: params.get('utm_medium') || '',
+      utm_campaign: params.get('utm_campaign') || '',
+      utm_term: params.get('utm_term') || '',
+      utm_content: params.get('utm_content') || ''
+    };
+  }
+
+  function populateLeadMetadata(modalEl) {
+    if (!modalEl) return;
+    var form = modalEl.querySelector('form');
+    if (!form) return;
+
+    var utm = getUtmParameters();
+    var setHidden = function (name, val) {
+      var input = form.querySelector('input[name="' + name + '"]');
+      if (input) input.value = val || '';
+    };
+
+    setHidden('page_url', window.location.href);
+    setHidden('page_title', document.title);
+    setHidden('referrer', document.referrer || 'Direct');
+    setHidden('utm_source', utm.utm_source);
+    setHidden('utm_medium', utm.utm_medium);
+    setHidden('utm_campaign', utm.utm_campaign);
+    setHidden('utm_term', utm.utm_term);
+    setHidden('utm_content', utm.utm_content);
+  }
+
+  function openLeadModal(serviceName) {
+    var modal = document.getElementById('gn-floating-lead-modal');
+    if (!modal) return;
+
+    if (serviceName) {
+      var select = modal.querySelector('select[name="area_of_interest"]');
+      if (select) {
+        var match = Array.prototype.find.call(select.options, function (o) {
+          return o.value.toLowerCase().includes(serviceName.toLowerCase()) ||
+                 serviceName.toLowerCase().includes(o.value.toLowerCase());
+        });
+        if (match) select.value = match.value;
+      }
+    }
+
+    populateLeadMetadata(modal);
+    openModal(modal);
+  }
+  window.openGreenNextLeadModal = openLeadModal;
+
+  function initLeadModalTriggers() {
+    var leadModal = document.getElementById('gn-floating-lead-modal');
+    if (!leadModal) return;
+
+    document.querySelectorAll('[data-open-lead-modal="true"], .open-lead-modal').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        // If user is already on contact.html and clicking an anchor to the in-page form, allow natural scroll
+        var path = window.location.pathname;
+        var isContactPage = path.endsWith('contact.html') || path.endsWith('/contact') || path.endsWith('/contact.html');
+        var href = btn.getAttribute('href') || '';
+        if (isContactPage && (href.includes('#enquiry') || href.includes('#quick-enquiry'))) {
+          return;
+        }
+
+        e.preventDefault();
+        var service = btn.getAttribute('data-service') || '';
+        openLeadModal(service);
+      });
+    });
+  }
+
+  /* ============================================================
+     6. WHATSAPP CLICK BINDINGS
      ============================================================ */
   function initWhatsAppLinks() {
     document.querySelectorAll('[data-whatsapp="true"]').forEach(function (el) {
@@ -209,11 +285,13 @@
     document.addEventListener('DOMContentLoaded', function () {
       initWelcomeModal();
       initExitIntent();
+      initLeadModalTriggers();
       initWhatsAppLinks();
     });
   } else {
     initWelcomeModal();
     initExitIntent();
+    initLeadModalTriggers();
     initWhatsAppLinks();
   }
 })();

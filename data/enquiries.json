@@ -16,5 +16,27 @@
     "message": "—",
     "consent": "Granted",
     "status": "New"
+  },
+  {
+    "enquiryId": "GN-20261018-0001",
+    "submittedAt": "2026-10-18T19:06:19.567Z",
+    "formType": "Short Form",
+    "fullName": "Suresh Menon",
+    "businessEmail": "suresh@menonenterprises.com",
+    "phoneNumber": "",
+    "companyName": "—",
+    "areaOfInterest": "Digital Infrastructure",
+    "projectRequirements": "—",
+    "metadata": {
+      "page_url": "",
+      "page_title": "",
+      "referrer": "",
+      "utm_source": "",
+      "utm_medium": "",
+      "utm_campaign": "",
+      "utm_term": "",
+      "utm_content": ""
+    },
+    "status": "New"
   }
 ]

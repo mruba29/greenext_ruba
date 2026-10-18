@@ -1,0 +1,561 @@
+/**
+ * GREENNEXT — GOOGLE SHEETS ENQUIRY INTEGRATION BACKEND
+ * Google Apps Script Web App
+ *
+ * Automatically records enterprise inquiries from GreenNext website
+ * (both Long Form "Talk to an Expert" and Short Form "Quick Enquiry")
+ * into the "Enquiries" worksheet.
+ */
+
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
+
+// Primary GreenNext Raw Data spreadsheet ID:
+var SPREADSHEET_ID = '14ciH1aNzWIJHJkQ5rYCdrEhci3KYMjrTSeY3QMaerVI';
+
+// Name of the target worksheet
+var SHEET_NAME = 'Enquiries';
+
+// Target Timezone for submission timestamps
+var TIMEZONE = 'Asia/Kolkata';
+
+// Optional recipient email address for immediate enterprise lead alerts.
+// Leave as '' to disable. E.g. 'contact@greennext.in'
+var NOTIFICATION_EMAIL = '';
+
+// 16 Standardized Columns matching GreenNext Information Architecture
+var COLUMNS = [
+  'Enquiry ID',
+  'Submitted At',
+  'Form Type',
+  'Full Name',
+  'Business Email',
+  'Company Name',
+  'Phone Number',
+  'Location',
+  'Industry',
+  'Area of Interest',
+  'Project Requirements',
+  'Expected Timeline',
+  'Preferred Contact Method',
+  'Message',
+  'Consent',
+  'Status'
+];
+
+// ============================================================================
+// HTTP DISPATCHERS (Dual-Mode: Standalone or Unified with Analytics.gs)
+// ============================================================================
+
+/**
+ * Health check and configuration verification endpoint.
+ * Dispatches deterministically regardless of script file compilation order.
+ */
+function doGet(e) {
+  var service = (e && e.parameter && (e.parameter.service || e.parameter.type)) || '';
+  if (service.toLowerCase() === 'analytics' && typeof handleAnalyticsGet === 'function') {
+    return handleAnalyticsGet(e);
+  }
+  if (service.toLowerCase() === 'enquiry' && typeof handleEnquiryGet === 'function') {
+    return handleEnquiryGet(e);
+  }
+  if (e && e.parameter && e.parameter.view && typeof handleAnalyticsGet === 'function') {
+    return handleAnalyticsGet(e);
+  }
+  // Default preference when both are installed
+  if (typeof handleEnquiryGet === 'function') {
+    return handleEnquiryGet(e);
+  }
+  if (typeof handleAnalyticsGet === 'function') {
+    return handleAnalyticsGet(e);
+  }
+  return createJsonResponse({ success: false, message: 'No handler available' });
+}
+
+/**
+ * Lead enquiry and analytics event receiver endpoint.
+ * Dispatches deterministically based on payload structure.
+ */
+function doPost(e) {
+  var postData = null;
+  if (typeof parseAnalyticsBody === 'function') {
+    postData = parseAnalyticsBody(e);
+  } else if (typeof parsePostData === 'function') {
+    postData = parsePostData(e);
+  }
+
+  // If this is an analytics batch or single event
+  if (postData && (postData.events || postData.event_type)) {
+    if (typeof handleAnalyticsPost === 'function') {
+      return handleAnalyticsPost(e, postData);
+    }
+  }
+
+  // If this is an enquiry submission
+  if (typeof handleEnquiryPost === 'function') {
+    return handleEnquiryPost(e, postData);
+  }
+
+  if (typeof handleAnalyticsPost === 'function') {
+    return handleAnalyticsPost(e, postData);
+  }
+
+  return createJsonResponse({ success: false, message: 'No handler available' });
+}
+
+// ============================================================================
+// ENQUIRY IMPLEMENTATION HANDLERS
+// ============================================================================
+
+/**
+ * Handles GET health check requests for the Enquiry service.
+ */
+function handleEnquiryGet(e) {
+  try {
+    var sheet = getOrInitEnquirySheet();
+    return createJsonResponse({
+      success: true,
+      status: 'online',
+      service: 'GreenNext Google Sheets Enquiry API',
+      sheetConnected: true,
+      sheetName: sheet.getName(),
+      totalRows: sheet.getLastRow(),
+      timestamp: formatTimestamp(new Date())
+    });
+  } catch (err) {
+    return createJsonResponse({
+      success: false,
+      status: 'configuration_error',
+      message: 'Unable to access spreadsheet. Check SPREADSHEET_ID and permissions.',
+      error: sanitizeError(err.message)
+    });
+  }
+}
+
+/**
+ * Handles POST lead submissions.
+ */
+function handleEnquiryPost(e, preParsedData) {
+  // Concurrency Lock: Prevents simultaneous row write collisions
+  var lock = LockService.getScriptLock();
+  var lockAcquired = false;
+
+  try {
+    // Wait up to 15 seconds for concurrent submissions to clear
+    lockAcquired = lock.tryLock(15000);
+    if (!lockAcquired) {
+      return createJsonResponse({
+        success: false,
+        message: 'Server is currently processing high volume. Please retry in a few seconds.'
+      });
+    }
+
+    // 1. Parse incoming payload (supports application/json, text/plain, or form-urlencoded)
+    var data = preParsedData || parsePostData(e);
+    if (!data) {
+      return createJsonResponse({
+        success: false,
+        message: 'Invalid request payload. Ensure JSON body is supplied.'
+      });
+    }
+
+    // 2. Validate form inputs server-side
+    var validationResult = validatePayload(data);
+    if (!validationResult.valid) {
+      return createJsonResponse({
+        success: false,
+        message: validationResult.message
+      });
+    }
+
+    // 3. Connect to / Initialize worksheet
+    var sheet = getOrInitEnquirySheet();
+
+    // 4. Build sanitized, formula-injection-safe row data
+    var now = new Date();
+    var enquiryId = generateEnquiryId(now);
+    var submittedAt = formatTimestamp(now);
+    var formType = sanitize(data.form_type || (data.is_short_form ? 'Short Form' : 'Long Form'), 100);
+
+    var fullName = sanitize(data.full_name || data.name || '', 150);
+    var businessEmail = sanitize(data.business_email || data.email || '', 150);
+    var companyName = sanitize(data.company_name || data.company || '—', 150);
+    var phoneNumber = sanitize(data.phone || data.phone_number || '', 50);
+    var location = sanitize(data.location || data.city || '—', 100);
+    var industry = sanitize(data.industry || '—', 100);
+    var areaOfInterest = sanitize(data.area_of_interest || data.service_interest || data.service || data.interest || '—', 150);
+    var projectRequirements = sanitize(data.project_requirements || data.requirements || '—', 4000);
+    var expectedTimeline = sanitize(data.timeline || data.expected_timeline || '—', 100);
+    var preferredContactMethod = sanitize(data.contact_method || data.preferred_contact_method || '—', 100);
+
+    // Capture hidden metadata (Page URL, Title, Referrer, UTM parameters)
+    var metaParts = [];
+    if (data.page_url) metaParts.push('URL: ' + data.page_url);
+    if (data.referrer) metaParts.push('Ref: ' + data.referrer);
+    if (data.utm_source) metaParts.push('UTM: ' + data.utm_source + (data.utm_medium ? '/' + data.utm_medium : '') + (data.utm_campaign ? '/' + data.utm_campaign : ''));
+    if (data.utm_term) metaParts.push('Term: ' + data.utm_term);
+    if (data.utm_content) metaParts.push('Content: ' + data.utm_content);
+    var metaSummary = metaParts.length > 0 ? metaParts.join(' | ') : '';
+
+    var rawMessage = (data.message || '').trim();
+    if (metaSummary) {
+      rawMessage = rawMessage ? rawMessage + ' [' + metaSummary + ']' : metaSummary;
+    }
+    var message = sanitize(rawMessage || '—', 4000);
+
+    var consent = data.consent === true || data.consent === 'true' || data.consent === 'on' || data.consent === 'Granted' ? 'Granted' : 'Granted';
+    var status = 'New';
+
+    // If Short Form passed a combined contact field (email or phone)
+    if (formType === 'Short Form' && data.contact) {
+      var contactVal = String(data.contact).trim();
+      if (contactVal.indexOf('@') !== -1) {
+        if (!businessEmail) businessEmail = sanitize(contactVal, 150);
+      } else {
+        if (!phoneNumber) phoneNumber = sanitize(contactVal, 50);
+      }
+    }
+
+    // 5. Server-Side Duplicate Submission Prevention
+    // Check recent rows to detect rapid duplicate submissions with identical contact details
+    var lastRow = sheet.getLastRow();
+    if (lastRow > 1) {
+      var checkRows = Math.min(10, lastRow - 1);
+      var recentData = sheet.getRange(lastRow - checkRows + 1, 1, checkRows, COLUMNS.length).getValues();
+      var inputEmailNorm = businessEmail.toLowerCase().trim();
+      var inputPhoneDigits = phoneNumber.replace(/\D/g, '');
+
+      for (var r = recentData.length - 1; r >= 0; r--) {
+        var rowEmailNorm = String(recentData[r][4] || '').toLowerCase().trim();
+        var rowPhoneDigits = String(recentData[r][6] || '').replace(/\D/g, '');
+        var rowType = String(recentData[r][2] || '').trim();
+
+        if (inputEmailNorm && rowEmailNorm === inputEmailNorm &&
+            inputPhoneDigits && rowPhoneDigits === inputPhoneDigits &&
+            rowType === formType) {
+          return createJsonResponse({
+            success: true,
+            message: 'Enquiry received. Our enterprise team is already processing your request.',
+            enquiryId: String(recentData[r][0]),
+            duplicate: true
+          });
+        }
+      }
+    }
+
+    var rowValues = [
+      enquiryId,
+      submittedAt,
+      formType,
+      fullName,
+      businessEmail,
+      companyName,
+      phoneNumber,
+      location,
+      industry,
+      areaOfInterest,
+      projectRequirements,
+      expectedTimeline,
+      preferredContactMethod,
+      message,
+      consent,
+      status
+    ];
+
+    // 6. Atomic Append to Sheet
+    sheet.appendRow(rowValues);
+
+    // 7. Optional Email Notification (fails gracefully without breaking lead confirmation)
+    if (NOTIFICATION_EMAIL) {
+      try {
+        sendLeadNotificationEmail(enquiryId, submittedAt, formType, fullName, businessEmail, companyName, phoneNumber, location, industry, areaOfInterest, projectRequirements, message);
+      } catch (mailErr) {
+        Logger.log('Notification email dispatch skipped/failed: ' + mailErr.message);
+      }
+    }
+
+    return createJsonResponse({
+      success: true,
+      message: 'Enquiry submitted successfully',
+      enquiryId: enquiryId
+    });
+
+  } catch (err) {
+    return createJsonResponse({
+      success: false,
+      message: 'Unable to submit your enquiry. Please try again or reach our desk directly.'
+    });
+  } finally {
+    if (lockAcquired) {
+      lock.releaseLock();
+    }
+  }
+}
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
+/**
+ * Accesses target spreadsheet and ensures "Enquiries" sheet exists with header row.
+ */
+function getOrInitEnquirySheet() {
+  var ss = null;
+  if (SPREADSHEET_ID && SPREADSHEET_ID !== 'ACTIVE') {
+    try {
+      ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    } catch (openErr) {
+      ss = SpreadsheetApp.getActiveSpreadsheet();
+    }
+  } else {
+    ss = SpreadsheetApp.getActiveSpreadsheet();
+  }
+
+  if (!ss) {
+    throw new Error('Spreadsheet could not be opened. Provide valid SPREADSHEET_ID.');
+  }
+
+  var sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME);
+  }
+
+  // If newly created or empty, initialize headers and styling
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(COLUMNS);
+    var headerRange = sheet.getRange(1, 1, 1, COLUMNS.length);
+    headerRange.setFontWeight('bold');
+    headerRange.setBackground('#0E3A2B'); // GreenNext deep forest green
+    headerRange.setFontColor('#FFFFFF');
+    sheet.setFrozenRows(1);
+
+    // Set auto-width on initial columns
+    for (var i = 1; i <= COLUMNS.length; i++) {
+      sheet.autoResizeColumn(i);
+    }
+  }
+
+  return sheet;
+}
+
+// Legacy alias for backwards compatibility
+function getOrInitSheet() {
+  return getOrInitEnquirySheet();
+}
+
+/**
+ * Parses POST body regardless of whether received as JSON or text/plain.
+ */
+function parsePostData(e) {
+  if (!e) return null;
+  if (e.postData && e.postData.contents) {
+    try {
+      return JSON.parse(e.postData.contents);
+    } catch (parseErr) {
+      // Fallback: Check if x-www-form-urlencoded
+      if (e.parameter && Object.keys(e.parameter).length > 0) {
+        return e.parameter;
+      }
+      return null;
+    }
+  }
+  if (e.parameter && Object.keys(e.parameter).length > 0) {
+    return e.parameter;
+  }
+  return null;
+}
+
+/**
+ * Server-side input validation and length limits.
+ */
+function validatePayload(data) {
+  var formType = data.form_type || (data.is_short_form ? 'Short Form' : 'Long Form');
+
+  if (formType === 'Short Form') {
+    var name = (data.name || data.full_name || '').trim();
+    var contact = (data.contact || data.business_email || data.phone || '').trim();
+    var interest = (data.area_of_interest || '').trim();
+
+    if (!name || name.length < 2) {
+      return { valid: false, message: 'Please provide a valid name (at least 2 characters).' };
+    }
+    if (name.length > 150) {
+      return { valid: false, message: 'Name exceeds maximum allowed length.' };
+    }
+    if (!contact || contact.length < 5) {
+      return { valid: false, message: 'Please provide a valid work email or phone number.' };
+    }
+    if (contact.length > 150) {
+      return { valid: false, message: 'Contact info exceeds maximum allowed length.' };
+    }
+    if (!interest) {
+      return { valid: false, message: 'Please select an area of interest.' };
+    }
+    return { valid: true };
+  }
+
+  if (formType === 'Floating Lead Form') {
+    var flName = (data.full_name || data.name || '').trim();
+    var flEmail = (data.business_email || data.email || '').trim();
+    var flPhone = (data.phone || data.phone_number || '').trim();
+    var flInterest = (data.area_of_interest || data.service_interest || data.service || '').trim();
+
+    if (!flName || flName.length < 2) {
+      return { valid: false, message: 'Full Name is required (at least 2 characters).' };
+    }
+    if (flName.length > 150) {
+      return { valid: false, message: 'Full Name exceeds maximum allowed length.' };
+    }
+    if (!flEmail || !isValidEmail(flEmail)) {
+      return { valid: false, message: 'A valid work email address is required.' };
+    }
+    if (flEmail.length > 150) {
+      return { valid: false, message: 'Email address exceeds maximum allowed length.' };
+    }
+    if (!flPhone || !isValidPhone(flPhone)) {
+      return { valid: false, message: 'A valid phone number is required (min 7 digits).' };
+    }
+    if (flPhone.length > 50) {
+      return { valid: false, message: 'Phone number exceeds maximum allowed length.' };
+    }
+    if (!flInterest) {
+      return { valid: false, message: 'Please select a requirement / service.' };
+    }
+    return { valid: true };
+  }
+
+  // Long Form validation
+  var fullName = (data.full_name || data.name || '').trim();
+  var email = (data.business_email || data.email || '').trim();
+  var phone = (data.phone || data.phone_number || '').trim();
+  var requirements = (data.project_requirements || data.requirements || data.message || '').trim();
+
+  if (!fullName || fullName.length < 2) {
+    return { valid: false, message: 'Full Name is required (at least 2 characters).' };
+  }
+  if (fullName.length > 150) {
+    return { valid: false, message: 'Full Name exceeds maximum allowed length.' };
+  }
+
+  if (!email || !isValidEmail(email)) {
+    return { valid: false, message: 'A valid business email address is required.' };
+  }
+  if (email.length > 150) {
+    return { valid: false, message: 'Email address exceeds maximum allowed length.' };
+  }
+
+  if (!phone || !isValidPhone(phone)) {
+    return { valid: false, message: 'A valid contact phone number is required (min 7 digits).' };
+  }
+  if (phone.length > 50) {
+    return { valid: false, message: 'Phone number exceeds maximum allowed length.' };
+  }
+
+  if (requirements && requirements.length > 4000) {
+    return { valid: false, message: 'Project Requirements cannot exceed 4,000 characters.' };
+  }
+
+  return { valid: true };
+}
+
+/**
+ * Basic email format verification.
+ */
+function isValidEmail(email) {
+  var re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  return re.test(email);
+}
+
+/**
+ * Basic phone verification (supports international + prefixes, spaces, dashes).
+ */
+function isValidPhone(phone) {
+  var digits = phone.replace(/\D/g, '');
+  return digits.length >= 7 && digits.length <= 15;
+}
+
+/**
+ * Sanitizes strings against CSV/Spreadsheet formula injection attacks.
+ * If user text begins with =, +, -, @, \t, or \r, it prepends a single quote.
+ */
+function sanitize(val, maxLen) {
+  if (val === null || val === undefined) return '';
+  var str = String(val).trim();
+  if (str.length === 0) return '';
+
+  var limit = (typeof maxLen === 'number' && maxLen > 0) ? maxLen : 4000;
+  if (str.length > limit) {
+    str = str.substring(0, limit);
+  }
+
+  var first = str.charAt(0);
+  if (first === '=' || first === '+' || first === '-' || first === '@' || first === '\t' || first === '\r') {
+    return "'" + str;
+  }
+  return str;
+}
+
+/**
+ * Dispatches enterprise notification email for newly captured leads.
+ */
+function sendLeadNotificationEmail(enquiryId, submittedAt, formType, fullName, email, company, phone, location, industry, interest, requirements, message) {
+  if (!NOTIFICATION_EMAIL) return;
+  var subject = 'GreenNext Lead: ' + formType + ' from ' + fullName + ' (' + enquiryId + ')';
+  var body = [
+    'GreenNext Enterprise Lead Capture Notification',
+    '====================================================',
+    'Reference ID:       ' + enquiryId,
+    'Submitted At:       ' + submittedAt + ' (IST)',
+    'Form Type:          ' + formType,
+    'Full Name:          ' + fullName,
+    'Business Email:     ' + email,
+    'Company Name:       ' + company,
+    'Phone Number:       ' + phone,
+    'Location:           ' + location,
+    'Industry:           ' + industry,
+    'Area of Interest:   ' + interest,
+    'Project Needs:      ' + requirements,
+    'Additional Message: ' + message,
+    '====================================================',
+    'This is an automated notification from GreenNext Web App.'
+  ].join('\n');
+
+  MailApp.sendEmail({
+    to: NOTIFICATION_EMAIL,
+    subject: subject,
+    body: body
+  });
+}
+
+/**
+ * Generates unique enterprise enquiry identifier: GN-YYYYMMDD-XXXX
+ */
+function generateEnquiryId(date) {
+  var dateStr = Utilities.formatDate(date, TIMEZONE, 'yyyyMMdd');
+  var rand = Math.floor(1000 + Math.random() * 9000);
+  return 'GN-' + dateStr + '-' + rand;
+}
+
+/**
+ * Formats timestamps in ISO-style localized string.
+ */
+function formatTimestamp(date) {
+  return Utilities.formatDate(date, TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
+}
+
+/**
+ * Helper to produce JSON HTTP responses with proper MIME type.
+ */
+function createJsonResponse(data) {
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * Strips internal paths or credentials from error messages.
+ */
+function sanitizeError(msg) {
+  if (!msg) return 'Unknown error';
+  return String(msg).replace(/(key|token|id)=[^\s&]+/gi, '$1=***');
+}

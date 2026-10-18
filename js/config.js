@@ -13,7 +13,7 @@ window.GreenNextConfig = {
   // Google Apps Script Web App Deployment URL
   // Paste your deployed Google Apps Script Web App URL here (e.g., 'https://script.google.com/macros/s/AKfycb.../exec').
   // When null or empty, submissions default to the server-side route (/api/enquiry).
-  GOOGLE_APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzY7QqSNPMyK05FraOoGMtUvD5lXLnuwVlE5D1rPmQiV1nf8qyyiknvlzi_w9c_HJ6G/exec',
+  GOOGLE_APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzUJwJa4KUfebClo3ZnZvevnrodTmGoXbF6ilwZn-sIf6SgMVD4TK4CEhp_iKq2S9A/exec',
 
   // Server-side API endpoint for lead capture & consultation requests
   API_ENDPOINT: '/api/enquiry',
@@ -21,9 +21,8 @@ window.GreenNextConfig = {
   // Analytics event collection endpoint (privacy-first, anonymous events only)
   ANALYTICS_ENDPOINT: '/api/analytics',
 
-  // Analytics Google Apps Script Web App URL (set after deploying Analytics.gs)
-  // Until set, analytics events are collected locally but not forwarded to Sheets.
-  ANALYTICS_GAS_URL: null,
+  // Analytics Google Apps Script Web App URL (Unified Web App deployment)
+  ANALYTICS_GAS_URL: 'https://script.google.com/macros/s/AKfycbzUJwJa4KUfebClo3ZnZvevnrodTmGoXbF6ilwZn-sIf6SgMVD4TK4CEhp_iKq2S9A/exec',
 
   // Time & behavior settings
   WELCOME_DELAY_MS: 1000,

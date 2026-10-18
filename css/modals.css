@@ -176,17 +176,52 @@
   height: 26px;
 }
 
-/* Floating WhatsApp Widget */
+/* Floating Action Cluster: Reusable Lead Form Trigger + WhatsApp */
+.floating-actions-container,
 .floating-whatsapp {
   position: fixed;
   bottom: 24px;
   right: 24px;
   z-index: 990;
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.floating-action-item {
+  display: flex;
   align-items: center;
   gap: 10px;
-  text-decoration: none;
+}
+
+.floating-lead-btn {
+  height: 50px;
+  padding: 0 20px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  box-shadow: 0 6px 20px rgba(14, 138, 95, 0.45);
   cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+}
+
+.floating-lead-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.floating-lead-btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(14, 138, 95, 0.6);
 }
 
 .floating-whatsapp-btn {
@@ -201,6 +236,7 @@
   box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45);
   transition: all var(--transition-base);
   position: relative;
+  text-decoration: none;
 }
 
 .floating-whatsapp-btn svg {
@@ -225,12 +261,13 @@
   100% { transform: scale(1.3); opacity: 0; }
 }
 
+.floating-action-tooltip,
 .floating-whatsapp-tooltip {
   background: #0D1F15;
   color: #FFFFFF;
   font-size: var(--font-size-xs);
   font-weight: 600;
-  padding: 8px 14px;
+  padding: 6px 14px;
   border-radius: var(--radius-full);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   white-space: nowrap;
@@ -241,29 +278,96 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.floating-action-item:hover .floating-action-tooltip,
 .floating-whatsapp:hover .floating-whatsapp-tooltip {
   opacity: 1;
   transform: translateX(0);
 }
 
-.floating-whatsapp:hover .floating-whatsapp-btn {
+.floating-whatsapp-btn:hover {
   transform: scale(1.08) translateY(-2px);
   box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6);
 }
 
+/* Global Reusable Floating Lead Modal */
+.gn-modal--lead {
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.gn-modal--lead .form-field {
+  margin-bottom: var(--space-3);
+}
+
+.gn-modal--lead .form-field label {
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--color-dark);
+}
+
+.gn-modal--lead .form-field input,
+.gn-modal--lead .form-field select,
+.gn-modal--lead .form-field textarea {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.gn-modal--lead .form-field input:focus,
+.gn-modal--lead .form-field select:focus,
+.gn-modal--lead .form-field textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(14, 138, 95, 0.15);
+}
+
+.gn-modal--lead .form-field-full {
+  grid-column: span 2;
+}
+
 @media (max-width: 640px) {
+  .floating-actions-container,
   .floating-whatsapp {
     bottom: 16px;
     right: 16px;
+    gap: 8px;
   }
 
+  .floating-action-tooltip,
   .floating-whatsapp-tooltip {
     display: none;
+  }
+
+  .floating-lead-btn-label {
+    display: none;
+  }
+
+  .floating-lead-btn {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
   }
 
   .gn-modal {
     padding: var(--space-6);
     border-radius: var(--radius-xl);
+  }
+
+  .gn-modal--lead .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .gn-modal--lead .form-field-full {
+    grid-column: span 1 !important;
   }
 
   .gn-modal-actions {

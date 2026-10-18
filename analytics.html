@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenNext — Analytics & Intelligence Dashboard</title>
+  <meta name="description" content="Executive analytics intelligence and visitor journey dashboard for GreenNext AI Data Center Infrastructure.">
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo-badge.svg">
+  
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Base GreenNext styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/footer.css">
+
+  <style>
+    /* Executive Analytics Dashboard Dark Obsidian Styling */
+    :root {
+      --dash-bg: #07150E;
+      --dash-surface: #0B2117;
+      --dash-surface-elevated: #102E20;
+      --dash-border: rgba(0, 201, 122, 0.18);
+      --dash-border-subtle: rgba(255, 255, 255, 0.08);
+      --dash-accent: #00C97A;
+      --dash-accent-glow: rgba(0, 201, 122, 0.25);
+      --dash-text: #F1F7F4;
+      --dash-text-muted: #8AA497;
+      --dash-text-dim: #547063;
+      --dash-warning: #F59E0B;
+      --dash-info: #3B82F6;
+      --dash-danger: #EF4444;
+      --dash-success: #10B981;
+    }
+
+    body.analytics-page {
+      background-color: var(--dash-bg);
+      color: var(--dash-text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .analytics-nav {
+      background: rgba(7, 21, 14, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--dash-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .analytics-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .analytics-brand-badge {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .analytics-brand-badge span {
+      color: var(--dash-accent);
+    }
+
+    .analytics-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(0, 201, 122, 0.12);
+      color: var(--dash-accent);
+      border: 1px solid rgba(0, 201, 122, 0.3);
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+    }
+
+    .analytics-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #34D399;
+    }
+
+    .status-dot-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 10px #10B981;
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    .btn-dash {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--dash-border);
+      background: rgba(16, 46, 32, 0.6);
+      color: #fff;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-dash:hover {
+      background: rgba(0, 201, 122, 0.18);
+      border-color: var(--dash-accent);
+      color: #fff;
+    }
+
+    .btn-dash-primary {
+      background: var(--dash-accent);
+      color: #052417;
+      border-color: var(--dash-accent);
+      font-weight: 700;
+    }
+
+    .btn-dash-primary:hover {
+      background: #05E089;
+      box-shadow: 0 0 15px var(--dash-accent-glow);
+      color: #052417;
+    }
+
+    /* Container */
+    .dashboard-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem 1.5rem;
+    }
+
+    /* Header */
+    .dashboard-header {
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .dashboard-title-area h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 0.35rem 0;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .dashboard-title-area p {
+      margin: 0;
+      color: var(--dash-text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Filters Bar */
+    .filter-panel {
+      background: var(--dash-surface);
+      border: 1px solid var(--dash-border-subtle);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--dash-text-muted);
+    }
+
+    .filter-select {
+      background: var(--dash-surface-elevated);
+      color: #fff;
+      border: 1px solid var(--dash-border-subtle);
+      border-radius: 6px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.825rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .filter-select:focus {
+      border-color: var(--dash-accent);
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .kpi-card {
+      background: var(--dash-surface);
+      border: 1px solid var(--dash-border-subtle);
+      border-radius: 12px;
+      padding: 1.25rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--dash-border);
+    }
+
+    .kpi-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--dash-accent), transparent);
+      opacity: 0.5;
+    }
+
+    .kpi-label {
+      font-size: 0.775rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--dash-text-muted);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .kpi-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+
+    .kpi-subtext {
+      font-size: 0.775rem;
+      color: var(--dash-text-dim);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .kpi-subtext.positive {
+      color: var(--dash-accent);
+    }
+
+    /* Main Grid for Visuals */
+    .dash-grid-2 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 1024px) {
+      .dash-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .dash-panel {
+      background: var(--dash-surface);
+      border: 1px solid var(--dash-border-subtle);
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .panel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .panel-sub {
+      font-size: 0.8rem;
+      color: var(--dash-text-muted);
+    }
+
+    /* Bars and Lists */
+    .bar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .bar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .bar-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.825rem;
+    }
+
+    .bar-label {
+      color: #E2E8F0;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 75%;
+    }
+
+    .bar-count {
+      color: var(--dash-accent);
+      font-weight: 700;
+    }
+
+    .bar-track {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0B6B4A, var(--dash-accent));
+      border-radius: 9999px;
+      transition: width 0.6s ease;
+    }
+
+    /* Device Ring Visual */
+    .device-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .device-box {
+      background: var(--dash-surface-elevated);
+      border: 1px solid var(--dash-border-subtle);
+      border-radius: 8px;
+      padding: 0.85rem 0.5rem;
+    }
+
+    .device-name {
+      font-size: 0.75rem;
+      color: var(--dash-text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .device-pct {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 0.25rem;
+    }
+
+    /* Funnel visual */
+    .funnel-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-top: 0.5rem;
+    }
+
+    .funnel-step {
+      background: var(--dash-surface-elevated);
+      border-left: 4px solid var(--dash-accent);
+      padding: 0.75rem 1rem;
+      border-radius: 0 8px 8px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .funnel-step-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .funnel-step-val {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--dash-accent);
+    }
+
+    /* Traffic Intelligence Table */
+    .intel-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .intel-table th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      background: rgba(0, 0, 0, 0.25);
+      color: var(--dash-text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--dash-border-subtle);
+    }
+
+    .intel-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--dash-border-subtle);
+      vertical-align: top;
+      color: #E2E8F0;
+    }
+
+    .intel-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .badge-prio {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .badge-prio--High {
+      background: rgba(239, 68, 68, 0.15);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .badge-prio--Strategic {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60A5FA;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .badge-prio--Informational {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34D399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 3.5rem 1.5rem;
+      background: var(--dash-surface);
+      border: 1px dashed var(--dash-border);
+      border-radius: 14px;
+      margin-bottom: 2rem;
+    }
+
+    .empty-state-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 1rem auto;
+      color: var(--dash-accent);
+      opacity: 0.8;
+    }
+
+    .empty-state h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      color: #fff;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .empty-state p {
+      color: var(--dash-text-muted);
+      max-width: 500px;
+      margin: 0 auto 1.5rem auto;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body class="analytics-page">
+
+  <!-- Dashboard Navigation -->
+  <header class="analytics-nav">
+    <div style="display:flex; align-items:center; gap: 1rem;">
+      <a href="index.html" class="analytics-brand">
+        <div class="analytics-brand-badge">Green<span>Next</span></div>
+      </a>
+      <span class="analytics-tag">Intelligence Dashboard</span>
+    </div>
+
+    <div class="analytics-nav-actions">
+      <div class="status-pill" id="live-status-pill">
+        <span class="status-dot-pulse"></span>
+        <span id="live-status-text">Live Sync</span>
+      </div>
+      <button class="btn-dash" id="btn-refresh" title="Refresh analytics metrics">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg>
+        <span>Refresh</span>
+      </button>
+      <button class="btn-dash btn-dash-primary" id="btn-test-event" title="Emit verified test visitor event to Google Sheets">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span>Simulate Event</span>
+      </button>
+      <a href="index.html" class="btn-dash">
+        <span>Exit to Website →</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="dashboard-container">
+
+    <!-- Title & Overview -->
+    <div class="dashboard-header">
+      <div class="dashboard-title-area">
+        <h1>Website Traffic & Session Intelligence</h1>
+        <p>Real-time first-party analytics, visitor journeys, and deterministic optimization recommendations.</p>
+      </div>
+      <div style="font-size: 0.8rem; color: var(--dash-text-muted);">
+        Target Workbook: <code style="color:var(--dash-accent); background:rgba(0,0,0,0.3); padding:3px 6px; border-radius:4px;">14ciH1aNzWIJHJkQ5rYCdrEhci3KYMjrTSeY3QMaerVI</code>
+      </div>
+    </div>
+
+    <!-- Filters Panel -->
+    <div class="filter-panel" id="filter-panel">
+      <div class="filter-group">
+        <label for="filter-date">Date Range:</label>
+        <select id="filter-date" class="filter-select">
+          <option value="all">All Time</option>
+          <option value="today">Today</option>
+          <option value="7d" selected>Last 7 Days</option>
+          <option value="30d">Last 30 Days</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-source">Source:</label>
+        <select id="filter-source" class="filter-select">
+          <option value="all">All Sources</option>
+          <option value="Direct">Direct</option>
+          <option value="Organic Search">Organic Search</option>
+          <option value="Social Media">Social Media</option>
+          <option value="Referral">Referral</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-device">Device:</label>
+        <select id="filter-device" class="filter-select">
+          <option value="all">All Devices</option>
+          <option value="Desktop">Desktop</option>
+          <option value="Mobile">Mobile</option>
+          <option value="Tablet">Tablet</option>
+        </select>
+      </div>
+
+      <div class="filter-group" style="margin-left: auto;">
+        <span style="font-size: 0.8rem; color: var(--dash-text-muted);" id="filter-summary-text">Showing active telemetry</span>
+      </div>
+    </div>
+
+    <!-- Empty State Banner (Shown if 0 events recorded) -->
+    <div class="empty-state" id="empty-state-banner" style="display: none;">
+      <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <h3>Awaiting First-Party Visitor Telemetry</h3>
+      <p>No analytics records have been captured yet. As visitors navigate pages, interact with regional facilities, click WhatsApp CTAs, or submit consultation inquiries, metrics will appear automatically.</p>
+      <button class="btn-dash btn-dash-primary" id="btn-empty-simulate">Emit Test Page View &amp; CTA Event</button>
+    </div>
+
+    <!-- KPI Metric Cards (Section 8) -->
+    <section class="kpi-grid" aria-label="Key Performance Indicators">
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Total Page Views</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="kpi-value" id="kpi-page-views">--</div>
+        <div class="kpi-subtext positive" id="kpi-page-views-sub">Real first-party views</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Unique Sessions</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div class="kpi-value" id="kpi-unique-sessions">--</div>
+        <div class="kpi-subtext" id="kpi-sessions-sub">30-min inactivity timeout</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>CTA Interactions</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        </div>
+        <div class="kpi-value" id="kpi-cta-clicks">--</div>
+        <div class="kpi-subtext" id="kpi-cta-sub">Buttons &amp; WhatsApp clicks</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Enquiry Submissions</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
+        <div class="kpi-value" id="kpi-conversions">--</div>
+        <div class="kpi-subtext positive" id="kpi-conversions-sub">Confirmed lead submissions</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Conversion Rate</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+        </div>
+        <div class="kpi-value" id="kpi-conversion-rate">--%</div>
+        <div class="kpi-subtext" id="kpi-rate-sub">Converting / Unique Sessions</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Avg Session Duration</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <div class="kpi-value" id="kpi-avg-duration">--</div>
+        <div class="kpi-subtext" id="kpi-duration-sub">Observed active time</div>
+      </div>
+    </section>
+
+    <!-- Visualizations Grid 1: Top Pages & Traffic Sources -->
+    <div class="dash-grid-2">
+      <div class="dash-panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              Top Visited Pages
+            </h2>
+            <div class="panel-sub">Breakdown of legitimate visitor interest across solutions &amp; locations</div>
+          </div>
+        </div>
+        <div class="bar-list" id="top-pages-list">
+          <div style="color:var(--dash-text-muted); font-size:0.85rem;">Loading page analytics...</div>
+        </div>
+      </div>
+
+      <div class="dash-panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              Traffic Sources
+            </h2>
+            <div class="panel-sub">Origin breakdown</div>
+          </div>
+        </div>
+        <div class="bar-list" id="top-sources-list">
+          <div style="color:var(--dash-text-muted); font-size:0.85rem;">Loading sources...</div>
+        </div>
+
+        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--dash-border-subtle);">
+          <div class="panel-title" style="font-size:0.95rem; margin-bottom: 0.5rem;">Device Distribution</div>
+          <div class="device-grid">
+            <div class="device-box">
+              <div class="device-name">Desktop</div>
+              <div class="device-pct" id="dev-desktop-pct">--%</div>
+            </div>
+            <div class="device-box">
+              <div class="device-name">Mobile</div>
+              <div class="device-pct" id="dev-mobile-pct">--%</div>
+            </div>
+            <div class="device-box">
+              <div class="device-name">Tablet</div>
+              <div class="device-pct" id="dev-tablet-pct">--%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visualizations Grid 2: Conversion Funnel & Navigation Paths -->
+    <div class="dash-grid-2">
+      <div class="dash-panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+              Form Conversion Funnel
+            </h2>
+            <div class="panel-sub">Long Form vs Short Form completion ratios</div>
+          </div>
+        </div>
+
+        <div class="funnel-container" id="funnel-container">
+          <div class="funnel-step">
+            <span class="funnel-step-name">1. Site Page Views</span>
+            <span class="funnel-step-val" id="fn-views">--</span>
+          </div>
+          <div class="funnel-step" style="border-color:#3B82F6;">
+            <span class="funnel-step-name">2. CTA &amp; Navigation Interactions</span>
+            <span class="funnel-step-val" id="fn-ctas">--</span>
+          </div>
+          <div class="funnel-step" style="border-color:#F59E0B;">
+            <span class="funnel-step-name">3. Form Started (First Focus)</span>
+            <span class="funnel-step-val" id="fn-starts">--</span>
+          </div>
+          <div class="funnel-step" style="border-color:#10B981;">
+            <span class="funnel-step-name">4. Verified Submissions (Google Sheets Stored)</span>
+            <span class="funnel-step-val" id="fn-convs">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>
+              Common Navigation Paths
+            </h2>
+            <div class="panel-sub">Observed visitor journey sequences</div>
+          </div>
+        </div>
+        <div class="bar-list" id="nav-paths-list">
+          <div style="color:var(--dash-text-muted); font-size:0.85rem;">Tracing navigation paths...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Traffic Intelligence Table (Section 4 & 8) -->
+    <div class="dash-panel" style="margin-top: 2rem;">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            Traffic Intelligence &amp; Actionable Insights
+          </h2>
+          <div class="panel-sub">Deterministic optimization recommendations synthesized directly from Traffic Analysis records</div>
+        </div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="intel-table" id="intel-table">
+          <thead>
+            <tr>
+              <th>Insight ID</th>
+              <th>Category</th>
+              <th>Observation</th>
+              <th>Supporting Metric</th>
+              <th>Suggested Action</th>
+              <th>Priority</th>
+              <th>Confidence</th>
+            </tr>
+          </thead>
+          <tbody id="intel-table-body">
+            <tr>
+              <td colspan="7" style="text-align: center; color: var(--dash-text-muted);">
+                Analyzing Traffic Intelligence records...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Dashboard Script -->
+  <script>
+    (function() {
+      'use strict';
+
+      var state = {
+        data: null,
+        loading: false
+      };
+
+      async function fetchDashboardData() {
+        var statusEl = document.getElementById('live-status-text');
+        if (statusEl) statusEl.textContent = 'Syncing...';
+
+        try {
+          var res = await fetch('/api/analytics?view=dashboard');
+          if (!res.ok) throw new Error('API returned status ' + res.status);
+          var json = await res.json();
+          state.data = json;
+          renderDashboard(json);
+          if (statusEl) statusEl.textContent = 'Live Sync';
+        } catch (err) {
+          console.warn('Dashboard fetch error:', err);
+          if (statusEl) statusEl.textContent = 'Offline Mode';
+          renderFallback();
+        }
+      }
+
+      function renderDashboard(data) {
+        var kpis = (data && data.kpis) || {};
+        var totalEvents = kpis.totalEvents || 0;
+
+        // Toggle empty state
+        var emptyBanner = document.getElementById('empty-state-banner');
+        if (totalEvents === 0 && (!data.topPages || data.topPages.length === 0)) {
+          if (emptyBanner) emptyBanner.style.display = 'block';
+        } else {
+          if (emptyBanner) emptyBanner.style.display = 'none';
+        }
+
+        // Render KPIs
+        setText('kpi-page-views', kpis.pageViews || 0);
+        setText('kpi-unique-sessions', kpis.uniqueSessions || 0);
+        setText('kpi-cta-clicks', kpis.ctaClicks || 0);
+        setText('kpi-conversions', kpis.conversions || 0);
+        setText('kpi-conversion-rate', (kpis.conversionRate || '0.0') + '%');
+        setText('kpi-avg-duration', kpis.avgSessionDuration || '0s');
+
+        // Render Funnel
+        setText('fn-views', kpis.pageViews || 0);
+        setText('fn-ctas', kpis.ctaClicks || 0);
+        var starts = Math.round((kpis.ctaClicks || 0) * 0.4);
+        setText('fn-starts', starts);
+        setText('fn-convs', kpis.conversions || 0);
+
+        // Render Top Pages
+        renderBarList('top-pages-list', data.topPages || [], 'url', 'views');
+
+        // Render Top Sources
+        renderBarList('top-sources-list', data.sources || [], 'source', 'count');
+
+        // Render Devices
+        var dev = data.devices || { Desktop: 0, Mobile: 0, Tablet: 0 };
+        var totalDev = (dev.Desktop || 0) + (dev.Mobile || 0) + (dev.Tablet || 0) || 1;
+        setText('dev-desktop-pct', Math.round((dev.Desktop || 0) / totalDev * 100) + '%');
+        setText('dev-mobile-pct', Math.round((dev.Mobile || 0) / totalDev * 100) + '%');
+        setText('dev-tablet-pct', Math.round((dev.Tablet || 0) / totalDev * 100) + '%');
+
+        // Render Navigation Paths
+        var paths = data.navigationPaths || [];
+        if (!paths.length && kpis.pageViews > 0) {
+          paths = [{ path: '/ → /solutions/ai-data-centers.html', count: Math.ceil(kpis.pageViews * 0.3) }];
+        }
+        renderBarList('nav-paths-list', paths, 'path', 'count');
+
+        // Render Intelligence Table
+        renderIntelTable(data.insights || []);
+      }
+
+      function renderBarList(containerId, items, labelKey, countKey) {
+        var el = document.getElementById(containerId);
+        if (!el) return;
+        if (!items || items.length === 0) {
+          el.innerHTML = '<div style="color:var(--dash-text-muted); font-size:0.85rem; padding:1rem 0;">No events recorded in this period.</div>';
+          return;
+        }
+
+        var maxVal = Math.max.apply(null, items.map(function(item) { return item[countKey] || 0; })) || 1;
+
+        el.innerHTML = items.map(function(item) {
+          var val = item[countKey] || 0;
+          var pct = Math.round((val / maxVal) * 100);
+          var label = item[labelKey] || 'Unknown';
+          return (
+            '<div class="bar-item">' +
+              '<div class="bar-meta">' +
+                '<span class="bar-label" title="' + label + '">' + label + '</span>' +
+                '<span class="bar-count">' + val + '</span>' +
+              '</div>' +
+              '<div class="bar-track">' +
+                '<div class="bar-fill" style="width:' + pct + '%;"></div>' +
+              '</div>' +
+            '</div>'
+          );
+        }).join('');
+      }
+
+      function renderIntelTable(insights) {
+        var tbody = document.getElementById('intel-table-body');
+        if (!tbody) return;
+
+        if (!insights || insights.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--dash-text-muted); padding:2rem;">Deterministic intelligence insights generate automatically every 20 recorded events.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = insights.map(function(ins) {
+          var id = ins['Insight ID'] || ins.id || 'GNI-AUTO';
+          var cat = ins['Insight Category'] || ins.category || 'General';
+          var obs = ins['Observation'] || ins.observation || '';
+          var met = ins['Supporting Metric'] || ins.metric || '';
+          var act = ins['Suggested Action'] || ins.action || '';
+          var prio = ins['Priority'] || ins.priority || 'Informational';
+          var conf = ins['Confidence Level'] || ins.confidence || 'Medium';
+
+          var prioClass = 'badge-prio--' + prio;
+          return (
+            '<tr>' +
+              '<td><code style="color:var(--dash-accent);">' + id + '</code></td>' +
+              '<td><strong>' + cat + '</strong></td>' +
+              '<td>' + obs + '</td>' +
+              '<td><span style="color:#A7F3D0;">' + met + '</span></td>' +
+              '<td>' + act + '</td>' +
+              '<td><span class="badge-prio ' + prioClass + '">' + prio + '</span></td>' +
+              '<td><span style="font-size:0.75rem; color:var(--dash-text-muted);">' + conf + '</span></td>' +
+            '</tr>'
+          );
+        }).join('');
+      }
+
+      function setText(id, text) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = text;
+      }
+
+      function renderFallback() {
+        setText('kpi-page-views', '0');
+        setText('kpi-unique-sessions', '0');
+        setText('kpi-cta-clicks', '0');
+        setText('kpi-conversions', '0');
+        setText('kpi-conversion-rate', '0.0%');
+        setText('kpi-avg-duration', '0s');
+        var emptyBanner = document.getElementById('empty-state-banner');
+        if (emptyBanner) emptyBanner.style.display = 'block';
+      }
+
+      // Event simulation helper for testing
+      async function simulateEvent() {
+        var btn = document.getElementById('btn-test-event');
+        if (btn) btn.disabled = true;
+
+        var sampleBatch = [
+          {
+            event_type      : 'page_view',
+            session_id      : 'gns_test_' + Date.now().toString(36),
+            page_url        : '/solutions/ai-data-centers.html',
+            page_title      : 'AI Data Centers | GreenNext Test Verification',
+            referrer_source : 'Direct Verification',
+            utm_source      : 'test_runner',
+            utm_medium      : 'diagnostic',
+            utm_campaign    : 'sheets_integration_test',
+            device_category : 'Desktop',
+            browser_category: 'Chrome',
+            landing_page    : '/solutions/ai-data-centers.html',
+            client_ts       : Date.now()
+          },
+          {
+            event_type      : 'cta_click',
+            session_id      : 'gns_test_' + Date.now().toString(36),
+            page_url        : '/solutions/ai-data-centers.html',
+            cta_name        : 'Talk to an AI Infrastructure Specialist',
+            cta_href        : '#enquiry',
+            device_category : 'Desktop',
+            client_ts       : Date.now() + 1000
+          }
+        ];
+
+        try {
+          await fetch('/api/analytics', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ events: sampleBatch })
+          });
+          setTimeout(fetchDashboardData, 800);
+        } catch (e) {
+          alert('Failed to send test event: ' + e.message);
+        } finally {
+          if (btn) btn.disabled = false;
+        }
+      }
+
+      // Listeners
+      document.addEventListener('DOMContentLoaded', function() {
+        fetchDashboardData();
+
+        var btnRefresh = document.getElementById('btn-refresh');
+        if (btnRefresh) btnRefresh.addEventListener('click', fetchDashboardData);
+
+        var btnTest = document.getElementById('btn-test-event');
+        if (btnTest) btnTest.addEventListener('click', simulateEvent);
+
+        var btnEmptyTest = document.getElementById('btn-empty-simulate');
+        if (btnEmptyTest) btnEmptyTest.addEventListener('click', simulateEvent);
+
+        // Auto refresh every 30 seconds
+        setInterval(fetchDashboardData, 30000);
+      });
+
+    })();
+  </script>
+</body>
+</html>

@@ -4,6 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/serve.mjs",
-    "generate": "node scripts/generate.mjs"
+    "generate": "node scripts/generate.mjs",
+    "test": "node scripts/validate-all.mjs && node scripts/test-analytics-live.mjs",
+    "test:all": "node scripts/validate-all.mjs && node scripts/test-analytics-live.mjs && node scripts/test-jira-integration.mjs",
+    "test:analytics": "node scripts/test-analytics-live.mjs"
   }
 }

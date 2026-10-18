@@ -261,7 +261,7 @@
   document.addEventListener('click', function(e) {
     var el = e.target;
 
-    // Walk up DOM to find trackable element
+    // Walk up DOM to find trackable element across all site components
     var target = el.closest(
       'a[data-cta], button[data-cta], ' +
       '.btn-primary, .btn-secondary, .btn-outline, ' +
@@ -269,8 +269,10 @@
       '.talk-expert-btn, .whatsapp-cta, [data-whatsapp="true"], ' +
       '.floating-whatsapp, #floating-whatsapp, ' +
       '.nav-link, .dropdown-item, .mobile-nav-item, .mobile-accordion-link, ' +
-      '.slider-arrow--prev, .slider-arrow--next, .slider-indicator, ' +
-      '.card-cta, .solution-card a, .capability-card a, .location-card a'
+      '.slider-arrow--prev, .slider-arrow--next, .slider-indicator, .slider-dot, ' +
+      '.card-cta, .solution-card a, .capability-card a, .location-card a, .industry-card a, ' +
+      '.ai-assistant, #ai-assistant, [data-ai-assistant], .ai-chat-btn, .ai-assistant-btn, ' +
+      '.footer a, .footer-link, .footer-nav-link, .footer-cta'
     );
 
     if (!target) return;
@@ -285,10 +287,22 @@
     var eventType = 'cta_click';
     if (target.matches('[data-whatsapp="true"], .floating-whatsapp, #floating-whatsapp, .whatsapp-cta')) {
       eventType = 'whatsapp_cta_click';
+    } else if (target.matches('.ai-assistant, #ai-assistant, [data-ai-assistant], .ai-chat-btn, .ai-assistant-btn')) {
+      eventType = 'ai_assistant_interaction';
     } else if (target.matches('.nav-link, .dropdown-item, .mobile-nav-item, .mobile-accordion-link')) {
       eventType = 'nav_click';
-    } else if (target.matches('.slider-arrow--prev, .slider-arrow--next, .slider-indicator')) {
+    } else if (target.matches('.slider-arrow--prev, .slider-arrow--next, .slider-indicator, .slider-dot')) {
       eventType = 'slider_interaction';
+    } else if (target.matches('.capability-card a, [href*="/capabilities/"]')) {
+      eventType = 'capability_card_click';
+    } else if (target.matches('.industry-card a, [href*="/industries/"]')) {
+      eventType = 'industry_card_click';
+    } else if (target.matches('.solution-card a, [href*="/solutions/"]')) {
+      eventType = 'solution_card_click';
+    } else if (target.matches('.location-card a, [href*="/locations/"]')) {
+      eventType = 'location_card_click';
+    } else if (target.closest('footer, .footer')) {
+      eventType = 'footer_interaction';
     }
 
     var href = target.getAttribute('href') || '';
@@ -301,10 +315,11 @@
 
   // ─── AUTO-TRACKING: FORM EVENTS ──────────────────────────────────────────────
 
-  // Track form-start (first interaction with a form field)
-  document.querySelectorAll('.lead-form, .quick-enquiry-form, .careers-form').forEach(function(form) {
-    var formType = form.classList.contains('quick-enquiry-form') ? 'Short Form' :
-                   form.classList.contains('careers-form')       ? 'Careers'   : 'Long Form';
+  // Track form-start (first interaction with a form field across all form variants)
+  document.querySelectorAll('.lead-form, .quick-enquiry-form, .careers-form, .floating-lead-form').forEach(function(form) {
+    var formType = form.classList.contains('quick-enquiry-form')  ? 'Short Form' :
+                   form.classList.contains('floating-lead-form')  ? 'Floating Lead Form' :
+                   form.classList.contains('careers-form')        ? 'Careers'   : 'Long Form';
     var started  = false;
 
     form.addEventListener('focusin', function() {

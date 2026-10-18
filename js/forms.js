@@ -94,13 +94,14 @@
   }
 
   // 5. Connect all Lead & Enquiry forms
-  var allForms = document.querySelectorAll('.lead-form, .quick-enquiry-form, .careers-form');
+  var allForms = document.querySelectorAll('.lead-form, .quick-enquiry-form, .careers-form, .floating-lead-form');
 
   allForms.forEach(function (form) {
-    var card = form.closest('.lead-form-card, .quick-enquiry-card, .footer-enquiry-card');
+    var card = form.closest('.lead-form-card, .quick-enquiry-card, .footer-enquiry-card, .gn-modal');
     var submitBtn = form.querySelector('button[type="submit"]');
     var isShortForm = form.classList.contains('quick-enquiry-form');
     var isCareersForm = form.classList.contains('careers-form');
+    var isFloatingLeadForm = form.classList.contains('floating-lead-form');
 
     // Live validation feedback on touch/input
     form.addEventListener('input', function (e) {
@@ -170,6 +171,39 @@
           validationMsg = 'Please select an area of interest.';
           if (!firstInvalid) firstInvalid = interestInput;
         }
+      } else if (isFloatingLeadForm) {
+        // Compact Floating Lead Form validation
+        var flNameInput = form.querySelector('[name="full_name"]');
+        var flEmailInput = form.querySelector('[name="business_email"]');
+        var flPhoneInput = form.querySelector('[name="phone"]');
+        var flInterestInput = form.querySelector('[name="area_of_interest"]');
+        var flConsentCheckbox = form.querySelector('input[name="consent"]');
+
+        if (!flNameInput || !flNameInput.value.trim() || flNameInput.value.trim().length < 2) {
+          valid = false;
+          if (flNameInput) flNameInput.classList.add('has-error');
+          validationMsg = 'Please enter your full name (at least 2 characters).';
+          if (!firstInvalid) firstInvalid = flNameInput;
+        } else if (!flEmailInput || !isValidEmail(flEmailInput.value.trim())) {
+          valid = false;
+          if (flEmailInput) flEmailInput.classList.add('has-error');
+          validationMsg = 'Please enter a valid work email address.';
+          if (!firstInvalid) firstInvalid = flEmailInput;
+        } else if (!flPhoneInput || !isValidPhone(flPhoneInput.value.trim())) {
+          valid = false;
+          if (flPhoneInput) flPhoneInput.classList.add('has-error');
+          validationMsg = 'Please enter a valid phone number (at least 7 digits).';
+          if (!firstInvalid) firstInvalid = flPhoneInput;
+        } else if (!flInterestInput || !flInterestInput.value) {
+          valid = false;
+          if (flInterestInput) flInterestInput.classList.add('has-error');
+          validationMsg = 'Please select a requirement or service.';
+          if (!firstInvalid) firstInvalid = flInterestInput;
+        } else if (flConsentCheckbox && !flConsentCheckbox.checked) {
+          valid = false;
+          validationMsg = 'Please agree to the privacy policy to proceed.';
+          if (!firstInvalid) firstInvalid = flConsentCheckbox;
+        }
       } else if (!isCareersForm) {
         // Long Form (Talk to an Expert / Consultation)
         var fullNameInput = form.querySelector('[name="full_name"]');
@@ -211,12 +245,23 @@
         submitBtn.innerHTML = '<span class="btn-spinner"></span> <span>Submitting Enquiry...</span>';
       }
 
-      // Build payload matching all 16 Google Sheet columns
+      // Build payload matching all 16 Google Sheet columns + hidden metadata
       var formData = new FormData(form);
+      var defaultFormType = isFloatingLeadForm ? 'Floating Lead Form' : (isShortForm ? 'Short Form' : (isCareersForm ? 'Careers Application' : 'Long Form'));
+      var searchParams = new URLSearchParams(window.location.search);
+
       var payload = {
-        form_type: isShortForm ? 'Short Form' : (isCareersForm ? 'Careers Application' : 'Long Form'),
+        form_type: defaultFormType,
         page_source: window.location.pathname,
-        submitted_at_client: new Date().toISOString()
+        submitted_at_client: new Date().toISOString(),
+        page_url: window.location.href,
+        page_title: document.title,
+        referrer: document.referrer || 'Direct',
+        utm_source: searchParams.get('utm_source') || '',
+        utm_medium: searchParams.get('utm_medium') || '',
+        utm_campaign: searchParams.get('utm_campaign') || '',
+        utm_term: searchParams.get('utm_term') || '',
+        utm_content: searchParams.get('utm_content') || ''
       };
 
       formData.forEach(function (value, key) {
@@ -291,6 +336,13 @@
             }
           }
 
+          // If this submission was from the floating lead modal, dismiss it
+          var floatingLeadModal = document.getElementById('gn-floating-lead-modal');
+          if (floatingLeadModal && floatingLeadModal.classList.contains('active')) {
+            floatingLeadModal.classList.remove('active');
+            floatingLeadModal.setAttribute('aria-hidden', 'true');
+          }
+
           // Trigger thank-you modal
           showThankYouModal({
             fullName: leadName,
@@ -299,7 +351,7 @@
 
           // Analytics: track conversion (privacy-safe — no personal data sent)
           if (window.GreenNextAnalytics && window.GreenNextAnalytics.trackConversion) {
-            var analyticsFormType = isShortForm ? 'Short Form' : (isCareersForm ? 'Careers' : 'Long Form');
+            var analyticsFormType = isFloatingLeadForm ? 'Floating Lead Form' : (isShortForm ? 'Short Form' : (isCareersForm ? 'Careers' : 'Long Form'));
             window.GreenNextAnalytics.trackConversion(analyticsFormType, assignedId);
           }
 

@@ -111,6 +111,16 @@ function doGet(e) {
 function doPost(e) {
   var postData = parsePostData(e);
 
+  // If payload contains an explicit action dispatcher
+  if (postData && postData.action) {
+    if (postData.action === 'send_lead_email') {
+      return handleSendLeadEmailAction(postData);
+    }
+    if (postData.action === 'update_lead_status' || postData.action === 'update_notification_status') {
+      return handleUpdateLeadStatusAction(postData);
+    }
+  }
+
   // If payload contains analytics event batch or single event
   if (postData && (postData.events || postData.event_type)) {
     return handleAnalyticsPost(e, postData);
@@ -119,6 +129,7 @@ function doPost(e) {
   // Otherwise handle lead enquiry
   return handleEnquiryPost(e, postData);
 }
+
 
 // ============================================================================
 // 3. ENQUIRY HANDLERS & PROCESSING
@@ -267,44 +278,6 @@ function handleEnquiryPost(e, preParsedData) {
         var lastR = sheet.getLastRow();
         sheet.getRange(lastR, 16).setValue('New [Jira: ' + jiraResult.parentKey + ']');
       }
-
-      // Record in dedicated Jira Lead Tracking worksheet (18 columns)
-      try {
-        var jiraTrackingSheet = getOrInitSheet(ss, SHEET_JIRA_TRACKING, COLS_JIRA_TRACKING, '#0D3B66');
-        var subMap = (jiraResult && jiraResult.subtaskMap) || {};
-        var parentKey = (jiraResult && jiraResult.parentKey) || '—';
-        var parentUrl = (jiraResult && jiraResult.parentUrl) || '—';
-        var creationStatus = (jiraResult && jiraResult.status) || 'jira_not_configured';
-        var errorDetails = (jiraResult && (jiraResult.error || jiraResult.note)) || '—';
-
-        var jiraRow = [
-          enquiryId,
-          timestampStr,
-          sanitize(formType, 100),
-          sanitize(data.company_name || data.company || '—', 200),
-          sanitize(fullName, 200),
-          sanitize(data.area_of_interest || data.service || '—', 200),
-          parentKey,
-          parentUrl,
-          subMap['initial_contact'] || '—',
-          subMap['follow_up_1'] || '—',
-          subMap['requirements_gathering'] || '—',
-          subMap['site_visit'] || '—',
-          subMap['proposal_quote'] || '—',
-          subMap['lead_closure'] || '—',
-          subMap['operations_handover'] || '—',
-          creationStatus,
-          (emailResult && emailResult.status) || 'Pending / Disabled',
-          (emailResult && emailResult.timestamp) || '—',
-          (emailResult && emailResult.recipient) || '—',
-          (emailResult && emailResult.error) || '—',
-          timestampStr,
-          sanitize(errorDetails, 400)
-        ];
-        jiraTrackingSheet.appendRow(jiraRow);
-      } catch (trackSheetErr) {
-        Logger.log('Jira Lead Tracking row error: ' + trackSheetErr.message);
-      }
     } catch (jiraErr) {
       Logger.log('Jira issue creation skipped/failed: ' + jiraErr.message);
     }
@@ -331,6 +304,46 @@ function handleEnquiryPost(e, preParsedData) {
       Logger.log('Lead notification email error: ' + emErr.message);
       emailResult = { success: false, status: 'failed', error: emErr.message };
     }
+
+    // Step 5: Record in dedicated Jira Lead Tracking worksheet (18 columns)
+    try {
+      var jiraTrackingSheet = getOrInitSheet(ss, SHEET_JIRA_TRACKING, COLS_JIRA_TRACKING, '#0D3B66');
+      var subMap = (jiraResult && jiraResult.subtaskMap) || {};
+      var parentKey = (jiraResult && jiraResult.parentKey) || '—';
+      var parentUrl = (jiraResult && jiraResult.parentUrl) || '—';
+      var creationStatus = (jiraResult && jiraResult.status) || 'jira_not_configured';
+      var errorDetails = (jiraResult && (jiraResult.error || jiraResult.note)) || '—';
+
+      var jiraRow = [
+        enquiryId,
+        timestampStr,
+        sanitize(formType, 100),
+        sanitize(data.company_name || data.company || '—', 200),
+        sanitize(fullName, 200),
+        sanitize(data.area_of_interest || data.service || '—', 200),
+        parentKey,
+        parentUrl,
+        subMap['initial_contact'] || '—',
+        subMap['follow_up_1'] || '—',
+        subMap['requirements_gathering'] || '—',
+        subMap['site_visit'] || '—',
+        subMap['proposal_quote'] || '—',
+        subMap['lead_closure'] || '—',
+        subMap['operations_handover'] || '—',
+        creationStatus,
+        (emailResult && (emailResult.status || (emailResult.success ? 'Sent' : 'Failed'))) || 'Pending / Disabled',
+        (emailResult && emailResult.timestamp) || '—',
+        (emailResult && emailResult.recipient) || '—',
+        (emailResult && (emailResult.error || emailResult.note)) || '—',
+        timestampStr,
+        sanitize(errorDetails, 400)
+      ];
+      jiraTrackingSheet.appendRow(jiraRow);
+    } catch (trackSheetErr) {
+      Logger.log('Jira Lead Tracking row error: ' + trackSheetErr.message);
+    }
+
+
 
     return createJsonResponse({
       success  : true,
@@ -1382,3 +1395,114 @@ function sendLeadNotificationEmailFromGas(
     };
   }
 }
+
+/**
+ * Handles explicit action 'send_lead_email' posted from Node.js /api/enquiry or serverless route
+ */
+function handleSendLeadEmailAction(postData) {
+  try {
+    var adminEmail = (postData.adminEmail || NOTIFICATION_EMAIL || 'ruba.int2027g3@gmail.com').trim();
+    var subject = postData.subject || '[GreenNext] New Lead Notification';
+    var html = postData.html || '';
+    var text = postData.text || '';
+
+    if (!html && !text) {
+      return createJsonResponse({ success: false, emailSent: false, emailError: 'No email content provided.' });
+    }
+
+    MailApp.sendEmail({
+      to: adminEmail,
+      subject: subject,
+      htmlBody: html,
+      body: text || 'GreenNext new lead received.'
+    });
+
+    return createJsonResponse({
+      success: true,
+      emailSent: true,
+      messageId: 'gas-mail-' + new Date().getTime(),
+      recipient: adminEmail,
+      timestamp: formatTimestamp(new Date())
+    });
+  } catch (err) {
+    Logger.log('MailApp.sendEmail error: ' + err.message);
+    return createJsonResponse({
+      success: false,
+      emailSent: false,
+      emailError: err.message
+    });
+  }
+}
+
+/**
+ * Handles explicit action 'update_lead_status' posted from Node.js /api/enquiry
+ * Upserts the tracking row in Jira Lead Tracking worksheet.
+ */
+function handleUpdateLeadStatusAction(postData) {
+  try {
+    var ss = getSpreadsheet();
+    var sheet = getOrInitSheet(ss, SHEET_JIRA_TRACKING, COLS_JIRA_TRACKING, '#0D3B66');
+    var enquiryId = (postData.enquiryId || '').trim();
+    if (!enquiryId) {
+      return createJsonResponse({ success: false, message: 'Enquiry ID required' });
+    }
+
+    var data = sheet.getDataRange().getValues();
+    var rowIndex = -1;
+    for (var r = 1; r < data.length; r++) {
+      if (String(data[r][0]).trim() === enquiryId) {
+        rowIndex = r + 1;
+        break;
+      }
+    }
+
+    var now = new Date();
+    var tsStr = formatTimestamp(now);
+
+    if (rowIndex > -1) {
+      if (postData.parentJiraKey && postData.parentJiraKey !== '—') sheet.getRange(rowIndex, 7).setValue(postData.parentJiraKey);
+      if (postData.parentJiraUrl && postData.parentJiraUrl !== '—') sheet.getRange(rowIndex, 8).setValue(postData.parentJiraUrl);
+      if (postData.jiraStatus) sheet.getRange(rowIndex, 16).setValue(postData.jiraStatus);
+      if (postData.emailNotificationStatus) sheet.getRange(rowIndex, 17).setValue(postData.emailNotificationStatus);
+      if (postData.emailSentTimestamp) sheet.getRange(rowIndex, 18).setValue(postData.emailSentTimestamp);
+      if (postData.emailRecipient) sheet.getRange(rowIndex, 19).setValue(postData.emailRecipient);
+      if (postData.emailErrorDetails) sheet.getRange(rowIndex, 20).setValue(postData.emailErrorDetails);
+      sheet.getRange(rowIndex, 21).setValue(tsStr);
+      if (postData.jiraSubtasksStatus) sheet.getRange(rowIndex, 22).setValue(postData.jiraSubtasksStatus);
+    } else {
+      var newRow = [
+        enquiryId,
+        tsStr,
+        postData.formType || 'Enquiry Form',
+        postData.companyName || '—',
+        postData.fullName || '—',
+        postData.areaOfInterest || '—',
+        postData.parentJiraKey || '—',
+        postData.parentJiraUrl || '—',
+        '—', '—', '—', '—', '—', '—', '—',
+        postData.jiraStatus || 'Pending',
+        postData.emailNotificationStatus || 'Pending',
+        postData.emailSentTimestamp || '—',
+        postData.emailRecipient || '—',
+        postData.emailErrorDetails || '—',
+        tsStr,
+        postData.jiraSubtasksStatus || '—'
+      ];
+      sheet.appendRow(newRow);
+    }
+
+    return createJsonResponse({
+      success: true,
+      enquiryId: enquiryId,
+      statusUpdated: true,
+      timestamp: tsStr
+    });
+  } catch (err) {
+    Logger.log('Update lead status error: ' + err.message);
+    return createJsonResponse({
+      success: false,
+      message: 'Failed to update lead status: ' + err.message
+    });
+  }
+}
+

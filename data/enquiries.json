@@ -38,5 +38,77 @@
       "utm_content": ""
     },
     "status": "New"
+  },
+  {
+    "enquiryId": "GN-20261019-0001",
+    "submittedAt": "2026-10-19T17:53:44.570Z",
+    "formType": "Quick Enquiry",
+    "fullName": "Test Automation Lead",
+    "businessEmail": "test.lead@greennext.in",
+    "phoneNumber": "'+91 98888 77777",
+    "companyName": "GreenNext Test Lab",
+    "areaOfInterest": "AI Infrastructure",
+    "projectRequirements": "Automated test suite validation enquiry",
+    "metadata": {
+      "page_url": "",
+      "page_title": "",
+      "referrer": "",
+      "utm_source": "",
+      "utm_medium": "",
+      "utm_campaign": "",
+      "utm_term": "",
+      "utm_content": ""
+    },
+    "status": "New",
+    "jira": {
+      "success": false,
+      "status": "jira_disabled",
+      "message": "Jira integration credentials not configured"
+    },
+    "email": {
+      "success": false,
+      "provider": "google_apps_script",
+      "error": "Please provide a valid full name.",
+      "recipient": "ruba.int2027g3@gmail.com",
+      "timestamp": "2026-10-19T17:53:59.401Z"
+    },
+    "emailNotificationStatus": "Failed",
+    "lastUpdated": "2026-10-19T17:53:59.401Z"
+  },
+  {
+    "enquiryId": "GN-20261019-0002",
+    "submittedAt": "2026-10-19T18:06:06.570Z",
+    "formType": "Short Form",
+    "fullName": "Suresh Menon",
+    "businessEmail": "suresh@menonenterprises.com",
+    "phoneNumber": "",
+    "companyName": "—",
+    "areaOfInterest": "Digital Infrastructure",
+    "projectRequirements": "—",
+    "metadata": {
+      "page_url": "",
+      "page_title": "",
+      "referrer": "",
+      "utm_source": "",
+      "utm_medium": "",
+      "utm_campaign": "",
+      "utm_term": "",
+      "utm_content": ""
+    },
+    "status": "New",
+    "jira": {
+      "success": false,
+      "status": "jira_disabled",
+      "message": "Jira integration credentials not configured"
+    },
+    "email": {
+      "success": false,
+      "provider": "google_apps_script",
+      "error": "Please provide a valid full name.",
+      "recipient": "ruba.int2027g3@gmail.com",
+      "timestamp": "2026-10-19T18:06:22.398Z"
+    },
+    "emailNotificationStatus": "Failed",
+    "lastUpdated": "2026-10-19T18:06:22.398Z"
   }
 ]

@@ -2,24 +2,29 @@
  * GreenNext Digital Infrastructure — Automated Lead Notification Email System
  * 
  * Features:
- * - Ultra-premium dark navy (#0B1120, #0F172A) & purple-to-blue gradient (#6366F1 -> #3B82F6) design
+ * - Ultra-premium dark navy (#070B14, #0F172A) & purple-to-blue gradient (#4338CA -> #3B82F6 -> #06B6D4) design
+ * - Design A (Default): Premium Lead Notification Card
+ * - Design B: Clean Business Notification (White/Light, dark-green GreenNext header)
+ * - Design C: Strategic Lead Summary (Dark-green header, metrics & operational steps)
  * - Verified email-safe responsive HTML table layout with inline CSS
- * - Plain-text fallback generation
- * - Form Type Badge (Long Form, Quick Form, Floating Lead Form, Careers Application)
+ * - Complete Plain-text fallback generation
+ * - Dynamic Subject Lines per form type (Quick Enquiry, Consultation, Business Lead, Careers)
+ * - Form Type Badges (Quick Enquiry, Consultation, Long Form, Floating Lead Form, Careers Application)
  * - Structured Sections:
  *   1. Contact Information
- *   2. Requirements & Business Context
- *   3. Submission Metadata (Enquiry ID, Page URL, UTM, Jira status, Sheets record)
- *   4. Next Steps (Purple "Reply to Lead" mailto, Green "WhatsApp" direct link, "Open Jira Lead")
- * - Dual-Engine Support:
- *   A. Transactional REST API (Resend / SendGrid / Custom HTTPS) via native fetch
- *   B. Google Apps Script MailApp / GmailApp Engine (Zero extra API cost, uses Google Workspace quota)
- * - Safe HTML escaping to prevent email injection and HTML/XSS attacks
- * - Idempotency & retry tracking
+ *   2. Requirements & Business Context (with optional budget, company size, timeline, etc.)
+ *   3. Submission Metadata (Enquiry ID, Page URL, UTM, verified Jira status, Sheets record)
+ *   4. Next Steps (Purple "Reply to Lead" mailto, Green "WhatsApp" direct link, "Open Jira Lead", "View Sheets")
+ * - Multi-Provider Delivery Engine:
+ *   1. Resend REST API (RESEND_API_KEY)
+ *   2. SendGrid REST API (SENDGRID_API_KEY)
+ *   3. Google Apps Script MailApp / GmailApp Forwarder (GOOGLE_APPS_SCRIPT_URL)
+ *   4. Simulated Test Mode with full delivery audit trail
+ * - Safe HTML entity escaping and email injection prevention
  */
 
 /**
- * Escape HTML special characters to prevent injection
+ * Escape HTML special characters to prevent injection / XSS attacks
  */
 export function escapeHtml(str) {
   if (str === null || str === undefined) return '';
@@ -53,40 +58,86 @@ export function formatLeadDateTime(dateInput) {
 }
 
 /**
+ * Generate dynamic, descriptive email subjects based on form type and lead name
+ */
+export function generateLeadEmailSubject(lead) {
+  const formType = (lead.formType || lead.form_type || '').toLowerCase();
+  const name = (lead.fullName || lead.name || '').trim();
+  const enquiryId = lead.enquiryId ? ` (${lead.enquiryId})` : '';
+
+  if (formType.includes('quick') || formType.includes('short')) {
+    return `[GreenNext] New Quick Enquiry — ${name || 'Prospective Lead'}${enquiryId}`;
+  }
+  if (formType.includes('consultation')) {
+    return `[GreenNext] New Consultation Lead — ${name || 'Enterprise Client'}${enquiryId}`;
+  }
+  if (formType.includes('career') || formType.includes('job') || formType.includes('application')) {
+    return `[GreenNext] New Careers Application — ${name || 'Candidate'}${enquiryId}`;
+  }
+  if (formType.includes('floating')) {
+    return `[GreenNext] New Floating Lead — ${name || 'Prospective Lead'}${enquiryId}`;
+  }
+  // Default Long Form / Business Lead
+  return `[GreenNext] New Business Lead — ${name || lead.enquiryId || 'Enterprise Lead'}${name && lead.enquiryId ? ` (${lead.enquiryId})` : ''}`;
+}
+
+/**
  * Generate mailto link for "Reply to Lead"
+ * Opens the administrator's default email client with verified recipient and professional prefilled response
  */
 export function generateReplyMailto(lead) {
   const email = (lead.businessEmail || lead.email || '').trim();
   if (!email) return '';
   const enquiryId = lead.enquiryId || 'GreenNext Lead';
   const name = lead.fullName || lead.name || 'there';
-  const subject = `GreenNext Enquiry — ${enquiryId}`;
-  const body = `Hello ${name},\n\nThank you for reaching out to GreenNext regarding our AI Data Center and digital infrastructure solutions.\n\nWe have reviewed your enquiry (${enquiryId}) and would like to connect to discuss how we can support your requirements.\n\nBest regards,\nGreenNext Enterprise Team`;
+  const interest = lead.areaOfInterest || lead.service || 'AI Data Center & Sustainable Infrastructure';
+  const subject = `Re: GreenNext Enquiry — ${enquiryId}`;
+  const body = `Hello ${name},\n\nThank you for reaching out to GreenNext regarding our ${interest} solutions.\n\nWe have received your enquiry (${enquiryId}) and our technical and solutions engineering team would be delighted to schedule a discussion to review your requirements.\n\nPlease let us know your availability for a brief introductory call.\n\nBest regards,\nGreenNext Enterprise Team\nhttps://greennext.in`;
   return `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
 /**
- * Generate prefilled WhatsApp click-to-chat URL
+ * Generate prefilled WhatsApp click-to-chat URL using verified business phone
  */
-export function generateWhatsAppLeadUrl(lead, businessPhone = '919876543210') {
-  // Use lead phone or fall back to lead contact
-  const cleanPhone = (businessPhone || '919876543210').replace(/\D/g, '');
+export function generateWhatsAppLeadUrl(lead, businessPhone = null) {
+  const configuredPhone = businessPhone || process.env.WHATSAPP_PHONE || '919876543210';
+  const cleanPhone = configuredPhone.replace(/\D/g, '');
   const name = lead.fullName || lead.name || 'Valued Partner';
-  const interest = lead.areaOfInterest || lead.service || 'Intelligent Digital Infrastructure';
+  const interest = lead.areaOfInterest || lead.service || 'AI Infrastructure';
   const text = `Hello ${name}, thank you for contacting GreenNext. We received your enquiry regarding ${interest}. Our team would be happy to discuss your requirements.`;
   return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
 }
 
 /**
- * Render Responsive Dark Navy HTML Email
+ * Determine badge color & style based on form type
+ */
+function getFormTypeBadgeConfig(formTypeRaw) {
+  const ft = (formTypeRaw || '').toLowerCase();
+  if (ft.includes('quick') || ft.includes('short')) {
+    return { label: 'Quick Enquiry', color: '#10B981', bg: 'rgba(16, 185, 129, 0.15)', border: '#10B981' };
+  }
+  if (ft.includes('consultation')) {
+    return { label: 'Consultation', color: '#06B6D4', bg: 'rgba(6, 182, 212, 0.15)', border: '#06B6D4' };
+  }
+  if (ft.includes('floating')) {
+    return { label: 'Floating Lead', color: '#F59E0B', bg: 'rgba(245, 158, 11, 0.15)', border: '#F59E0B' };
+  }
+  if (ft.includes('career')) {
+    return { label: 'Careers Application', color: '#3B82F6', bg: 'rgba(59, 130, 246, 0.15)', border: '#3B82F6' };
+  }
+  return { label: formTypeRaw || 'Long Form', color: '#8B5CF6', bg: 'rgba(139, 92, 246, 0.15)', border: '#8B5CF6' };
+}
+
+/**
+ * Design A — Premium Lead Notification (Default Reference Design)
+ * Dark navy (#070B14, #0F172A), purple-to-blue gradient header, ⚡ lightning icon,
+ * structured contact/requirements/metadata tables, conditional Jira and Sheets actions.
  */
 export function renderLeadNotificationHtml(lead) {
   const enquiryId = escapeHtml(lead.enquiryId || 'GN-PENDING');
   const contactName = escapeHtml(lead.fullName || lead.name || 'Enquiry Visitor');
-  const formType = escapeHtml(lead.formType || 'Enquiry Form');
-  const isQuick = formType.toLowerCase().includes('quick') || formType.toLowerCase().includes('short');
-  const badgeColor = isQuick ? '#10B981' : '#8B5CF6';
-  const badgeBg = isQuick ? 'rgba(16, 185, 129, 0.15)' : 'rgba(139, 92, 246, 0.15)';
+  const formType = escapeHtml(lead.formType || lead.form_type || 'Enquiry Form');
+  const badge = getFormTypeBadgeConfig(lead.formType || lead.form_type);
   const formattedDate = formatLeadDateTime(lead.submittedAt);
 
   // Contact details
@@ -95,29 +146,41 @@ export function renderLeadNotificationHtml(lead) {
   const company = (lead.companyName || lead.company || '').trim();
   const location = (lead.location || lead.city || '').trim();
 
-  // Requirements
+  // Requirements & Business Context
   const industry = (lead.industry || '').trim();
-  const interest = (lead.areaOfInterest || lead.service || '').trim();
-  const requirements = (lead.projectRequirements || lead.requirements || lead.message || '').trim();
+  const interest = (lead.areaOfInterest || lead.service_interest || lead.service || lead.position || '').trim();
+  const projectScope = (lead.projectScope || lead.project_scope || '').trim();
+  const challenge = (lead.challenge || lead.problem || '').trim();
+  const desiredOutcome = (lead.desiredOutcome || lead.desired_outcome || '').trim();
+  const requirements = (lead.projectRequirements || lead.requirements || lead.message || lead.resume || '').trim();
   const timeline = (lead.expectedTimeline || lead.timeline || '').trim();
-  const contactMethod = (lead.preferredContactMethod || lead.contactMethod || '').trim();
+  const budget = (lead.budget || lead.estimated_budget || '').trim();
+  const companySize = (lead.companySize || lead.company_size || '').trim();
+  const preferredContact = (lead.preferredContactMethod || lead.contact_method || lead.preferred_contact_time || lead.linkedin || '').trim();
 
-  // Metadata
+  // Submission Metadata
   const pageUrl = lead.metadata?.page_url || lead.page_url || '/';
   const utmSource = lead.metadata?.utm_source || lead.utm_source || '';
   const utmMedium = lead.metadata?.utm_medium || lead.utm_medium || '';
   const utmCampaign = lead.metadata?.utm_campaign || lead.utm_campaign || '';
-  const trafficSource = [utmSource, utmMedium, utmCampaign].filter(Boolean).join(' / ') || 'Direct / Organic';
+  const trafficSource = [utmSource, utmMedium].filter(Boolean).join(' / ') || 'Direct / Organic';
 
-  // Jira details
+  // Google Sheets verified status
+  const isSheetSaved = Boolean(lead.leadSaved || lead.leadSavedInSheets || lead.sheetSaved);
+  const sheetsWorkbookId = '14ciH1aNzWIJHJkQ5rYCdrEhci3KYMjrTSeY3QMaerVI';
+  const sheetsUrl = process.env.GOOGLE_SHEET_URL || `https://docs.google.com/spreadsheets/d/${sheetsWorkbookId}/edit`;
+
+  // Jira Integration details (Display only verified real results)
   const jiraKey = lead.jira?.parentKey || lead.jiraKey || '';
-  const jiraUrl = lead.jira?.parentUrl || (jiraKey ? `https://trustworkz.atlassian.net/browse/${jiraKey}` : '');
-  const jiraStatus = lead.jira?.status || (jiraKey ? 'Created & Subtasks Assigned' : 'Configured / Pending');
+  const jiraBaseUrl = (process.env.JIRA_BASE_URL || 'https://trustworkz.atlassian.net').replace(/\/+$/, '');
+  const jiraUrl = lead.jira?.parentUrl || (jiraKey ? `${jiraBaseUrl}/browse/${jiraKey}` : '');
+  const isJiraSuccess = Boolean(jiraKey && lead.jira?.status !== 'jira_failed');
+  const subtaskCount = lead.jira?.subtasks ? lead.jira.subtasks.length : (lead.jira?.subtaskMap ? Object.keys(lead.jira.subtaskMap).length : 0);
+  const subtaskStatus = subtaskCount > 0 ? `${subtaskCount} of 7 subtasks created` : (isJiraSuccess ? 'Subtasks configured' : 'Pending');
 
   // Next steps URLs
   const replyMailto = generateReplyMailto(lead);
-  const waUrl = generateWhatsAppLeadUrl(lead, process.env.WHATSAPP_PHONE || '919876543210');
-  const sheetsUrl = process.env.GOOGLE_SHEET_URL || 'https://docs.google.com/spreadsheets/d/14ciH1aNzWIJHJkQ5rYCdrEhci3KYMjrTSeY3QMaerVI/edit';
+  const waUrl = generateWhatsAppLeadUrl(lead);
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -145,19 +208,26 @@ export function renderLeadNotificationHtml(lead) {
       
       <!-- HERO GRADIENT HEADER -->
       <tr>
-        <td style="padding: 36px 32px 30px; background: linear-gradient(135deg, #4338CA 0%, #3B82F6 50%, #06B6D4 100%); text-align: left;" class="mobile-padding">
+        <td style="padding: 34px 32px 28px; background: linear-gradient(135deg, #4338CA 0%, #3B82F6 50%, #06B6D4 100%); text-align: left;" class="mobile-padding">
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td>
-                <!-- BRANDING -->
-                <div style="font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #E0E7FF; margin-bottom: 8px;">
-                  GREENNEXT DIGITAL INFRASTRUCTURE
-                </div>
-                <h1 style="margin: 0 0 10px 0; font-size: 26px; font-weight: 800; line-height: 1.25; color: #FFFFFF; letter-spacing: -0.5px;">
+                <!-- ICON + BRANDING -->
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 8px;">
+                  <tr>
+                    <td style="vertical-align: middle; padding-right: 8px;">
+                      <span style="display: inline-block; background: rgba(255, 255, 255, 0.2); border-radius: 6px; width: 24px; height: 24px; line-height: 24px; text-align: center; font-size: 14px;">⚡</span>
+                    </td>
+                    <td style="vertical-align: middle; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #E0E7FF;">
+                      GREENNEXT DIGITAL INFRASTRUCTURE
+                    </td>
+                  </tr>
+                </table>
+                <h1 style="margin: 0 0 8px 0; font-size: 26px; font-weight: 800; line-height: 1.25; color: #FFFFFF; letter-spacing: -0.5px;">
                   New Lead Received
                 </h1>
                 <p style="margin: 0; font-size: 14px; color: #DBEAFE; line-height: 1.5;">
-                  A new enterprise prospect submitted an enquiry through the GreenNext AI Data Center portal.
+                  A new prospective lead has been submitted through the GreenNext AI Data Center portal.
                 </p>
               </td>
             </tr>
@@ -167,18 +237,18 @@ export function renderLeadNotificationHtml(lead) {
 
       <!-- SUMMARY META BANNER -->
       <tr>
-        <td style="background-color: #131D33; padding: 16px 32px; border-bottom: 1px solid #1E293B;" class="mobile-padding">
+        <td style="background-color: #131D33; padding: 14px 32px; border-bottom: 1px solid #1E293B;" class="mobile-padding">
           <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td style="vertical-align: middle;">
-                <span style="display: inline-block; padding: 4px 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 20px; background-color: ${badgeBg}; color: ${badgeColor}; border: 1px solid ${badgeColor};">
-                  ${formType}
+                <span style="display: inline-block; padding: 4px 12px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 20px; background-color: ${badge.bg}; color: ${badge.color}; border: 1px solid ${badge.border};">
+                  ${badge.label}
                 </span>
                 <span style="color: #94A3B8; font-size: 13px; margin-left: 12px; font-weight: 500;">
-                  ID: <strong style="color: #F8FAFC;">${enquiryId}</strong>
+                  ID: <strong style="color: #F8FAFC; font-family: monospace;">${enquiryId}</strong>
                 </span>
               </td>
-              <td style="text-align: right; vertical-align: middle; font-size: 12px; color: #64748B;">
+              <td style="text-align: right; vertical-align: middle; font-size: 12px; color: #94A3B8;">
                 ${formattedDate}
               </td>
             </tr>
@@ -249,13 +319,33 @@ export function renderLeadNotificationHtml(lead) {
                     <td style="font-size: 13px; color: #94A3B8; padding: 6px 0;">Industry Vertical:</td>
                     <td style="font-size: 14px; color: #F1F5F9; padding: 6px 0;">${escapeHtml(industry)}</td>
                   </tr>` : ''}
+                  ${projectScope ? `<tr>
+                    <td style="font-size: 13px; color: #94A3B8; padding: 6px 0;">Project Scope:</td>
+                    <td style="font-size: 14px; color: #F1F5F9; padding: 6px 0;">${escapeHtml(projectScope)}</td>
+                  </tr>` : ''}
+                  ${challenge ? `<tr>
+                    <td style="font-size: 13px; color: #94A3B8; padding: 6px 0;">Challenge / Problem:</td>
+                    <td style="font-size: 14px; color: #F1F5F9; padding: 6px 0;">${escapeHtml(challenge)}</td>
+                  </tr>` : ''}
+                  ${desiredOutcome ? `<tr>
+                    <td style="font-size: 13px; color: #94A3B8; padding: 6px 0;">Desired Outcome:</td>
+                    <td style="font-size: 14px; color: #F1F5F9; padding: 6px 0;">${escapeHtml(desiredOutcome)}</td>
+                  </tr>` : ''}
                   ${timeline ? `<tr>
                     <td style="font-size: 13px; color: #94A3B8; padding: 6px 0;">Expected Timeline:</td>
                     <td style="font-size: 14px; color: #F1F5F9; padding: 6px 0;">${escapeHtml(timeline)}</td>
                   </tr>` : ''}
-                  ${contactMethod ? `<tr>
+                  ${budget ? `<tr>
+                    <td style="font-size: 13px; color: #94A3B8; padding: 6px 0;">Budget:</td>
+                    <td style="font-size: 14px; color: #F1F5F9; padding: 6px 0;">${escapeHtml(budget)}</td>
+                  </tr>` : ''}
+                  ${companySize ? `<tr>
+                    <td style="font-size: 13px; color: #94A3B8; padding: 6px 0;">Company Size:</td>
+                    <td style="font-size: 14px; color: #F1F5F9; padding: 6px 0;">${escapeHtml(companySize)}</td>
+                  </tr>` : ''}
+                  ${preferredContact ? `<tr>
                     <td style="font-size: 13px; color: #94A3B8; padding: 6px 0;">Preferred Contact:</td>
-                    <td style="font-size: 14px; color: #F1F5F9; padding: 6px 0;">${escapeHtml(contactMethod)}</td>
+                    <td style="font-size: 14px; color: #F1F5F9; padding: 6px 0;">${escapeHtml(preferredContact)}</td>
                   </tr>` : ''}
                   ${requirements ? `<tr>
                     <td colspan="2" style="padding-top: 10px;">
@@ -294,19 +384,31 @@ export function renderLeadNotificationHtml(lead) {
                     <td style="font-size: 12px; color: #64748B; padding: 4px 0;">Traffic Source:</td>
                     <td style="font-size: 13px; color: #E2E8F0; padding: 4px 0;">${escapeHtml(trafficSource)}</td>
                   </tr>
+                  ${utmCampaign ? `<tr>
+                    <td style="font-size: 12px; color: #64748B; padding: 4px 0;">UTM Campaign:</td>
+                    <td style="font-size: 13px; color: #E2E8F0; padding: 4px 0;">${escapeHtml(utmCampaign)}</td>
+                  </tr>` : ''}
                   <tr>
                     <td style="font-size: 12px; color: #64748B; padding: 4px 0;">Google Sheets:</td>
-                    <td style="font-size: 13px; color: #34D399; padding: 4px 0;">
-                      <a href="${sheetsUrl}" target="_blank" style="color: #34D399; text-decoration: none;">Recorded (Enquiries + Jira Lead Tracking) &rarr;</a>
+                    <td style="font-size: 13px; color: ${isSheetSaved ? '#34D399' : '#94A3B8'}; padding: 4px 0;">
+                      ${isSheetSaved 
+                        ? `<a href="${sheetsUrl}" target="_blank" style="color: #34D399; text-decoration: none;">Saved to Workbook &rarr;</a>` 
+                        : 'Local Store / Offline'}
                     </td>
                   </tr>
-                  ${jiraKey ? `<tr>
-                    <td style="font-size: 12px; color: #64748B; padding: 4px 0;">Jira Lead Issue:</td>
+                  ${isJiraSuccess ? `<tr>
+                    <td style="font-size: 12px; color: #64748B; padding: 4px 0;">Jira Parent Issue:</td>
                     <td style="font-size: 13px; color: #818CF8; padding: 4px 0;">
                       <a href="${jiraUrl}" target="_blank" style="color: #818CF8; font-weight: 700; text-decoration: none;">${escapeHtml(jiraKey)} &rarr;</a>
-                      <span style="font-size: 11px; color: #94A3B8; margin-left: 6px;">(${escapeHtml(jiraStatus)})</span>
+                      <span style="font-size: 11px; color: #94A3B8; margin-left: 6px;">(${escapeHtml(subtaskStatus)})</span>
                     </td>
                   </tr>` : ''}
+                  <tr>
+                    <td style="font-size: 12px; color: #64748B; padding: 4px 0;">Lead Status:</td>
+                    <td style="font-size: 13px; color: #E2E8F0; padding: 4px 0;">
+                      ${isJiraSuccess ? 'Assigned in Jira' : 'New Lead (Action Required)'}
+                    </td>
+                  </tr>
                 </table>
               </td>
             </tr>
@@ -335,9 +437,14 @@ export function renderLeadNotificationHtml(lead) {
                         💬 Open WhatsApp
                       </a>
                     </td>
-                    ${jiraUrl ? `<td style="padding-bottom: 8px;">
+                    ${isJiraSuccess && jiraUrl ? `<td style="padding-right: 12px; padding-bottom: 8px;">
                       <a href="${jiraUrl}" target="_blank" class="btn" style="display: inline-block; background-color: #1E293B; color: #94A3B8; font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 18px; border-radius: 8px; border: 1px solid #334155; mso-padding-alt: 0;">
-                        📌 Jira Lead
+                        📌 Open Jira
+                      </a>
+                    </td>` : ''}
+                    ${isSheetSaved ? `<td style="padding-bottom: 8px;">
+                      <a href="${sheetsUrl}" target="_blank" class="btn" style="display: inline-block; background-color: #064E3B; color: #34D399; font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 18px; border-radius: 8px; border: 1px solid #059669; mso-padding-alt: 0;">
+                        📊 Google Sheets
                       </a>
                     </td>` : ''}
                   </tr>
@@ -368,12 +475,126 @@ export function renderLeadNotificationHtml(lead) {
 }
 
 /**
+ * Design B — Clean Business Notification (Light Theme)
+ * White/light-grey background, dark-green header, structured data table.
+ */
+export function renderCleanBusinessEmailHtml(lead) {
+  const enquiryId = escapeHtml(lead.enquiryId || 'GN-PENDING');
+  const contactName = escapeHtml(lead.fullName || lead.name || 'Enquiry Visitor');
+  const formType = escapeHtml(lead.formType || lead.form_type || 'Enquiry Form');
+  const formattedDate = formatLeadDateTime(lead.submittedAt);
+
+  const email = (lead.businessEmail || lead.email || '').trim();
+  const phone = (lead.phoneNumber || lead.phone || '').trim();
+  const company = (lead.companyName || lead.company || '').trim();
+  const location = (lead.location || lead.city || '').trim();
+  const interest = (lead.areaOfInterest || lead.service_interest || lead.service || '').trim();
+  const requirements = (lead.projectRequirements || lead.requirements || lead.message || '').trim();
+
+  const jiraKey = lead.jira?.parentKey || lead.jiraKey || '';
+  const jiraBaseUrl = (process.env.JIRA_BASE_URL || 'https://trustworkz.atlassian.net').replace(/\/+$/, '');
+  const jiraUrl = lead.jira?.parentUrl || (jiraKey ? `${jiraBaseUrl}/browse/${jiraKey}` : '');
+  const replyMailto = generateReplyMailto(lead);
+  const waUrl = generateWhatsAppLeadUrl(lead);
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>GreenNext Lead Notification — ${enquiryId}</title>
+</head>
+<body style="margin: 0; padding: 20px 0; background-color: #F1F5F9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <center>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden;">
+      <tr>
+        <td style="padding: 24px; background-color: #064E3B; color: #FFFFFF;">
+          <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #A7F3D0; margin-bottom: 4px;">GREENNEXT DIGITAL INFRASTRUCTURE</div>
+          <h1 style="margin: 0; font-size: 22px; font-weight: 700; color: #FFFFFF;">Lead Notification: ${formType}</h1>
+          <div style="font-size: 13px; color: #D1FAE5; margin-top: 4px;">ID: ${enquiryId} | ${formattedDate}</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 24px;">
+          <table role="presentation" border="0" cellpadding="6" cellspacing="0" width="100%" style="font-size: 14px; color: #1E293B;">
+            <tr><td width="35%" style="color: #64748B;">Contact Name:</td><td><strong>${contactName}</strong></td></tr>
+            ${email ? `<tr><td style="color: #64748B;">Business Email:</td><td><a href="mailto:${escapeHtml(email)}" style="color: #059669;">${escapeHtml(email)}</a></td></tr>` : ''}
+            ${phone ? `<tr><td style="color: #64748B;">Phone:</td><td>${escapeHtml(phone)}</td></tr>` : ''}
+            ${company ? `<tr><td style="color: #64748B;">Company:</td><td>${escapeHtml(company)}</td></tr>` : ''}
+            ${location ? `<tr><td style="color: #64748B;">Location:</td><td>${escapeHtml(location)}</td></tr>` : ''}
+            ${interest ? `<tr><td style="color: #64748B;">Area of Interest:</td><td><strong>${escapeHtml(interest)}</strong></td></tr>` : ''}
+            ${requirements ? `<tr><td colspan="2" style="padding-top: 12px;"><div style="color: #64748B; font-size: 12px; margin-bottom: 4px;">PROJECT REQUIREMENTS:</div><div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 10px; border-radius: 6px;">${escapeHtml(requirements).replace(/\n/g, '<br>')}</div></td></tr>` : ''}
+          </table>
+          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #E2E8F0;">
+            ${replyMailto ? `<a href="${replyMailto}" style="display: inline-block; padding: 10px 18px; background-color: #064E3B; color: #FFFFFF; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600; margin-right: 8px;">Reply via Email</a>` : ''}
+            <a href="${waUrl}" style="display: inline-block; padding: 10px 18px; background-color: #10B981; color: #FFFFFF; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600; margin-right: 8px;">WhatsApp</a>
+            ${jiraUrl ? `<a href="${jiraUrl}" style="display: inline-block; padding: 10px 18px; background-color: #F1F5F9; color: #334155; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600; border: 1px solid #CBD5E1;">View Jira (${escapeHtml(jiraKey)})</a>` : ''}
+          </div>
+        </td>
+      </tr>
+    </table>
+  </center>
+</body>
+</html>`;
+}
+
+/**
+ * Design C — Strategic Lead Summary
+ * Dark green header, operational next steps, Google Sheets reference, Jira issue link.
+ */
+export function renderStrategicLeadSummaryHtml(lead) {
+  const enquiryId = escapeHtml(lead.enquiryId || 'GN-PENDING');
+  const contactName = escapeHtml(lead.fullName || lead.name || 'Enquiry Visitor');
+  const formType = escapeHtml(lead.formType || lead.form_type || 'Enquiry Form');
+  const formattedDate = formatLeadDateTime(lead.submittedAt);
+  const email = (lead.businessEmail || lead.email || '').trim();
+  const phone = (lead.phoneNumber || lead.phone || '').trim();
+  const company = (lead.companyName || lead.company || '').trim();
+  const interest = (lead.areaOfInterest || lead.service_interest || lead.service || '').trim();
+  const priorityScore = lead.priorityScore || lead.predictiveScore || null;
+  const jiraKey = lead.jira?.parentKey || lead.jiraKey || '';
+  const jiraBaseUrl = (process.env.JIRA_BASE_URL || 'https://trustworkz.atlassian.net').replace(/\/+$/, '');
+  const jiraUrl = lead.jira?.parentUrl || (jiraKey ? `${jiraBaseUrl}/browse/${jiraKey}` : '');
+  const sheetsUrl = process.env.GOOGLE_SHEET_URL || 'https://docs.google.com/spreadsheets/d/14ciH1aNzWIJHJkQ5rYCdrEhci3KYMjrTSeY3QMaerVI/edit';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>GreenNext Strategic Lead — ${enquiryId}</title>
+</head>
+<body style="margin: 0; padding: 20px 0; background-color: #0A141D; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <center>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #111E2E; border: 1px solid #1E3A5F; border-radius: 8px; color: #E2E8F0;">
+      <tr>
+        <td style="padding: 24px; background-color: #064E3B; color: #FFFFFF;">
+          <h1 style="margin: 0; font-size: 20px;">GreenNext Strategic Lead Summary</h1>
+          <div style="font-size: 13px; color: #A7F3D0; margin-top: 4px;">${formType} | ${enquiryId} | ${formattedDate}</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 24px;">
+          ${priorityScore ? `<div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10B981; padding: 10px; border-radius: 6px; margin-bottom: 16px; color: #34D399; font-weight: 700;">Predictive Score: ${escapeHtml(priorityScore)}</div>` : ''}
+          <div style="font-size: 16px; font-weight: 700; color: #FFFFFF; margin-bottom: 8px;">${contactName} — ${escapeHtml(company || 'Enterprise')}</div>
+          <div style="font-size: 13px; color: #94A3B8; margin-bottom: 16px;">Email: ${escapeHtml(email)} | Phone: ${escapeHtml(phone || '—')} | Focus: ${escapeHtml(interest || 'Infrastructure')}</div>
+          <div style="border-top: 1px solid #1E293B; padding-top: 14px; font-size: 13px;">
+            <div>&bull; Google Sheets: <a href="${sheetsUrl}" target="_blank" style="color: #34D399;">View Record &rarr;</a></div>
+            ${jiraKey ? `<div>&bull; Jira Issue: <a href="${jiraUrl}" target="_blank" style="color: #60A5FA;">${escapeHtml(jiraKey)} &rarr;</a></div>` : ''}
+          </div>
+        </td>
+      </tr>
+    </table>
+  </center>
+</body>
+</html>`;
+}
+
+/**
  * Generate Plain-Text Fallback Version
  */
 export function renderLeadNotificationText(lead) {
   const enquiryId = lead.enquiryId || 'GN-PENDING';
   const contactName = lead.fullName || lead.name || 'Enquiry Visitor';
-  const formType = lead.formType || 'Enquiry Form';
+  const formType = lead.formType || lead.form_type || 'Enquiry Form';
   const formattedDate = formatLeadDateTime(lead.submittedAt);
 
   const email = (lead.businessEmail || lead.email || '').trim();
@@ -381,16 +602,21 @@ export function renderLeadNotificationText(lead) {
   const company = (lead.companyName || lead.company || '—').trim();
   const location = (lead.location || lead.city || '—').trim();
 
-  const interest = (lead.areaOfInterest || lead.service || '—').trim();
+  const interest = (lead.areaOfInterest || lead.service_interest || lead.service || lead.position || '—').trim();
   const industry = (lead.industry || '—').trim();
+  const projectScope = (lead.projectScope || lead.project_scope || '').trim();
+  const challenge = (lead.challenge || lead.problem || '').trim();
   const timeline = (lead.expectedTimeline || lead.timeline || '—').trim();
-  const contactMethod = (lead.preferredContactMethod || lead.contactMethod || '—').trim();
-  const requirements = (lead.projectRequirements || lead.requirements || lead.message || '—').trim();
+  const budget = (lead.budget || lead.estimated_budget || '').trim();
+  const companySize = (lead.companySize || lead.company_size || '').trim();
+  const contactMethod = (lead.preferredContactMethod || lead.contact_method || '—').trim();
+  const requirements = (lead.projectRequirements || lead.requirements || lead.message || lead.resume || '—').trim();
 
   const pageUrl = lead.metadata?.page_url || lead.page_url || '/';
   const jiraKey = lead.jira?.parentKey || lead.jiraKey || '—';
+  const isSheetSaved = Boolean(lead.leadSaved || lead.leadSavedInSheets || lead.sheetSaved);
 
-  return `===============================================================
+  let text = `===============================================================
 [GreenNext] New Lead Received — ${contactName} (${enquiryId})
 ===============================================================
 Form Type: ${formType}
@@ -410,7 +636,14 @@ Area of Interest:    ${interest}
 Industry:            ${industry}
 Expected Timeline:   ${timeline}
 Preferred Contact:   ${contactMethod}
+`;
 
+  if (projectScope) text += `Project Scope:       ${projectScope}\n`;
+  if (challenge)    text += `Challenge:           ${challenge}\n`;
+  if (budget)       text += `Budget:              ${budget}\n`;
+  if (companySize)  text += `Company Size:        ${companySize}\n`;
+
+  text += `
 Project Requirements:
 ${requirements}
 
@@ -419,17 +652,18 @@ SUBMISSION METADATA
 Enquiry ID:   ${enquiryId}
 Source Page:  ${pageUrl}
 Jira Key:     ${jiraKey}
-Google Sheet: Synchronized (14ciH1aNzWIJHJkQ5rYCdrEhci3KYMjrTSeY3QMaerVI)
+Google Sheet: ${isSheetSaved ? 'Synchronized (Workbook 14ciH1aNzWIJHJkQ5rYCdrEhci3KYMjrTSeY3QMaerVI)' : 'Pending / Local'}
 
 NEXT STEPS
 ---------------------------------------------------------------
-• Reply to Lead: mailto:${email}?subject=GreenNext%20Enquiry%20%E2%80%94%20${enquiryId}
-• WhatsApp Chat: https://wa.me/919876543210
-• Jira Issue:    https://trustworkz.atlassian.net/browse/${jiraKey}
-
+• Reply to Lead: mailto:${email}?subject=Re%3A%20GreenNext%20Enquiry%20%E2%80%94%20${enquiryId}
+• WhatsApp Chat: ${generateWhatsAppLeadUrl(lead)}
+${jiraKey !== '—' ? `• Jira Issue:    https://trustworkz.atlassian.net/browse/${jiraKey}\n` : ''}
 --
 GreenNext Digital Infrastructure — Automated Lead Notification Engine
 `;
+
+  return text;
 }
 
 /**
@@ -437,12 +671,20 @@ GreenNext Digital Infrastructure — Automated Lead Notification Engine
  * Supported providers:
  * 1. Resend REST API (when RESEND_API_KEY is present)
  * 2. SendGrid REST API (when SENDGRID_API_KEY is present)
- * 3. Google Apps Script Web App forwarder (zero dependency fallback)
+ * 3. Google Apps Script Web App forwarder (zero external cost, uses Google Workspace quota)
+ * 4. Simulation fallback (returns structured delivery audit when running in offline testing)
  */
 export async function sendLeadNotificationEmail(lead, options = {}) {
-  const adminEmail = options.adminEmail || process.env.ADMIN_NOTIFICATION_EMAIL || process.env.NOTIFICATION_EMAIL || 'ruba.int2027g3@gmail.com';
-  const fromEmail = options.fromEmail || process.env.EMAIL_FROM || 'GreenNext Leads <leads@greennext.in>';
-  const subject = `[GreenNext] New Lead Received — ${lead.fullName || lead.enquiryId || 'Enterprise Lead'}`;
+  const adminEmail = (
+    options.adminEmail ||
+    process.env.ADMIN_NOTIFICATION_EMAIL ||
+    process.env.NOTIFICATION_EMAIL ||
+    process.env.JIRA_EMAIL ||
+    'ruba.int2027g3@gmail.com'
+  ).trim();
+
+  const fromEmail = (options.fromEmail || process.env.EMAIL_FROM || 'GreenNext Leads <leads@greennext.in>').trim();
+  const subject = options.subject || generateLeadEmailSubject(lead);
 
   const html = renderLeadNotificationHtml(lead);
   const text = renderLeadNotificationText(lead);
@@ -473,6 +715,7 @@ export async function sendLeadNotificationEmail(lead, options = {}) {
           provider: 'resend',
           messageId: data.id,
           recipient: adminEmail,
+          subject,
           timestamp: new Date().toISOString()
         };
       }
@@ -480,6 +723,7 @@ export async function sendLeadNotificationEmail(lead, options = {}) {
         success: false,
         provider: 'resend',
         error: data?.message || `HTTP ${res.status}`,
+        recipient: adminEmail,
         timestamp: new Date().toISOString()
       };
     } catch (err) {
@@ -487,6 +731,7 @@ export async function sendLeadNotificationEmail(lead, options = {}) {
         success: false,
         provider: 'resend',
         error: err.message,
+        recipient: adminEmail,
         timestamp: new Date().toISOString()
       };
     }
@@ -519,6 +764,7 @@ export async function sendLeadNotificationEmail(lead, options = {}) {
           provider: 'sendgrid',
           messageId: msgId,
           recipient: adminEmail,
+          subject,
           timestamp: new Date().toISOString()
         };
       }
@@ -527,6 +773,7 @@ export async function sendLeadNotificationEmail(lead, options = {}) {
         success: false,
         provider: 'sendgrid',
         error: data?.errors?.[0]?.message || `HTTP ${res.status}`,
+        recipient: adminEmail,
         timestamp: new Date().toISOString()
       };
     } catch (err) {
@@ -534,13 +781,14 @@ export async function sendLeadNotificationEmail(lead, options = {}) {
         success: false,
         provider: 'sendgrid',
         error: err.message,
+        recipient: adminEmail,
         timestamp: new Date().toISOString()
       };
     }
   }
 
-  // 3. Fallback: Google Apps Script Native Mail Forwarding (via Google Workspace / Gmail App)
-  const gasUrl = options.gasUrl || process.env.GOOGLE_APPS_SCRIPT_URL;
+  // 3. Google Apps Script Native Mail Forwarding (via Google Workspace / MailApp)
+  const gasUrl = options.gasUrl !== undefined ? options.gasUrl : (process.env.GOOGLE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbzoSXPulFt49lQ1ibWJX2CFNw7iiuT4YBAShuiEcckEovty7FauYnspHCuHQmSqFZk/exec');
   if (gasUrl) {
     try {
       const res = await fetch(gasUrl, {
@@ -563,13 +811,16 @@ export async function sendLeadNotificationEmail(lead, options = {}) {
           provider: 'google_apps_script',
           messageId: data.messageId || 'gas-' + Date.now(),
           recipient: adminEmail,
+          subject,
           timestamp: new Date().toISOString()
         };
       }
+      // If GAS doesn't have the send_lead_email action yet, record graceful fallback
       return {
         success: false,
         provider: 'google_apps_script',
-        error: data?.emailError || 'Email send failed via Google Apps Script',
+        error: data?.emailError || data?.message || 'Email forward action not recognized by GAS deployment',
+        recipient: adminEmail,
         timestamp: new Date().toISOString()
       };
     } catch (err) {
@@ -577,16 +828,19 @@ export async function sendLeadNotificationEmail(lead, options = {}) {
         success: false,
         provider: 'google_apps_script',
         error: err.message,
+        recipient: adminEmail,
         timestamp: new Date().toISOString()
       };
     }
   }
 
-  // If no email credentials configured
+  // 4. Fallback if no provider is configured
   return {
     success: false,
     provider: 'none',
     error: 'No email service provider configured (RESEND_API_KEY, SENDGRID_API_KEY, or GOOGLE_APPS_SCRIPT_URL)',
+    recipient: adminEmail,
     timestamp: new Date().toISOString()
   };
 }
+

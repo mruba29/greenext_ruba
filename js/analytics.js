@@ -285,10 +285,30 @@
 
     // Determine event type
     var eventType = 'cta_click';
+    if (target.matches('.hero-cta, .hero-cta-secondary, [data-hero-cta], .hero-banner a, .hero-banner button, .hero-actions a')) {
+      eventType = 'cta_click';
+      window.GreenNextAnalytics.track('hero_cta_click', {
+        cta_name : ctaName,
+        cta_href : (target.getAttribute('href') || '').substring(0, 200),
+      });
+    }
+
     if (target.matches('[data-whatsapp="true"], .floating-whatsapp, #floating-whatsapp, .whatsapp-cta')) {
       eventType = 'whatsapp_cta_click';
+      window.GreenNextAnalytics.track('whatsapp_click', {
+        cta_name : ctaName,
+        cta_href : (target.getAttribute('href') || '').substring(0, 200),
+      });
     } else if (target.matches('.ai-assistant, #ai-assistant, [data-ai-assistant], .ai-chat-btn, .ai-assistant-btn')) {
       eventType = 'ai_assistant_interaction';
+      window.GreenNextAnalytics.track('assistant_open', {
+        cta_name : ctaName,
+      });
+    } else if (target.closest('.ai-assistant-modal, #ai-chat-window, .ai-chat-drawer, .chat-modal') && target.matches('a, button')) {
+      window.GreenNextAnalytics.track('assistant_cta_click', {
+        cta_name : ctaName,
+        cta_href : (target.getAttribute('href') || '').substring(0, 200),
+      });
     } else if (target.matches('.nav-link, .dropdown-item, .mobile-nav-item, .mobile-accordion-link')) {
       eventType = 'nav_click';
     } else if (target.matches('.slider-arrow--prev, .slider-arrow--next, .slider-indicator, .slider-dot')) {
@@ -329,6 +349,12 @@
         form_type: formType,
         cta_name : 'Form Start: ' + formType,
       });
+      if (formType === 'Long Form' || formType === 'Floating Lead Form') {
+        window.GreenNextAnalytics.track('consultation_start', {
+          form_type: formType,
+          cta_name : 'Consultation Start: ' + formType,
+        });
+      }
     }, { once: false });
   });
 
@@ -353,6 +379,13 @@
       cta_name         : 'Form Submitted: ' + formType,
       conversion_status: 'Converted',
       enquiry_id_prefix: enquiryId ? enquiryId.substring(0, 12) : '', // Only prefix, not full ID
+    });
+    // Explicit KPI events
+    var specificEvent = (formType === 'Short Form') ? 'quick_enquiry_submit' : 'consultation_submit';
+    window.GreenNextAnalytics.track(specificEvent, {
+      form_type        : formType,
+      cta_name         : 'Form Submitted: ' + formType,
+      conversion_status: 'Converted',
     });
     flush(); // Immediate flush on conversion
   };

@@ -296,6 +296,7 @@ export default async function handler(req, res) {
 
   // 9. Automated Lead Notification Email Delivery
   normalizedLeadData.jira = jiraResult;
+  normalizedLeadData.leadSaved = leadSavedInSheets;
   let emailResult = null;
   try {
     emailResult = await sendLeadNotificationEmail(normalizedLeadData);
@@ -307,7 +308,60 @@ export default async function handler(req, res) {
     };
   }
 
-  // 10. Deliver response to website
+  // 10. Update Lead Notification & Jira Status in Google Sheets (Jira Lead Tracking)
+  const notificationStatusPayload = {
+    action: 'update_lead_status',
+    enquiryId,
+    formType: normalizedLeadData.formType,
+    fullName: normalizedLeadData.fullName,
+    companyName: normalizedLeadData.companyName,
+    areaOfInterest: normalizedLeadData.areaOfInterest,
+    parentJiraKey: jiraResult?.parentKey || '—',
+    parentJiraUrl: jiraResult?.parentUrl || '—',
+    jiraStatus: jiraResult?.status || (jiraResult?.parentKey ? 'jira_created' : 'pending'),
+    jiraSubtasksStatus: jiraResult?.subtasks ? `${jiraResult.subtasks.length} of 7 subtasks created` : (jiraResult?.parentKey ? 'Subtasks configured' : 'Pending'),
+    emailNotificationStatus: emailResult?.success ? 'Sent' : (emailResult?.error ? 'Failed' : 'Disabled'),
+    emailSentTimestamp: emailResult?.timestamp || new Date().toISOString(),
+    emailRecipient: emailResult?.recipient || '',
+    emailMessageId: emailResult?.messageId || '',
+    emailErrorDetails: emailResult?.error || '',
+    lastUpdated: new Date().toISOString(),
+  };
+
+  if (GAS_URL) {
+    try {
+      await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(notificationStatusPayload),
+        signal: AbortSignal.timeout(8000),
+      });
+    } catch (uErr) {
+      console.error('[Enquiry API] Status tracking update notice:', uErr.message);
+    }
+  }
+
+  // Also update local storage record if available
+  try {
+    const cwd = process.cwd();
+    const dataDir = join(cwd, 'data');
+    const enquiriesFile = join(dataDir, 'enquiries.json');
+    const raw = await readFile(enquiriesFile, 'utf8').catch(() => '[]');
+    let list = [];
+    try { list = JSON.parse(raw); } catch (e) { list = []; }
+    const item = list.find(l => l.enquiryId === enquiryId);
+    if (item) {
+      item.jira = jiraResult;
+      item.email = emailResult;
+      item.emailNotificationStatus = notificationStatusPayload.emailNotificationStatus;
+      item.lastUpdated = notificationStatusPayload.lastUpdated;
+      await writeFile(enquiriesFile, JSON.stringify(list, null, 2), 'utf8');
+    }
+  } catch (fsErr) {
+    // Non-blocking
+  }
+
+  // 11. Deliver integrated response to website
   res.status(200).json({
     success: true,
     message: 'Enquiry submitted successfully',

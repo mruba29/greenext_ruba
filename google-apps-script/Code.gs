@@ -22,7 +22,7 @@ var SPREADSHEET_ID = '14ciH1aNzWIJHJkQ5rYCdrEhci3KYMjrTSeY3QMaerVI';
 var TIMEZONE       = 'Asia/Kolkata';
 
 // Optional lead notification email (e.g. 'contact@greennext.in', leave '' to disable)
-var NOTIFICATION_EMAIL = '';
+var NOTIFICATION_EMAIL = 'ruba.int2027g3@gmail.com';
 
 // Target worksheet names
 var SHEET_ENQUIRY       = 'Enquiries';

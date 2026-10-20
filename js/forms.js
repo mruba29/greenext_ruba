@@ -271,12 +271,12 @@
       var leadName = payload.full_name || payload.name || 'Valued Partner';
 
       // Determine backend target:
-      // Priority 1: Google Apps Script Web App URL from config.js
-      // Priority 2: API_ENDPOINT from config.js (e.g. /api/enquiry)
-      // Priority 3: Default local proxy route /api/enquiry
+      // Priority 1: /api/enquiry (Vercel serverless function & local proxy — triggers Jira + Email Automation)
+      // Priority 2: Direct Google Apps Script Web App (only for pure static file:// environments without backend)
+      var apiEndpoint = (window.GreenNextConfig && window.GreenNextConfig.API_ENDPOINT) || '/api/enquiry';
       var gasUrl = window.GreenNextConfig && window.GreenNextConfig.GOOGLE_APPS_SCRIPT_URL;
-      var apiEndpoint = window.GreenNextConfig && window.GreenNextConfig.API_ENDPOINT;
-      var targetUrl = gasUrl || apiEndpoint || '/api/enquiry';
+      var isHttp = window.location.protocol.indexOf('http') === 0;
+      var targetUrl = isHttp ? apiEndpoint : (gasUrl || apiEndpoint);
 
       // For direct Google Apps Script Web App calls:
       // We must use 'text/plain;charset=utf-8' so browsers do NOT trigger CORS OPTIONS preflights,

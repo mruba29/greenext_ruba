@@ -6,6 +6,6 @@ package-lock.json
 data/enquiries.json
 .env
 .env.local
-
 .vercel
 .env*
+!.env.example

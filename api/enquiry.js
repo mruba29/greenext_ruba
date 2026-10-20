@@ -16,6 +16,7 @@
 
 import { createJiraLeadTask } from './_jira.js';
 import { sendLeadNotificationEmail } from './_email.js';
+import { saveLeadToAirtable } from './_airtable.js';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -60,6 +61,7 @@ export default async function handler(req, res) {
       status: 'online',
       gasConfigured: Boolean(GAS_URL),
       jiraConfigured: Boolean(process.env.JIRA_API_TOKEN && process.env.JIRA_EMAIL),
+      airtableConfigured: Boolean(process.env.AIRTABLE_PAT),
     });
     return;
   }
@@ -81,7 +83,10 @@ export default async function handler(req, res) {
   }
   body = body || {};
 
-  const formType = body.form_type || (body.is_short_form ? 'Short Form' : 'Long Form');
+  let formType = body.form_type || (body.is_short_form ? 'Short Form' : 'Long Form');
+  if (formType.toLowerCase().includes('quick') || formType.toLowerCase().includes('short')) {
+    formType = 'Short Form';
+  }
   const fullName = (body.full_name || body.name || '').trim();
   const contact = (body.contact || body.business_email || body.phone || '').trim();
 
@@ -277,9 +282,14 @@ export default async function handler(req, res) {
     industry: sanitize(body.industry || '—'),
     areaOfInterest: sanitize(body.area_of_interest || body.service_interest || body.service || body.position || '—'),
     projectRequirements: sanitize(body.project_requirements || body.requirements || body.resume || '—'),
+    businessChallenge: sanitize(body.business_challenge || body.challenge || body.requirements || body.project_requirements || '—'),
     expectedTimeline: sanitize(body.timeline || body.expected_timeline || '—'),
+    budget: sanitize(body.budget || body.budget_range || ''),
     preferredContactMethod: sanitize(body.contact_method || body.preferred_contact_method || body.linkedin || '—'),
     submittedAt: now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', hour12: false }),
+    createdAt: now.toISOString(),
+    leadStatus: 'New',
+    leadSaved: leadSavedInSheets,
     metadata,
   };
 
@@ -296,7 +306,7 @@ export default async function handler(req, res) {
 
   // 9. Automated Lead Notification Email Delivery
   normalizedLeadData.jira = jiraResult;
-  normalizedLeadData.leadSaved = leadSavedInSheets;
+  normalizedLeadData.jiraKey = jiraResult?.parentKey || '—';
   let emailResult = null;
   try {
     emailResult = await sendLeadNotificationEmail(normalizedLeadData);
@@ -307,8 +317,23 @@ export default async function handler(req, res) {
       timestamp: new Date().toISOString(),
     };
   }
+  normalizedLeadData.email = emailResult;
+  normalizedLeadData.emailNotificationStatus = emailResult?.success ? 'Sent' : (emailResult?.error ? 'Failed' : 'Disabled');
 
-  // 10. Update Lead Notification & Jira Status in Google Sheets (Jira Lead Tracking)
+  // 10. Persist Lead to Airtable Database
+  let airtableResult = null;
+  try {
+    airtableResult = await saveLeadToAirtable(normalizedLeadData);
+  } catch (aErr) {
+    airtableResult = {
+      success: false,
+      status: 'airtable_failed',
+      error: aErr.message,
+      message: 'Failed to record lead in Airtable: ' + aErr.message,
+    };
+  }
+
+  // 11. Update Lead Notification, Jira Status, and Airtable Status in Google Sheets
   const notificationStatusPayload = {
     action: 'update_lead_status',
     enquiryId,
@@ -320,7 +345,9 @@ export default async function handler(req, res) {
     parentJiraUrl: jiraResult?.parentUrl || '—',
     jiraStatus: jiraResult?.status || (jiraResult?.parentKey ? 'jira_created' : 'pending'),
     jiraSubtasksStatus: jiraResult?.subtasks ? `${jiraResult.subtasks.length} of 7 subtasks created` : (jiraResult?.parentKey ? 'Subtasks configured' : 'Pending'),
-    emailNotificationStatus: emailResult?.success ? 'Sent' : (emailResult?.error ? 'Failed' : 'Disabled'),
+    airtableRecordId: airtableResult?.recordId || '—',
+    airtableStatus: airtableResult?.status || (airtableResult?.success ? 'Saved' : 'Pending'),
+    emailNotificationStatus: normalizedLeadData.emailNotificationStatus,
     emailSentTimestamp: emailResult?.timestamp || new Date().toISOString(),
     emailRecipient: emailResult?.recipient || '',
     emailMessageId: emailResult?.messageId || '',
@@ -353,6 +380,8 @@ export default async function handler(req, res) {
     if (item) {
       item.jira = jiraResult;
       item.email = emailResult;
+      item.airtable = airtableResult;
+      item.airtableRecordId = airtableResult?.recordId || null;
       item.emailNotificationStatus = notificationStatusPayload.emailNotificationStatus;
       item.lastUpdated = notificationStatusPayload.lastUpdated;
       await writeFile(enquiriesFile, JSON.stringify(list, null, 2), 'utf8');
@@ -361,12 +390,28 @@ export default async function handler(req, res) {
     // Non-blocking
   }
 
-  // 11. Deliver integrated response to website
+  // 12. Deliver integrated response to website
+  // If Airtable is not successfully recorded, do not show success
+  if (airtableResult && !airtableResult.success) {
+    const statusCode = airtableResult.status === 'missing_credentials' ? 503 : 502;
+    res.status(statusCode).json({
+      success: false,
+      message: airtableResult.message || 'Unable to store lead in Airtable database.',
+      enquiryId,
+      leadSaved: leadSavedInSheets,
+      airtable: airtableResult,
+      jira: jiraResult,
+      email: emailResult,
+    });
+    return;
+  }
+
   res.status(200).json({
     success: true,
     message: 'Enquiry submitted successfully',
     enquiryId,
     leadSaved: leadSavedInSheets,
+    airtable: airtableResult,
     jira: jiraResult,
     email: emailResult,
   });

@@ -11,6 +11,7 @@ try { process.loadEnvFile('.env.local'); } catch (e) {
 
 import enquiryHandler from '../api/enquiry.js';
 import jiraHandler from '../api/jira.js';
+import airtableHandler from '../api/airtable.js';
 import analyticsHandler from '../api/analytics.js';
 
 const ROOT = join(fileURLToPath(import.meta.url), '..', '..');
@@ -96,6 +97,19 @@ const server = createServer(async (req, res) => {
         res.end(JSON.stringify(data, null, 2));
       };
       await jiraHandler(req, res);
+      return;
+    }
+
+    // -------------------------------------------------------------------------
+    // API ROUTE: /api/airtable (Diagnostics & Health Check)
+    // -------------------------------------------------------------------------
+    if (path === '/api/airtable') {
+      res.status = (code) => { res.statusCode = code; return res; };
+      res.json = (data) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(data, null, 2));
+      };
+      await airtableHandler(req, res);
       return;
     }
 

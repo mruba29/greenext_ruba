@@ -1277,6 +1277,23 @@ function sendLeadNotificationEmailFromGas(
   location, industry, interest, requirements, timeline,
   contactMethod, pageUrl, trafficSource, jiraResult, timestampStr
 ) {
+  // Provide safe defaults so clicking 'Run' directly in the Apps Script editor works smoothly
+  enquiryId     = enquiryId || ('GN-' + Date.now().toString(36).toUpperCase());
+  formType      = formType || 'Quick Enquiry';
+  fullName      = fullName || 'Enterprise Lead';
+  email         = email || 'lead@example.com';
+  company       = company || 'GreenNext Partner';
+  phone         = phone || '+91 98765 43210';
+  location      = location || 'Bangalore, India';
+  industry      = industry || 'AI & Cloud Infrastructure';
+  interest      = interest || 'AI Infrastructure';
+  requirements  = requirements || 'Automated lead notification test.';
+  timeline      = timeline || 'Immediate';
+  contactMethod = contactMethod || 'Email';
+  pageUrl       = pageUrl || '/';
+  trafficSource = trafficSource || 'Direct';
+  timestampStr  = timestampStr || formatTimestamp(new Date());
+
   var props = PropertiesService.getScriptProperties();
   var adminEmail = props.getProperty('NOTIFICATION_EMAIL') || props.getProperty('ADMIN_EMAIL') || NOTIFICATION_EMAIL || 'ruba.int2027g3@gmail.com';
 
@@ -1291,7 +1308,7 @@ function sendLeadNotificationEmailFromGas(
   var subject = '[GreenNext] New Lead Received — ' + (fullName || enquiryId);
   var parentKey = (jiraResult && jiraResult.parentKey) || '—';
   var parentUrl = (jiraResult && jiraResult.parentUrl) || '';
-  var isQuick = formType.toLowerCase().indexOf('quick') > -1 || formType.toLowerCase().indexOf('short') > -1;
+  var isQuick = String(formType).toLowerCase().indexOf('quick') > -1 || String(formType).toLowerCase().indexOf('short') > -1;
   var badgeColor = isQuick ? '#10B981' : '#8B5CF6';
   var badgeBg = isQuick ? 'rgba(16, 185, 129, 0.15)' : 'rgba(139, 92, 246, 0.15)';
 
@@ -1394,6 +1411,33 @@ function sendLeadNotificationEmailFromGas(
       timestamp: timestampStr
     };
   }
+}
+
+/**
+ * Run this test directly in the Google Apps Script Editor by clicking 'Run'
+ * to send a real lead notification email to ruba.int2027g3@gmail.com and authorize MailApp.
+ */
+function testSendLeadNotificationEmail() {
+  var result = sendLeadNotificationEmailFromGas(
+    'GN-TEST-0001',
+    'Quick Enquiry',
+    'Ruba Dharshini M',
+    'ruba.int2027g3@gmail.com',
+    'GreenNext Digital Infrastructure',
+    '+919876543210',
+    'Bangalore, India',
+    'AI Data Center',
+    'AI Infrastructure & High-Density Racks',
+    'This is a verified test email sent directly from Google Apps Script editor.',
+    'Immediate',
+    'Email',
+    'https://greenextruba.vercel.app/',
+    'Direct',
+    { parentKey: 'DI-322', parentUrl: 'https://trustworkz.atlassian.net/browse/DI-322' },
+    formatTimestamp(new Date())
+  );
+  Logger.log('Test Email Result: ' + JSON.stringify(result));
+  return result;
 }
 
 /**

@@ -12,6 +12,7 @@ try { process.loadEnvFile('.env.local'); } catch (e) {
 import enquiryHandler from '../api/enquiry.js';
 import jiraHandler from '../api/jira.js';
 import airtableHandler from '../api/airtable.js';
+import bookingHandler from '../api/booking.js';
 import analyticsHandler from '../api/analytics.js';
 
 const ROOT = join(fileURLToPath(import.meta.url), '..', '..');
@@ -110,6 +111,35 @@ const server = createServer(async (req, res) => {
         res.end(JSON.stringify(data, null, 2));
       };
       await airtableHandler(req, res);
+      return;
+    }
+
+    // -------------------------------------------------------------------------
+    // API ROUTE: /api/booking (Calendar Scheduling & Consultation Booking)
+    // -------------------------------------------------------------------------
+    if (path === '/api/booking') {
+      res.status = (code) => { res.statusCode = code; return res; };
+      res.json = (data) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(data, null, 2));
+      };
+      res.send = (data) => {
+        res.end(data);
+      };
+
+      if (req.method === 'POST') {
+        let bodyRaw = '';
+        for await (const chunk of req) {
+          bodyRaw += chunk;
+        }
+        try {
+          req.body = JSON.parse(bodyRaw);
+        } catch (e) {
+          req.body = {};
+        }
+      }
+
+      await bookingHandler(req, res);
       return;
     }
 

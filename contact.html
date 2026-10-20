@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="css/visual.css">
 <link rel="stylesheet" href="css/slider.css">
 <link rel="stylesheet" href="css/modals.css">
+<link rel="stylesheet" href="css/booking.css">
 </head>
 <body>
 
@@ -302,8 +303,8 @@
         <h1 class="display-lg hero-title">Connect with GreenNext Infrastructure Specialists</h1>
         <p class="hero-description">Discuss your AI data center plans, compute requirements, energy optimization goals, or regional deployments across South India.</p>
         <div class="hero-ctas">
-          <a class="btn btn-primary btn-lg" href="#enquiry"><span>Request Detailed Consultation</span><span class="btn-arrow">&rarr;</span></a>
-          <a class="btn btn-secondary btn-lg" href="#quick-enquiry"><span>Quick Enquiry</span><span class="btn-arrow">&rarr;</span></a>
+          <a class="btn btn-primary btn-lg" href="#schedule-consultation"><span>Schedule Live Consultation</span><span class="btn-arrow">&rarr;</span></a>
+          <a class="btn btn-secondary btn-lg" href="#enquiry"><span>Written Enquiry</span><span class="btn-arrow">&rarr;</span></a>
         </div>
       </div>
     </div>
@@ -319,7 +320,7 @@
           <p class="feature-desc">Schedule an in-depth architectural review with a senior GreenNext enterprise data center specialist.</p>
         </div>
         <div style="margin-top:var(--space-6);">
-          <a class="btn btn-secondary btn-sm" href="#enquiry"><span>Submit Consultation Request</span> &rarr;</a>
+          <a class="btn btn-primary btn-sm" href="#schedule-consultation"><span>Book Calendar Slot</span> &rarr;</a>
         </div>
       </div>
       <div class="feature-card reveal reveal-delay-2"  style="text-align: center;display:flex;flex-direction:column;justify-content:space-between;">
@@ -344,6 +345,175 @@
       </div>
   </div>
 </div>
+
+<!-- =========================================================================
+     GREENNEXT CALENDAR SCHEDULING & LIVE CONSULTATION BOOKING
+     ========================================================================= -->
+<section class="section" id="schedule-consultation" style="padding-top: var(--space-12);">
+  <div class="container">
+    <div class="booking-card reveal" id="gn-booking-card">
+      <div class="booking-header">
+        <span class="booking-eyebrow">⚡ REAL-TIME CALENDAR SCHEDULING</span>
+        <h2 class="heading-lg" style="margin-top:var(--space-2);">Schedule a Live Consultation</h2>
+        <p class="text-base text-muted">Book a 45-minute technical review with a GreenNext infrastructure architect. Select a consultation focus, pick your date and available time slot, and receive a verified Google Calendar invite with Google Meet video link.</p>
+      </div>
+
+      <div class="booking-steps-bar">
+        <div class="booking-step-item active"><span class="booking-step-num">1</span> <span>Type & Mode</span></div>
+        <div class="booking-step-item"><span class="booking-step-num">2</span> <span>Date & Time</span></div>
+        <div class="booking-step-item"><span class="booking-step-num">3</span> <span>Attendee Details</span></div>
+        <div class="booking-step-item"><span class="booking-step-num">4</span> <span>Confirmation</span></div>
+      </div>
+
+      <form id="gn-booking-form" novalidate>
+        <input type="hidden" id="consultation_type_input" name="consultation_type" value="AI Architecture Review">
+        <input type="hidden" id="meeting_mode_input" name="meeting_mode" value="Online (Google Meet)">
+        <input type="hidden" id="selected_time_slot" name="selected_time_slot" value="">
+
+        <!-- Step 1: Consultation Focus -->
+        <label style="display:block;font-size:var(--font-size-sm);font-weight:700;margin-bottom:var(--space-2);">1. Select Consultation Focus *</label>
+        <div class="consultation-types-grid">
+          <div class="consultation-type-option selected" data-type="AI Architecture Review">
+            <div>
+              <div class="consultation-type-title">⚡ AI Architecture Review</div>
+              <p style="font-size:12px;color:var(--color-text-muted);margin:0;">High-density clusters, GPU fabrics &amp; liquid cooling architectures.</p>
+            </div>
+            <div class="consultation-type-meta" style="margin-top:8px;">⏱️ 45 Min • Senior Solutions Architect</div>
+          </div>
+          <div class="consultation-type-option" data-type="High-Density Cooling Advisory">
+            <div>
+              <div class="consultation-type-title">❄️ High-Density Cooling Advisory</div>
+              <p style="font-size:12px;color:var(--color-text-muted);margin:0;">Direct-to-chip, rear door heat exchangers &amp; thermal optimization.</p>
+            </div>
+            <div class="consultation-type-meta" style="margin-top:8px;">⏱️ 45 Min • Thermal Engineering Lead</div>
+          </div>
+          <div class="consultation-type-option" data-type="Green Energy & PUE Optimization">
+            <div>
+              <div class="consultation-type-title">🌿 Green Energy &amp; PUE Optimization</div>
+              <p style="font-size:12px;color:var(--color-text-muted);margin:0;">Renewable microgrids, PUE reduction &amp; regional grid compliance.</p>
+            </div>
+            <div class="consultation-type-meta" style="margin-top:8px;">⏱️ 45 Min • Sustainability Director</div>
+          </div>
+          <div class="consultation-type-option" data-type="Regional Deployment (South India)">
+            <div>
+              <div class="consultation-type-title">📍 Regional Facility Deployment</div>
+              <p style="font-size:12px;color:var(--color-text-muted);margin:0;">Campus builds &amp; colocation across Coimbatore, Chennai, Madurai, Trichy, Mangalore.</p>
+            </div>
+            <div class="consultation-type-meta" style="margin-top:8px;">⏱️ 45 Min • Regional Director</div>
+          </div>
+        </div>
+
+        <!-- Step 2: Meeting Mode -->
+        <label style="display:block;font-size:var(--font-size-sm);font-weight:700;margin-bottom:var(--space-2);">2. Choose Meeting Format *</label>
+        <div class="booking-mode-row">
+          <button type="button" class="booking-mode-btn active" data-mode="Online (Google Meet)">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span>Online Video Meeting (Google Meet)</span>
+          </button>
+          <button type="button" class="booking-mode-btn" data-mode="In-Person Facility Consultation">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>In-Person Facility Visit</span>
+          </button>
+        </div>
+
+        <!-- Step 3: Calendar Date & Time Slot -->
+        <label style="display:block;font-size:var(--font-size-sm);font-weight:700;margin-bottom:var(--space-2);">3. Select Date &amp; Available Slot * (Asia/Kolkata IST)</label>
+        <div class="booking-calendar-row">
+          <div class="booking-date-selector">
+            <label for="booking_date" style="font-size:12px;font-weight:600;color:var(--color-text-muted);">Consultation Date</label>
+            <input type="date" id="booking_date" name="booking_date" class="booking-date-input" required>
+            <span style="font-size:11px;color:var(--color-text-light);">Consultations are scheduled Monday – Friday.</span>
+          </div>
+          <div class="booking-slots-container">
+            <label style="font-size:12px;font-weight:600;color:var(--color-text-muted);">Available Time Slots</label>
+            <div id="booking_slots_loading" style="display:none;font-size:12px;color:var(--color-text-muted);"><span class="btn-spinner"></span> Checking live calendar availability...</div>
+            <div class="booking-slots-grid" id="booking_slots_grid">
+              <!-- Dynamically populated from /api/booking?date=... -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Attendee Details -->
+        <label style="display:block;font-size:var(--font-size-sm);font-weight:700;margin-top:var(--space-4);margin-bottom:var(--space-2);">4. Attendee &amp; Organization Details *</label>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="booking_full_name">Full Name *</label>
+            <input type="text" id="booking_full_name" name="full_name" placeholder="e.g. Rajesh Kumar" required>
+          </div>
+          <div class="form-field">
+            <label for="booking_email">Business Email *</label>
+            <input type="email" id="booking_email" name="business_email" placeholder="e.g. rajesh@enterprise.com" required>
+          </div>
+          <div class="form-field">
+            <label for="booking_phone">Phone / WhatsApp Number *</label>
+            <input type="tel" id="booking_phone" name="phone" placeholder="e.g. +91 98765 43210" required>
+          </div>
+          <div class="form-field">
+            <label for="booking_company">Company / Enterprise Name *</label>
+            <input type="text" id="booking_company" name="company_name" placeholder="e.g. CloudTech Systems" required>
+          </div>
+          <div class="form-field" id="booking_location_group" style="display:none;">
+            <label for="booking_location">Preferred City / Facility Location</label>
+            <select id="booking_location" name="location">
+              <option value="Remote / Online Video Call">Remote / Online Video Call</option>
+              <option value="Coimbatore Hub (ELCOT IT Park)">Coimbatore Hub (ELCOT IT Park)</option>
+              <option value="Chennai Metro Hub (Ambattur / Siruseri)">Chennai Metro Hub (Ambattur / Siruseri)</option>
+              <option value="Madurai Tech Hub (Vadapalanji)">Madurai Tech Hub (Vadapalanji)</option>
+              <option value="Trichy Tech Hub (Navalpattu)">Trichy Tech Hub (Navalpattu)</option>
+              <option value="Mangalore Coastal Hub (Derlakatte)">Mangalore Coastal Hub (Derlakatte)</option>
+            </select>
+          </div>
+          <div class="form-field full-width">
+            <label for="booking_requirements">Key Agenda or Technical Requirements</label>
+            <textarea id="booking_requirements" name="project_requirements" rows="3" placeholder="Briefly share your AI workload profile, rack density, target timeline, or specific engineering questions..."></textarea>
+          </div>
+        </div>
+
+        <div id="booking_error_banner" style="display:none;padding:10px 14px;background:#fee2e2;border:1px solid #f87171;color:#b91c1c;border-radius:8px;font-size:13px;font-weight:600;margin-top:16px;"></div>
+
+        <div style="margin-top:var(--space-6);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <button type="submit" class="btn btn-primary btn-lg" style="cursor:pointer;">
+            <span>Confirm Consultation Booking</span>
+            <span class="btn-arrow">&rarr;</span>
+          </button>
+          <span style="font-size:12px;color:var(--color-text-muted);">🔒 Confirmed directly to Google Calendar &amp; Airtable</span>
+        </div>
+      </form>
+
+      <!-- Step 5: Rich Confirmation Screen -->
+      <div class="booking-confirmation-panel" id="booking_confirmation_panel">
+        <div class="booking-confirmed-icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
+        <h3 class="heading-md" style="margin-bottom:var(--space-2);">Consultation Confirmed!</h3>
+        <p class="text-sm text-muted">Your consultation has been reserved in our Google Calendar and synchronized with Airtable.</p>
+
+        <div class="booking-ref-badge">
+          <span>Booking Reference:</span> <code class="booking-ref-value">GN-BK-XXXXXXXX</code>
+        </div>
+
+        <div class="booking-details-box">
+          <div class="booking-details-row"><span>Consultation Focus:</span> <strong class="booking-confirm-type">AI Architecture Review</strong></div>
+          <div class="booking-details-row"><span>Date &amp; Time:</span> <strong class="booking-confirm-datetime">—</strong></div>
+          <div class="booking-details-row"><span>Timezone:</span> <strong>Asia/Kolkata (IST)</strong></div>
+          <div class="booking-details-row"><span>Google Meet Link:</span> <a href="#" target="_blank" rel="noopener noreferrer" class="booking-meet-link" style="color:var(--color-primary);font-weight:600;word-break:break-all;">Opening video link...</a></div>
+        </div>
+
+        <div class="booking-actions-row">
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-md btn-add-gcal">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Add to Google Calendar</span>
+          </a>
+          <a href="#" class="btn btn-secondary btn-md btn-download-ics">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download .ics Invite</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div id="talk-to-an-expert">
   <div id="enquiry">
     
@@ -794,6 +964,7 @@
 <script src="js/motion.js" defer></script>
 <script src="js/slider.js" defer></script>
 <script src="js/modals.js" defer></script>
+<script src="js/booking.js" defer></script>
 
 </body>
 </html>

@@ -144,6 +144,23 @@ export function mapLeadToAirtableFields(leadData = {}) {
     fields['Email Notification Status'] = leadData.emailNotificationStatus || (leadData.email?.success ? 'Sent' : 'Pending');
   }
 
+  // Consultation & Calendar Booking fields
+  if (leadData.calendarEventId) {
+    fields['Calendar Event ID'] = String(leadData.calendarEventId).trim();
+  }
+  if (leadData.meetLink) {
+    fields['Google Meet Link'] = String(leadData.meetLink).trim();
+  }
+  if (leadData.meetingMode) {
+    fields['Meeting Mode'] = String(leadData.meetingMode).trim();
+  }
+  if (leadData.bookingTimezone) {
+    fields['Booking Timezone'] = String(leadData.bookingTimezone).trim();
+  }
+  if (leadData.bookingStatus) {
+    fields['Booking Status'] = String(leadData.bookingStatus).trim();
+  }
+
   return fields;
 }
 

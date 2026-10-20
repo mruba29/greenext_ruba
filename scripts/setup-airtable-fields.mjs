@@ -41,6 +41,22 @@ const fieldsToCreate = [
   { name: 'Google Sheets Sync Status', type: 'singleLineText' },
   { name: 'Jira Issue Key', type: 'singleLineText' },
   { name: 'Email Notification Status', type: 'singleLineText' },
+  { name: 'Calendar Event ID', type: 'singleLineText' },
+  { name: 'Google Meet Link', type: 'url' },
+  { name: 'Meeting Mode', type: 'singleLineText' },
+  { name: 'Booking Timezone', type: 'singleLineText' },
+  {
+    name: 'Booking Status',
+    type: 'singleSelect',
+    options: {
+      choices: [
+        { name: 'Confirmed', color: 'greenLight2' },
+        { name: 'Rescheduled', color: 'yellowLight2' },
+        { name: 'Cancelled', color: 'redLight2' },
+        { name: 'Completed', color: 'blueLight2' }
+      ]
+    }
+  }
 ];
 
 async function run() {

@@ -4,6 +4,7 @@ package-lock.json
 *.log
 .kilo/
 data/enquiries.json
+data/bookings.json
 .env
 .env.local
 .vercel

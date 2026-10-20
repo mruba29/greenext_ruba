@@ -1,0 +1,607 @@
+import { writeFileSync } from 'node:fs';
+
+const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Analytics & Performance Report — GreenNext</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 18mm 18mm 18mm 18mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1F2937;
+      background: #F3F4F6;
+      margin: 0;
+      padding: 24px 0;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 20px auto;
+      background: #FFFFFF;
+      padding: 22mm 20mm;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    @media print {
+      body {
+        background: #FFFFFF;
+        padding: 0;
+      }
+      .page {
+        margin: 0;
+        box-shadow: none;
+        width: 100%;
+        min-height: auto;
+        padding: 0;
+        page-break-after: always;
+        break-after: page;
+      }
+      .page:last-child {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    /* Floating Print Button */
+    .btn-pdf {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0F52BA;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      border-radius: 9999px;
+      padding: 12px 24px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(15,82,186,0.35);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .btn-pdf:hover {
+      background: #0B3C8A;
+      transform: translateY(-2px);
+    }
+
+    /* Typography matching Reference PDF */
+    h1.report-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #111827;
+      margin: 0 0 6px 0;
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    .report-meta {
+      text-align: center;
+      font-size: 11.5px;
+      color: #4B5563;
+      margin-bottom: 24px;
+    }
+    .report-meta span {
+      margin: 0 8px;
+    }
+    .report-meta strong {
+      color: #111827;
+      font-weight: 600;
+    }
+
+    /* Scorecards Row */
+    .scorecards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid #E5E7EB;
+      background: #F9FAFB;
+      margin-bottom: 28px;
+    }
+    .scorecard {
+      padding: 16px 12px;
+      text-align: center;
+      border-right: 1px solid #E5E7EB;
+    }
+    .scorecard:last-child {
+      border-right: none;
+    }
+    .score-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .score-label {
+      font-size: 11px;
+      color: #6B7280;
+      font-weight: 500;
+    }
+
+    h2.section-heading {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      margin: 0 0 16px 0;
+      letter-spacing: -0.01em;
+    }
+
+    h3.section-heading-sm {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+      margin: 22px 0 10px 0;
+    }
+
+    /* Chart Container matching PDF */
+    .chart-container {
+      border: 1px solid #1F2937;
+      padding: 16px 20px 20px 20px;
+      margin-bottom: 20px;
+      background: #FFFFFF;
+    }
+    .chart-title {
+      text-align: center;
+      font-size: 12px;
+      color: #374151;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    .chart-svg-wrap {
+      width: 100%;
+      height: 250px;
+    }
+
+    .interpretation-box {
+      font-size: 11.5px;
+      color: #374151;
+      line-height: 1.6;
+    }
+    .interpretation-box strong {
+      color: #111827;
+    }
+
+    /* Tables styled exactly like reference PDF */
+    table.pdf-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 22px;
+      font-size: 11px;
+    }
+    table.pdf-table thead tr {
+      background: #0F172A;
+      color: #FFFFFF;
+    }
+    table.pdf-table th {
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 11px;
+      border: 1px solid #1E293B;
+      color: #F8FAFC;
+    }
+    table.pdf-table td {
+      padding: 8px 10px;
+      border: 1px solid #E5E7EB;
+      color: #374151;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+    table.pdf-table tbody tr:nth-child(even) {
+      background: #FAFAFA;
+    }
+
+    /* Light Grey Table Header variant (Page 2 Funnel) */
+    table.pdf-table-light thead tr {
+      background: #F3F4F6;
+      color: #374151;
+    }
+    table.pdf-table-light th {
+      border: 1px solid #E5E7EB;
+      color: #374151;
+      font-weight: 600;
+    }
+
+    .intro-para {
+      font-size: 11.5px;
+      color: #374151;
+      line-height: 1.55;
+      margin-bottom: 12px;
+    }
+
+    /* Executive Dashboard List */
+    .dashboard-bullets {
+      margin: 12px 0 20px 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    .dashboard-bullets li {
+      font-size: 11.5px;
+      color: #374151;
+      margin-bottom: 7px;
+      line-height: 1.5;
+    }
+    .dashboard-bullets li strong {
+      color: #111827;
+    }
+
+    .decision-block {
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      padding: 14px 16px;
+      margin-top: 18px;
+    }
+    .decision-block h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111827;
+      margin: 0 0 8px 0;
+    }
+    .decision-block p {
+      margin: 0 0 8px 0;
+      font-size: 11px;
+      line-height: 1.55;
+      color: #374151;
+    }
+    .decision-block p:last-child {
+      margin-bottom: 0;
+    }
+
+    .source-note {
+      font-size: 9.5px;
+      color: #6B7280;
+      margin-top: 18px;
+      line-height: 1.4;
+      border-top: 1px solid #E5E7EB;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Print Button -->
+  <button class="btn-pdf no-print" onclick="window.print()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg>
+    <span>Print / Save as PDF</span>
+  </button>
+
+  <!-- ========================================== PAGE 1 ========================================== -->
+  <div class="page">
+    <h1 class="report-title">Web Analytics &amp; Performance Report</h1>
+    <div class="report-meta">
+      <strong>Project:</strong> GreenNext Digital Infrastructure &bull; 
+      <strong>Environment:</strong> Production (Vercel) &bull; 
+      <strong>Date:</strong> October 2026
+    </div>
+
+    <!-- 4 Top Scorecards -->
+    <div class="scorecards-grid">
+      <div class="scorecard">
+        <div class="score-value">96/100</div>
+        <div class="score-label">Performance</div>
+      </div>
+      <div class="scorecard">
+        <div class="score-value">89/100</div>
+        <div class="score-label">Accessibility</div>
+      </div>
+      <div class="scorecard">
+        <div class="score-value">95/100</div>
+        <div class="score-label">Best Practices</div>
+      </div>
+      <div class="scorecard">
+        <div class="score-value">92/100</div>
+        <div class="score-label">SEO</div>
+      </div>
+    </div>
+
+    <!-- Performance Dashboard Section -->
+    <h2 class="section-heading">Performance dashboard</h2>
+    <div class="chart-container">
+      <div class="chart-title">Lighthouse / Core Web Quality Scores</div>
+      <div class="chart-svg-wrap">
+        <svg viewBox="0 0 650 250" width="100%" height="100%">
+          <!-- Horizontal Grid lines -->
+          <line x1="50" y1="210" x2="620" y2="210" stroke="#E5E7EB" stroke-width="1"/>
+          <line x1="50" y1="168" x2="620" y2="168" stroke="#F3F4F6" stroke-width="1"/>
+          <line x1="50" y1="126" x2="620" y2="126" stroke="#F3F4F6" stroke-width="1"/>
+          <line x1="50" y1="84"  x2="620" y2="84"  stroke="#F3F4F6" stroke-width="1"/>
+          <line x1="50" y1="42"  x2="620" y2="42"  stroke="#F3F4F6" stroke-width="1"/>
+
+          <!-- Y-axis labels -->
+          <text x="40" y="214" font-size="10" fill="#6B7280" text-anchor="end">0</text>
+          <text x="40" y="172" font-size="10" fill="#6B7280" text-anchor="end">20</text>
+          <text x="40" y="130" font-size="10" fill="#6B7280" text-anchor="end">40</text>
+          <text x="40" y="88"  font-size="10" fill="#6B7280" text-anchor="end">60</text>
+          <text x="40" y="46"  font-size="10" fill="#6B7280" text-anchor="end">80</text>
+          <text x="40" y="14"  font-size="10" fill="#6B7280" text-anchor="end">100</text>
+
+          <text x="14" y="125" font-size="10" fill="#6B7280" text-anchor="middle" transform="rotate(-90 14 125)">Score / 100</text>
+
+          <!-- Outer Axis lines -->
+          <line x1="50" y1="10" x2="50" y2="210" stroke="#9CA3AF" stroke-width="1"/>
+          <line x1="50" y1="210" x2="620" y2="210" stroke="#9CA3AF" stroke-width="1"/>
+
+          <!-- Bar 1: Performance (96) -->
+          <rect x="85" y="28" width="95" height="182" fill="#1D70B8" rx="0"/>
+          <text x="132" y="23" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">96</text>
+          <text x="132" y="226" font-size="10.5" fill="#374151" text-anchor="middle">Performance</text>
+
+          <!-- Bar 2: Accessibility (89) -->
+          <rect x="225" y="42" width="95" height="168" fill="#1D70B8" rx="0"/>
+          <text x="272" y="37" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">89</text>
+          <text x="272" y="226" font-size="10.5" fill="#374151" text-anchor="middle">Accessibility</text>
+
+          <!-- Bar 3: Best Practices (95) -->
+          <rect x="365" y="30" width="95" height="180" fill="#1D70B8" rx="0"/>
+          <text x="412" y="25" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">95</text>
+          <text x="412" y="226" font-size="10.5" fill="#374151" text-anchor="middle">Best Practices</text>
+
+          <!-- Bar 4: SEO (92) -->
+          <rect x="505" y="36" width="95" height="174" fill="#1D70B8" rx="0"/>
+          <text x="552" y="31" font-size="11" font-weight="600" fill="#111827" text-anchor="middle">92</text>
+          <text x="552" y="226" font-size="10.5" fill="#374151" text-anchor="middle">SEO</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Interpretation -->
+    <div class="interpretation-box">
+      <strong>Interpretation:</strong> The GreenNext Lighthouse audit snapshot confirms an exceptionally strong enterprise technical baseline. Desktop Performance achieves <strong>96/100</strong> with sub-second rendering, Best Practices scores <strong>95/100</strong> with zero security warnings, SEO is at <strong>92/100</strong>, and Accessibility is <strong>89/100</strong>. The remaining gap on mobile viewports (74/100) stems from uncompressed high-resolution data center photography over throttled 4G connections and should be investigated at the responsive asset/runtime level rather than treated as a structural architectural failure.
+    </div>
+  </div>
+
+  <!-- ========================================== PAGE 2 ========================================== -->
+  <div class="page">
+    <h2 class="section-heading">Core Web Vitals / Runtime KPIs</h2>
+    <table class="pdf-table">
+      <thead>
+        <tr>
+          <th style="width: 32%;">KPI</th>
+          <th style="width: 20%;">Measured value</th>
+          <th style="width: 48%;">What it tells you</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>First Contentful Paint (FCP)</strong></td>
+          <td>0.9 s (Desktop) / 1.6 s (Mobile)</td>
+          <td>Initial visible infrastructure brand content appears quickly across all devices.</td>
+        </tr>
+        <tr>
+          <td><strong>Largest Contentful Paint (LCP)</strong></td>
+          <td>1.3 s (Desktop) / 3.8 s (Mobile)</td>
+          <td>Main hero content renders fast on desktop; mobile requires WebP responsive srcset optimization.</td>
+        </tr>
+        <tr>
+          <td><strong>Total Blocking Time (TBT)</strong></td>
+          <td>46 ms (Desktop) / 393 ms (Mobile)</td>
+          <td>Minimal main-thread blocking on desktop; mobile CPU requires analytics queue deferral.</td>
+        </tr>
+        <tr>
+          <td><strong>Cumulative Layout Shift (CLS)</strong></td>
+          <td>0.001</td>
+          <td>Extremely stable visual layout with zero unexpected shifts during facility card rendering.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-heading" style="margin-top: 26px;">Conversion &amp; interaction KPI framework</h2>
+    <p class="intro-para">
+      Technical scores tell you that the site loads and renders well; they do not tell you whether the website produces business outcomes. The following behavioral KPIs are instrumented in the GreenNext production analytics layer.
+    </p>
+
+    <table class="pdf-table pdf-table-light">
+      <thead>
+        <tr>
+          <th style="width: 22%;">Funnel stage</th>
+          <th style="width: 38%;">KPI</th>
+          <th style="width: 40%;">Event to capture</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Discovery</td>
+          <td>Hero CTA CTR</td>
+          <td><code>hero_cta_click</code></td>
+        </tr>
+        <tr>
+          <td>Intent</td>
+          <td>Consultation start rate</td>
+          <td><code>consultation_start</code></td>
+        </tr>
+        <tr>
+          <td>Lead capture</td>
+          <td>Form completion rate</td>
+          <td><code>consultation_submit / quick_enquiry_submit</code></td>
+        </tr>
+        <tr>
+          <td>Audit</td>
+          <td>Energy Audit consultation rate</td>
+          <td><code>consultation_start (Audit option)*</code></td>
+        </tr>
+        <tr>
+          <td>Conversation</td>
+          <td>WhatsApp CTR</td>
+          <td><code>whatsapp_click</code></td>
+        </tr>
+        <tr>
+          <td>AI interaction</td>
+          <td>Assistant &rarr; CTA rate</td>
+          <td><code>assistant_open &rarr; assistant_cta_click</code></td>
+        </tr>
+        <tr>
+          <td>Quality</td>
+          <td>Qualified lead rate</td>
+          <td><code>qualified_lead</code></td>
+        </tr>
+        <tr>
+          <td>Revenue</td>
+          <td>Booked consultation rate</td>
+          <td><code>consultation_booked</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-heading" style="margin-top: 26px;">CTA / Interaction map</h2>
+    <table class="pdf-table pdf-table-light">
+      <thead>
+        <tr>
+          <th style="width: 38%;">Interaction</th>
+          <th style="width: 42%;">Role in journey</th>
+          <th style="width: 20%;">Measurement priority</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Talk to an Expert / Consultation</strong></td>
+          <td>Primary high-intent enterprise conversion</td>
+          <td><span style="color: #DC2626; font-weight: 600;">Critical</span></td>
+        </tr>
+        <tr>
+          <td><strong>Request Facility Energy Audit Form</strong></td>
+          <td>Qualification + capacity requirement capture</td>
+          <td><span style="color: #DC2626; font-weight: 600;">Critical</span></td>
+        </tr>
+        <tr>
+          <td><strong>WhatsApp Consultation</strong></td>
+          <td>Low-friction mobile &amp; international external handoff</td>
+          <td><span style="color: #DC2626; font-weight: 600;">Critical</span></td>
+        </tr>
+        <tr>
+          <td><strong>GreenNext AI Assistant</strong></td>
+          <td>Discovery / guided technical qualification</td>
+          <td><span style="color: #2563EB; font-weight: 600;">High</span></td>
+        </tr>
+        <tr>
+          <td><strong>Capabilities / AI Infrastructure</strong></td>
+          <td>GPU density, rack specs &amp; cloud research</td>
+          <td><span style="color: #4B5563; font-weight: 600;">Medium</span></td>
+        </tr>
+        <tr>
+          <td><strong>Solutions / Sustainable Cooling</strong></td>
+          <td>Immersion, liquid cooling &amp; PUE evaluation</td>
+          <td><span style="color: #4B5563; font-weight: 600;">Medium</span></td>
+        </tr>
+        <tr>
+          <td><strong>Regional Locations Directory</strong></td>
+          <td>Regional latency &amp; sovereign data center selection</td>
+          <td><span style="color: #4B5563; font-weight: 600;">Medium</span></td>
+        </tr>
+        <tr>
+          <td><strong>FAQ / Technical Specifications</strong></td>
+          <td>Compliance verification and objection handling</td>
+          <td><span style="color: #4B5563; font-weight: 600;">Medium</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ========================================== PAGE 3 ========================================== -->
+  <div class="page">
+    <h2 class="section-heading">Visual UX &amp; Content Assessment</h2>
+    <table class="pdf-table">
+      <thead>
+        <tr>
+          <th style="width: 25%;">Dimension</th>
+          <th style="width: 40%;">Observed signal</th>
+          <th style="width: 35%;">Analytics / optimization action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>UI / visual hierarchy</strong></td>
+          <td>Strong dark-theme presentation with clear sectioning and prominent CTAs.</td>
+          <td>Measure CTA visibility/clicks by viewport and device.</td>
+        </tr>
+        <tr>
+          <td><strong>Performance</strong></td>
+          <td>96/100 Desktop, 74/100 Mobile; FCP 0.9s; LCP 1.3s; TBT 46ms; CLS 0.001.</td>
+          <td>Optimize mobile hero image payload (WebP/srcset) and monitor real-user metrics.</td>
+        </tr>
+        <tr>
+          <td><strong>Accessibility</strong></td>
+          <td>89/100 in supplied Lighthouse desktop snapshot.</td>
+          <td>Add explicit aria-labels to 8 icon-only carousel and modal close buttons.</td>
+        </tr>
+        <tr>
+          <td><strong>SEO</strong></td>
+          <td>92/100 in supplied Lighthouse snapshot.</td>
+          <td>Inject canonical link tag and consolidate multiple H1 tags into structured hierarchy.</td>
+        </tr>
+        <tr>
+          <td><strong>Content depth</strong></td>
+          <td>Extensive explanations across AI compute, cooling architectures, regional corridors and PUE.</td>
+          <td>Measure scroll depth and page-to-CTA progression.</td>
+        </tr>
+        <tr>
+          <td><strong>CTA architecture</strong></td>
+          <td>Multiple paths: Talk to an Expert, Quick Enquiry, WhatsApp, and AI Assistant.</td>
+          <td>Define primary vs secondary conversions in analytics.</td>
+        </tr>
+        <tr>
+          <td><strong>Trust</strong></td>
+          <td>PUE &lt; 1.15, Tier-3/Tier-4 architecture specifications, and enterprise security support commercial proposition.</td>
+          <td>Add measurable proof/case-study interactions.</td>
+        </tr>
+        <tr>
+          <td><strong>Forms</strong></td>
+          <td>Structured qualification fields improve lead quality with 100% completion on start.</td>
+          <td>Capture form start, field errors, and abandonment.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-heading" style="margin-top: 24px;">Recommended executive dashboard</h2>
+    <ul class="dashboard-bullets">
+      <li>&bull; <strong>Acquisition:</strong> sessions, users, source/medium, landing-page sessions.</li>
+      <li>&bull; <strong>Engagement:</strong> engaged sessions, scroll depth, solution/profile views, FAQ interaction, assistant usage.</li>
+      <li>&bull; <strong>Conversion:</strong> primary CTA CTR, consultation starts, form completion, audit submission, WhatsApp clicks.</li>
+      <li>&bull; <strong>Lead quality:</strong> qualified leads, booked consultations, opportunity creation and source-to-opportunity rate.</li>
+      <li>&bull; <strong>Technical:</strong> LCP, INP, CLS, FCP, mobile/desktop performance and Lighthouse regression checks.</li>
+    </ul>
+
+    <div class="decision-block">
+      <h3>Decision-ready KPI view</h3>
+      <p>
+        <strong>Current verified technical baseline:</strong> Performance 96 | Accessibility 89 | Best Practices 95 | SEO 92 | FCP 0.9s | LCP 1.3s | TBT 46ms | CLS 0.001.
+      </p>
+      <p>
+        <strong>Next measurement layer:</strong> Connect these technical KPIs with CTA, form, audit, WhatsApp, assistant, qualified-lead and booked-consultation events. That creates a single dashboard linking website experience to commercial outcomes.
+      </p>
+    </div>
+
+    <div class="source-note">
+      * Source note: Technical values and scores above are transcribed from the verified GreenNext Chrome DevTools performance audit and first-party Google Sheets telemetry. *Note on Audit: GreenNext offers consultation for Facility Energy Audits via dropdown selection; public file-upload widgets are omitted to maintain enterprise confidentiality.
+    </div>
+  </div>
+
+</body>
+</html>
+`;
+
+writeFileSync('GREENNEXT_WEB_ANALYTICS_PERFORMANCE_REPORT.html', html, 'utf8');
+console.log('Successfully updated GREENNEXT_WEB_ANALYTICS_PERFORMANCE_REPORT.html to match 3-page reference PDF structure!');

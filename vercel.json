@@ -1,34 +1,20 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/*.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "**/*.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    { "src": "/api/analytics",  "dest": "/api/analytics.js" },
-    { "src": "/api/enquiry",    "dest": "/api/enquiry.js" },
-    { "src": "/api/jira",       "dest": "/api/jira.js" },
-    { "src": "/analytics",      "dest": "/analytics.html" },
-    { "src": "/dashboard",      "dest": "/analytics.html" },
-    { "src": "/capabilities",   "dest": "/capabilities/index.html" },
-    { "src": "/industries",     "dest": "/industries/index.html" },
-    { "src": "/solutions",      "dest": "/solutions/index.html" },
-    { "src": "/locations",      "dest": "/locations/index.html" },
-    { "src": "/(.*)",           "dest": "/$1" }
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/analytics", "destination": "/analytics.html" },
+    { "source": "/dashboard", "destination": "/analytics.html" },
+    { "source": "/capabilities", "destination": "/capabilities/index.html" },
+    { "source": "/industries", "destination": "/industries/index.html" },
+    { "source": "/solutions", "destination": "/solutions/index.html" },
+    { "source": "/locations", "destination": "/locations/index.html" }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Frame-Options",        "value": "SAMEORIGIN" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy",        "value": "strict-origin-when-cross-origin" }
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
       ]
     }
   ]

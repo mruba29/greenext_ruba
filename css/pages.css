@@ -1,7 +1,7 @@
 /* ============================================================
-   GREENNEXT — SHARED PAGE UTILITIES & ENTERPRISE MODULES
-   Icon sizing, Use Cases, Business Benefits, FAQ Accordions,
-   Deep-Dive Split Sections, and Cross-Linking Bars
+   GREENNEXT — "NEXUS INTELLIGENCE" SHARED PAGE UTILITIES
+   Use Cases, Benefits, FAQ Accordions, Deep-Dive Split Sections,
+   and Cross-Linking Bars with Electric Cyan & Midnight Navy Theme
    ============================================================ */
 
 .icon-wrap {
@@ -22,7 +22,7 @@
 .location-card-icon .icon-wrap svg {
   width: 24px;
   height: 24px;
-  color: var(--color-primary);
+  color: #00A8CC;
 }
 
 .dropdown-item-icon .icon-wrap svg {
@@ -33,25 +33,49 @@
 .nav-logo-icon .icon-wrap svg {
   width: 18px;
   height: 18px;
-  color: white;
+  color: #0B1220;
 }
 
 .card:hover .card-icon .icon-wrap svg {
-  color: white;
+  color: #0B1220;
 }
 
 /* Breadcrumb sits just below the fixed/sticky header */
 .breadcrumb-bar {
-  padding-top: calc(var(--nav-height) + var(--space-8));
-  padding-bottom: var(--space-2);
+  background: #0B1220;
+  padding-top: calc(var(--nav-height) + var(--space-4));
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.10);
+}
+
+.breadcrumb-bar .breadcrumb {
+  margin-bottom: 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-cool-grey);
+}
+
+.breadcrumb-bar .breadcrumb a {
+  color: var(--color-cool-grey);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.breadcrumb-bar .breadcrumb a:hover {
+  color: var(--color-cyan);
+}
+
+.breadcrumb-bar .breadcrumb-sep {
+  color: rgba(0, 212, 255, 0.35);
+  margin: 0 var(--space-1);
+}
+
+.breadcrumb-bar .breadcrumb span:last-child {
+  color: var(--color-arctic-silver);
+  font-weight: 500;
 }
 
 .hero--compact {
-  padding: var(--space-10) 0 var(--space-20);
-}
-
-.section-header p {
-  margin-top: var(--space-4);
+  padding: var(--space-12) 0 var(--space-16);
 }
 
 /* ============================================================
@@ -70,36 +94,84 @@
   border-radius: var(--radius-xl);
   padding: var(--space-8);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
   position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.benefit-card .benefit-card-desc {
+  flex-grow: 1;
+}
+
+.benefit-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #00D4FF, #8BE9FF);
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
 
 .benefit-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
-  border-color: rgba(0, 201, 122, 0.4);
+  border-color: rgba(0, 212, 255, 0.4);
 }
 
-.benefit-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-lg);
-  background: rgba(11, 107, 74, 0.08);
-  color: var(--color-primary);
+.benefit-card:hover::before {
+  opacity: 1;
+}
+
+.benefit-card-header {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: var(--space-5);
 }
 
-.benefit-title {
+.benefit-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  color: #00A8CC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.benefit-card-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.benefit-card-metric {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #00A8CC;
+  background: rgba(0, 212, 255, 0.08);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.benefit-card-title {
   font-size: var(--font-size-lg);
   font-weight: 700;
   color: var(--color-dark);
   margin-bottom: var(--space-2);
 }
 
-.benefit-desc {
+.benefit-card-desc {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
   line-height: 1.65;
@@ -128,29 +200,24 @@
 }
 
 .use-case-card:hover {
-  border-color: var(--color-primary);
+  border-color: rgba(0, 212, 255, 0.5);
   box-shadow: var(--shadow-card-hover);
   transform: translateY(-3px);
 }
 
-.use-case-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
-}
-
 .use-case-badge {
   display: inline-block;
-  padding: 4px 10px;
+  align-self: flex-start;
+  padding: 4px 12px;
   border-radius: var(--radius-full);
-  background: var(--color-bg-muted);
-  color: var(--color-primary-dark);
-  font-size: var(--font-size-xs);
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  color: #00A8CC;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+  margin-bottom: var(--space-4);
 }
 
 .use-case-title {
@@ -161,13 +228,39 @@
   line-height: 1.3;
 }
 
-.use-case-body {
+.use-case-desc {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
   line-height: 1.65;
   margin-bottom: var(--space-6);
   flex-grow: 1;
 }
+
+.use-case-points {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.use-case-point {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.use-case-point-icon {
+  width: 16px;
+  height: 16px;
+  color: #00A8CC;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.use-case-point-icon svg { width: 14px; height: 14px; }
 
 .use-case-impact {
   border-top: 1px solid var(--color-border-light);
@@ -181,7 +274,8 @@
 }
 
 .use-case-impact span {
-  color: var(--color-primary);
+  color: #00A8CC;
+  font-weight: 700;
 }
 
 /* ============================================================
@@ -192,6 +286,10 @@
   grid-template-columns: 1.15fr 0.85fr;
   gap: var(--space-12);
   align-items: center;
+}
+
+.deep-dive-grid--reverse {
+  grid-template-columns: 0.85fr 1.15fr;
 }
 
 .deep-dive-bullets {
@@ -215,8 +313,8 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: rgba(0, 201, 122, 0.15);
-  color: var(--color-primary);
+  background: rgba(0, 212, 255, 0.12);
+  color: #00A8CC;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -234,6 +332,7 @@
   border-radius: var(--radius-2xl);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(0, 212, 255, 0.2);
 }
 
 .deep-dive-visual img {
@@ -249,7 +348,7 @@
   left: 0;
   right: 0;
   padding: var(--space-4) var(--space-6);
-  background: linear-gradient(to top, rgba(13, 31, 21, 0.95), rgba(13, 31, 21, 0.4) 80%, transparent);
+  background: linear-gradient(to top, rgba(11, 18, 32, 0.95), rgba(11, 18, 32, 0.5) 80%, transparent);
   color: white;
   font-size: var(--font-size-xs);
   line-height: 1.5;
@@ -278,8 +377,8 @@
 }
 
 .faq-item[open] {
-  border-color: rgba(11, 107, 74, 0.3);
-  box-shadow: var(--shadow-sm);
+  border-color: rgba(0, 212, 255, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 212, 255, 0.1);
 }
 
 .faq-summary {
@@ -301,7 +400,7 @@
 }
 
 .faq-summary:hover {
-  color: var(--color-primary);
+  color: #00A8CC;
 }
 
 .faq-icon {
@@ -319,8 +418,8 @@
 
 .faq-item[open] .faq-icon {
   transform: rotate(180deg);
-  background: var(--color-primary);
-  color: #FFFFFF;
+  background: var(--color-cyan);
+  color: #0B1220;
 }
 
 .faq-icon svg {
@@ -382,9 +481,10 @@
 }
 
 .related-nav-pill:hover {
-  background: var(--color-primary);
-  color: #FFFFFF;
-  border-color: var(--color-primary);
+  background: var(--color-cyan);
+  color: #0B1220;
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.35);
   transform: translateY(-1px);
 }
 

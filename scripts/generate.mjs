@@ -2,7 +2,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { capabilities, industries, solutions, locations } from './data.mjs';
+import { capabilities, industries, solutions, locations, operationalWorkflowSteps } from './data.mjs';
 import {
   capabilitiesContent,
   industriesContent,
@@ -16,7 +16,7 @@ import {
 import {
   page, hero, heroSlider, quickEnquirySection, breadcrumb, featureGrid, cardGrid, metricsStrip,
   leadFormSection, careersFormSection, finalCTASection,
-  aboutSplitSection, anchorSection, intelligenceDashboardSection, processFlowSection,
+  aboutSplitSection, anchorSection, intelligenceDashboardSection, processFlowSection, architectureSection,
   sustainabilitySection, futureVisionSection, locationsMapSection,
   benefitsSection, useCasesSection, deepDiveSection, faqSection, relatedLinksBar,
 } from './templates.mjs';
@@ -84,15 +84,27 @@ function write(relPath, html) {
 
   const body = `
 ${heroSlider(base)}
+
+<section class="section" style="padding-bottom:0;" id="glance">
+  <div class="container">
+    <div class="section-header section-header--center">
+      <span class="section-label">Infrastructure at a Glance</span>
+      <h2 class="heading-xl">Infrastructure Designed Around Your Next Move</h2>
+      <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+        From high-density accelerated compute clusters to carrier-neutral regional networks, GreenNext integrates critical infrastructure layers into unified, resilient foundations.
+      </p>
+    </div>
+  </div>
+</section>
 ${metricsStrip()}
 
-<section class="section" style="padding-bottom:0;">
+<section class="section" style="padding-bottom:0;" id="capabilities">
   <div class="container">
     <div class="section-header" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);margin-bottom:var(--space-10);">
       <div>
         <span class="section-label">Core Capabilities</span>
-        <h2 class="heading-xl">Foundations for Accelerated Computing</h2>
-        <p class="text-base text-muted" style="margin-top:var(--space-2);">Purpose-built infrastructure foundations for high-density AI clusters and mission-critical enterprise workloads.</p>
+        <h2 class="heading-xl">The Foundation Behind Intelligent Enterprise</h2>
+        <p class="text-base text-muted" style="margin-top:var(--space-2);">Purpose-built infrastructure foundations for high-density AI clusters, facility engineering, and operational visibility.</p>
       </div>
       <a class="location-card-link" href="capabilities/index.html">Explore All Capabilities <span class="btn-arrow">&rarr;</span></a>
     </div>
@@ -100,52 +112,53 @@ ${metricsStrip()}
 </section>
 ${cardGrid(base, featuredCapabilities, { hrefPrefix: 'capabilities/', ctaText: 'Learn More', columns: 5, withPhoto: true })}
 
-<section class="section bg-soft">
+${processFlowSection({ eyebrow: 'INTELLIGENT OPERATIONS WORKFLOW', heading: 'From Infrastructure Data to Better Decisions', steps: operationalWorkflowSteps })}
+
+<section class="section bg-soft" id="industries">
   <div class="container">
-    <div class="industries-solutions-grid">
-      <div>
-        <div class="section-header" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);margin-bottom:var(--space-8);">
+    <div class="section-header section-header--center">
+      <span class="section-label">Industry Solutions</span>
+      <h2 class="heading-xl">Infrastructure for Industries That Cannot Stand Still</h2>
+      <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+        Different sectors face distinct physical and architectural hurdles—from microsecond financial determinism to healthcare regulatory compliance.
+      </p>
+    </div>
+    <div class="grid-4" style="gap:var(--space-5);margin-top:var(--space-8);">
+      ${industries.map((ind, i) => `
+        <div class="card reveal reveal-delay-${(i % 4) + 1}" style="display:flex;flex-direction:column;justify-content:space-between;padding:var(--space-6);">
           <div>
-            <span class="section-label">Industries</span>
-            <h2 class="heading-lg">Who We Serve</h2>
-            <p class="text-sm text-muted" style="margin-top:var(--space-2);">Tailored digital infrastructure across mission-critical enterprise sectors.</p>
+            <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4);">
+              <div class="card-icon" style="width:40px;height:40px;margin-bottom:0;">${icon(ind.icon)}</div>
+              <h3 class="feature-title" style="margin:0;font-size:var(--font-size-base);">${ind.name}</h3>
+            </div>
+            <div style="margin-bottom:var(--space-3);font-size:var(--font-size-xs);line-height:1.6;color:var(--color-text-muted);">
+              <strong style="color:var(--color-text-main);display:block;margin-bottom:2px;">Challenge:</strong> ${ind.challenge}
+            </div>
+            <div style="margin-bottom:var(--space-3);font-size:var(--font-size-xs);line-height:1.6;color:var(--color-text-muted);">
+              <strong style="color:var(--color-text-main);display:block;margin-bottom:2px;">Capability:</strong> ${ind.capability}
+            </div>
+            <div style="padding:var(--space-2) var(--space-3);background:rgba(0,212,255,0.06);border-left:2px solid var(--color-primary);border-radius:var(--radius-sm);font-size:11px;color:var(--color-text-dim);line-height:1.5;">
+              <strong style="color:var(--color-text-main);">Outcome:</strong> ${ind.outcome}
+            </div>
           </div>
-        </div>
-        <a class="location-card-link" href="industries/index.html" style="margin-bottom:var(--space-6);display:inline-flex;">Explore Industry Solutions <span class="btn-arrow">&rarr;</span></a>
-        <div class="grid-4" style="gap:var(--space-4);">
-          ${industries.map((ind, i) => `
-            <a class="card reveal reveal-delay-${(i % 4) + 1}" style="display:block;text-decoration:none;padding:var(--space-5);" href="industries/${ind.slug}.html">
-              <div class="card-icon" style="width:36px;height:36px;margin-bottom:var(--space-3);">${icon(ind.icon)}</div>
-              <h3 class="feature-title" style="font-size:var(--font-size-sm);">${ind.name}</h3>
-              <span class="text-xs text-muted" style="display:block;margin-top:4px;">Explore &rarr;</span>
-            </a>`).join('')}
-        </div>
-      </div>
-      <div>
-        <div class="section-header" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:var(--space-3);margin-bottom:var(--space-8);">
-          <div>
-            <span class="section-label">Solutions</span>
-            <h2 class="heading-lg">Solutions for the AI Era</h2>
-            <p class="text-sm text-muted" style="margin-top:var(--space-2);">Scalable, secure, and energy-efficient architectures designed for continuous uptime.</p>
+          <div style="margin-top:var(--space-5);">
+            <a class="location-card-link" href="industries/${ind.slug}.html">Sector Architecture &rarr;</a>
           </div>
-        </div>
-        <a class="location-card-link" href="solutions/index.html" style="margin-bottom:var(--space-6);display:inline-flex;">Explore All Solutions <span class="btn-arrow">&rarr;</span></a>
-        ${cardGrid(base, featuredSolutions, { hrefPrefix: 'solutions/', ctaText: 'Learn More', columns: 2, withPhoto: true, wrap: false })}
-      </div>
+        </div>`).join('')}
     </div>
   </div>
 </section>
 
-${processFlowSection({ eyebrow: 'Autonomous Workflow', heading: 'From Continuous Telemetry to Closed-Loop Optimization', steps: AUTOMATION_STEPS })}
+${architectureSection(base)}
 
-${intelligenceDashboardSection()}
-
-<section class="section bg-soft" style="padding-bottom: 0;">
+<section class="section bg-soft" style="padding-bottom: 0;" id="locations">
   <div class="container">
     <div class="section-header section-header--center">
       <span class="section-label">Regional Presence</span>
-      <h2 class="heading-xl">South India Technology Corridors</h2>
-      <p class="text-base text-muted" style="margin-top: var(--space-4);">GreenNext delivers localized AI data center and digital infrastructure expertise across Madurai, Coimbatore, Trichy, and Mangalore.</p>
+      <h2 class="heading-xl">Closer to the Next Wave of Digital Growth</h2>
+      <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+        Strategic proximity across South India's high-growth industrial and academic corridors: Madurai, Coimbatore, Trichy, and Mangalore.
+      </p>
       <a class="location-card-link" href="locations/index.html" style="justify-content:center;margin-top:var(--space-4);">Explore Regional Hubs <span class="btn-arrow">&rarr;</span></a>
     </div>
   </div>
@@ -154,20 +167,26 @@ ${intelligenceDashboardSection()}
 ${locationsMapSection(base, locations, 'locations/')}
 </div>
 
+${intelligenceDashboardSection(base)}
+
 ${sustainabilitySection(base)}
 
 ${aboutSplitSection({
   heading: 'Infrastructure Engineered to Think Ahead',
   body: 'GreenNext bridges high-performance computing, smart energy management, and intelligent automation into one unified operational architecture. We empower forward-looking organizations with sustainable, AI-ready data center facilities designed for longevity and resilience.',
-  floatCardText: 'Sustainable. Intelligent. Ahead.',
+  floatCardText: 'Powering Intelligence. Engineering Tomorrow.',
   base,
   img: 'assets/img/control-room.webp',
   id: 'about-greennext',
 })}
 
-<section class="section bg-soft" style="padding-top: var(--space-12);">
+<section class="section bg-soft" id="consultation" style="padding-top: var(--space-12);">
   <div class="container" style="max-width: 900px;">
-    ${quickEnquirySection({ base, title: 'Quick Infrastructure Enquiry', subtitle: 'Need rapid pricing, facility specifications, or capacity planning? Connect with our team directly.' })}
+    ${quickEnquirySection({
+      base,
+      title: 'Schedule a Consultation or Send an Enquiry',
+      subtitle: 'Talk with our senior engineering team about your infrastructure priorities, operational challenges, and long-term technology roadmap.'
+    })}
   </div>
 </section>
 
@@ -177,8 +196,8 @@ ${finalCTASection(base)}
 `;
   write('index.html', page({
     base,
-    title: 'AI Data Centers, Intelligent Automation & Sustainable Digital Infrastructure',
-    metaDesc: 'GreenNext designs AI-driven data centers, intelligent automation, and energy-efficient digital infrastructure across Madurai, Coimbatore, Trichy, and Mangalore.',
+    title: 'GreenNext — Powering Intelligence. Engineering Tomorrow. | AI Data Center Infrastructure',
+    metaDesc: 'GreenNext delivers AI-ready infrastructure, high-density data center engineering, intelligent operations, and energy-conscious computing foundations for enterprises.',
     bodyHtml: body,
   }));
 }
@@ -192,6 +211,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Capabilities' }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: 'assets/img/datacenter-hero.jpg',
   eyebrow: 'CORE CAPABILITIES',
   headline: 'Foundations for High-Density AI & Modern Enterprise Computing',
   description: 'Explore the five core capabilities behind GreenNext: from accelerated AI compute architecture to energy efficiency and carrier-neutral connectivity.',
@@ -216,6 +237,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Capabilities', href: 'capabilities/index.html' }, { label: cap.name }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: cap.slug === 'ai-infrastructure' ? 'assets/img/datacenter-hero.jpg' : (cap.img || 'assets/img/server-room.webp'),
   eyebrow: cData ? cData.eyebrow : cap.eyebrow,
   headline: cData ? cData.headline : cap.headline,
   description: cData ? cData.description : cap.description,
@@ -223,7 +246,7 @@ ${hero({
   secondary: { text: 'Quick Enquiry', href: '#quick-enquiry' },
 })}
 ${cData && cData.benefits ? benefitsSection(cData.benefits, { eyebrow: 'Business Benefits', heading: 'Engineered for Performance, Reliability & TCO' }) : ''}
-${cData && cData.deepDive ? deepDiveSection({ ...cData.deepDive, base }) : ''}
+${cData && cData.deepDive ? deepDiveSection({ img: cData.img, alt: cData.alt, caption: cData.caption, ...cData.deepDive, base }) : ''}
 ${cData && cData.useCases ? useCasesSection(cData.useCases, { eyebrow: 'Enterprise Use Cases', heading: 'Practical Deployments Across Modern Workloads' }) : ''}
 ${featureGrid(cap.features)}
 ${processSectionFor(cap.slug)}
@@ -256,6 +279,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Industries' }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: 'assets/img/datacenter-hero.jpg',
   eyebrow: 'ENTERPRISE INDUSTRIES',
   headline: 'Digital Infrastructure Tailored to Your Industry’s Operational Realities',
   description: 'GreenNext designs high-availability infrastructure, secure data centers, and automation frameworks suited to the strict compliance and uptime needs of your sector.',
@@ -280,6 +305,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Industries', href: 'industries/index.html' }, { label: ind.name }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: 'assets/img/datacenter-hero.jpg',
   eyebrow: iData ? iData.eyebrow : ind.name.toUpperCase(),
   headline: iData ? iData.headline : `Infrastructure Solutions for ${ind.name}`,
   description: iData ? iData.description : ind.description,
@@ -287,7 +314,7 @@ ${hero({
   secondary: { text: 'Quick Enquiry', href: '#quick-enquiry' },
 })}
 ${iData && iData.benefits ? benefitsSection(iData.benefits, { eyebrow: 'Sector Benefits', heading: `Purpose-Built Advantages for ${ind.name}` }) : ''}
-${iData && iData.deepDive ? deepDiveSection({ ...iData.deepDive, base }) : ''}
+${iData && iData.deepDive ? deepDiveSection({ img: iData.img, alt: iData.alt, caption: iData.caption, ...iData.deepDive, base }) : ''}
 ${iData && iData.useCases ? useCasesSection(iData.useCases, { eyebrow: 'Sector Applications', heading: `Proven Deployments in ${ind.name}` }) : ''}
 ${iData && iData.faqs ? faqSection(iData.faqs, { eyebrow: 'Frequently Asked Questions', heading: `${ind.name} Infrastructure Clarity` }) : ''}
 <section class="section bg-soft" id="quick-enquiry" style="padding-top:var(--space-12);">
@@ -318,6 +345,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Solutions' }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: 'assets/img/datacenter-hero.jpg',
   eyebrow: 'ENGINEERED SOLUTIONS',
   headline: 'Specialized Solutions for the AI-Driven Enterprise',
   description: 'Explore GreenNext solutions spanning AI data centers, smart infrastructure, energy optimization, and automation.',
@@ -342,6 +371,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Solutions', href: 'solutions/index.html' }, { label: sol.name }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: sol.img || 'assets/img/server-room.webp',
   eyebrow: sData ? sData.eyebrow : sol.eyebrow,
   headline: sData ? sData.headline : sol.headline,
   description: sData ? sData.description : sol.description,
@@ -349,7 +380,7 @@ ${hero({
   secondary: { text: 'Quick Enquiry', href: '#quick-enquiry' },
 })}
 ${sData && sData.benefits ? benefitsSection(sData.benefits, { eyebrow: 'Solution Benefits', heading: `Enterprise Advantages of ${sol.name}` }) : featureGrid(sol.features)}
-${sData && sData.deepDive ? deepDiveSection({ ...sData.deepDive, base }) : ''}
+${sData && sData.deepDive ? deepDiveSection({ img: sData.img, alt: sData.alt, caption: sData.caption, ...sData.deepDive, base }) : ''}
 ${processSectionFor(sol.slug)}
 ${sData && sData.useCases ? useCasesSection(sData.useCases, { eyebrow: 'Proven Implementations', heading: `Real-World Deployments of ${sol.name}` }) : ''}
 ${sData && sData.faqs ? faqSection(sData.faqs, { eyebrow: 'Frequently Asked Questions', heading: `${sol.name} Architecture & Deployment FAQ` }) : ''}
@@ -381,6 +412,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Locations' }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: 'assets/img/datacenter-hero.jpg',
   eyebrow: 'REGIONAL PRESENCE',
   headline: 'Connected Digital Infrastructure Across South India’s Growth Corridors',
   description: 'GreenNext supports enterprises across Madurai, Coimbatore, Trichy, and Mangalore with regional infrastructure expertise, high-density AI planning, and energy-aware facility design.',
@@ -430,6 +463,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Locations', href: 'locations/index.html' }, { label: loc.name }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: loc.img || 'assets/img/datacenter-hero.jpg',
   eyebrow: `${loc.name.toUpperCase()} REGIONAL HUB`,
   headline: lData ? lData.headline : `GreenNext in ${loc.name}`,
   description: lData ? lData.description : loc.description,
@@ -437,7 +472,7 @@ ${hero({
   secondary: { text: 'Quick Enquiry', href: '#quick-enquiry' },
 })}
 ${lData && lData.highlights ? benefitsSection(lData.highlights, { eyebrow: 'Regional Advantages', heading: `Why ${loc.name} for Digital Infrastructure` }) : ''}
-${lData && lData.deepDive ? deepDiveSection({ ...lData.deepDive, base }) : ''}
+${lData && lData.deepDive ? deepDiveSection({ img: lData.img, alt: lData.alt, caption: lData.caption, ...lData.deepDive, base }) : ''}
 ${lData && lData.useCases ? useCasesSection(lData.useCases, { eyebrow: 'Regional Deployments', heading: `Targeted Enterprise Scenarios in ${loc.name}` }) : ''}
 ${lData && lData.faqs ? faqSection(lData.faqs, { eyebrow: 'Frequently Asked Questions', heading: `${loc.name} Regional Infrastructure FAQ` }) : ''}
 <section class="section bg-soft" id="quick-enquiry" style="padding-top:var(--space-12);">
@@ -468,6 +503,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'About Us' }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: 'assets/img/control-room.webp',
   eyebrow: aboutContent.eyebrow,
   headline: aboutContent.headline,
   description: aboutContent.description,
@@ -527,6 +564,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Sustainability' }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: 'assets/img/solar-panels.webp',
   eyebrow: sustainabilityContent.eyebrow,
   headline: sustainabilityContent.headline,
   description: sustainabilityContent.description,
@@ -534,7 +573,7 @@ ${hero({
   secondary: sustainabilityContent.heroSecondary,
 })}
 ${benefitsSection(sustainabilityContent.pillars, { eyebrow: 'Four Pillars', heading: 'Our Core Sustainability Commitments' })}
-${deepDiveSection({ ...sustainabilityContent.deepDive, base })}
+${deepDiveSection({ img: sustainabilityContent.img, alt: sustainabilityContent.alt, caption: sustainabilityContent.caption, ...sustainabilityContent.deepDive, base })}
 ${useCasesSection(sustainabilityContent.useCases, { eyebrow: 'Sustainable Deployments', heading: 'Real-World Energy & Cooling Optimization' })}
 ${faqSection(sustainabilityContent.faqs, { eyebrow: 'Frequently Asked Questions', heading: 'Sustainability Standards & Transparency' })}
 <section class="section bg-soft" id="quick-enquiry" style="padding-top:var(--space-12);">
@@ -561,6 +600,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Careers' }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: 'assets/img/server-room.webp',
   eyebrow: careersContent.eyebrow,
   headline: careersContent.headline,
   description: careersContent.description,
@@ -609,6 +650,8 @@ ${finalCTASection(base)}
 ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Contact' }])}
 ${hero({
   base,
+  variant: 'dark',
+  img: 'assets/img/datacenter-hero.jpg',
   eyebrow: contactContent.eyebrow,
   headline: contactContent.headline,
   description: contactContent.description,
@@ -744,21 +787,23 @@ ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: title }])}
 
   write('privacy-policy.html', page({
     base, title: 'Privacy Policy | GreenNext',
-    metaDesc: 'GreenNext Privacy Policy.',
+    metaDesc: 'GreenNext enterprise data privacy commitments, information processing practices, and security measures.',
     bodyHtml: legalBody('Privacy Policy', [
-      '<!-- Placeholder legal copy: replace with GreenNext\'s reviewed privacy policy. -->',
-      'This page outlines how GreenNext collects, uses, and protects information submitted through this website, including enquiry and application forms.',
-      'All personal data submitted through consultation requests or application portals is processed in accordance with applicable data privacy legislation and kept strictly confidential.',
+      'GreenNext is committed to safeguarding personal and organizational information submitted through this website, including technical enquiry channels, priority consultation forms, and career portals.',
+      'All personal information, including names, corporate email addresses, phone numbers, and architectural requirements, is collected solely to evaluate digital infrastructure needs, provide customized engineering advisory, or review employment applications.',
+      'GreenNext implements modern technical, administrative, and physical security measures to protect data against unauthorized access, alteration, or disclosure. We do not sell or rent enterprise contact details to third-party commercial marketing entities.',
+      'Visitors may contact the GreenNext governance desk at hello@greennext.example regarding data updates, access requests, or privacy inquiries.'
     ]),
   }));
 
   write('terms-and-conditions.html', page({
     base, title: 'Terms & Conditions | GreenNext',
-    metaDesc: 'GreenNext Terms & Conditions.',
+    metaDesc: 'GreenNext terms of website use, intellectual property rights, and technical advisory disclaimers.',
     bodyHtml: legalBody('Terms &amp; Conditions', [
-      '<!-- Placeholder legal copy: replace with GreenNext\'s reviewed terms and conditions. -->',
-      'These terms govern the use of this website. By using this site, you agree to these terms.',
-      'All architectural descriptions, technical diagrams, and conceptual models displayed on this website are proprietary to GreenNext and intended for informational and advisory planning purposes.',
+      'These Terms and Conditions govern access to and use of the GreenNext website, technical architecture materials, and digital consultation pathways. By accessing this platform, users agree to adhere to these terms.',
+      'All architectural descriptions, technical diagrams, conceptual topologies, and telemetry models displayed on this website are proprietary to GreenNext and intended for informational and advisory planning purposes.',
+      'GreenNext strives to maintain accurate, up-to-date documentation regarding computing topologies, cooling benchmarks, and regional network corridors. Actual infrastructure specifications are finalized under formal service level agreements (SLAs) and master services contracts.',
+      'For questions regarding intellectual property rights or enterprise partnership agreements, contact the GreenNext legal and advisory desk at hello@greennext.example.'
     ]),
   }));
 }

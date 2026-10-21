@@ -1,6 +1,6 @@
 import { icon } from './icons.mjs';
 import { nav, footerData, finalCTA, formConfigs, careersFormConfig, tagline, heroImg } from './data.mjs';
-import { curveDivider, blobDecor, processFlow, miniFlowHorizontal, dashboardMock, locationsMapVisual } from './visuals.mjs';
+import { curveDivider, blobDecor, processFlow, miniFlowHorizontal, dashboardMock, locationsMapVisual, architectureDiagram } from './visuals.mjs';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -11,7 +11,7 @@ function link(base, href) {
 
 function cta(text, href, { variant = 'primary', size = 'lg', base = '', openLeadModal = false } = {}) {
   const cls = `btn btn-${variant}${size ? ' btn-' + size : ''}`;
-  const shouldOpen = openLeadModal || (text && (text.includes('Talk to an Expert') || text.includes('Request Consultation')));
+  const shouldOpen = openLeadModal || (text && (text.includes('Talk to an Expert') || text.includes('Request Consultation') || text.includes('Schedule a Consultation') || text.includes('Plan Your Infrastructure')));
   const modalAttr = shouldOpen ? ' data-open-lead-modal="true"' : '';
   return `<a class="${cls}" href="${link(base, href)}"${modalAttr}><span>${text}</span><span class="btn-arrow">&rarr;</span></a>`;
 }
@@ -77,7 +77,7 @@ export function headerAndNav(base) {
         <a class="nav-whatsapp-btn" href="#" data-whatsapp="true" aria-label="Chat with GreenNext on WhatsApp" title="Chat on WhatsApp">
           ${icon('whatsapp')}
         </a>
-        <a class="nav-cta" href="${link(base, 'contact.html')}" data-open-lead-modal="true">Talk to an Expert <span class="btn-arrow">&rarr;</span></a>
+        <a class="nav-cta" href="${link(base, 'contact.html')}" data-open-lead-modal="true">Plan Your Infrastructure <span class="btn-arrow">&rarr;</span></a>
         <button class="nav-hamburger" id="gn-hamburger" aria-label="Open menu" aria-expanded="false">
           <span class="hamburger-bar"></span><span class="hamburger-bar"></span><span class="hamburger-bar"></span>
         </button>
@@ -90,7 +90,7 @@ export function headerAndNav(base) {
     <a class="mobile-nav-whatsapp" href="#" data-whatsapp="true" style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);color:#25D366;font-weight:600;text-decoration:none;">
       ${icon('whatsapp')} Chat on WhatsApp
     </a>
-    <a class="mobile-nav-cta" href="${link(base, 'contact.html')}" data-open-lead-modal="true">Talk to an Expert &rarr;</a>
+    <a class="mobile-nav-cta" href="${link(base, 'contact.html')}" data-open-lead-modal="true">Plan Your Infrastructure &rarr;</a>
   </div>`;
 }
 
@@ -112,42 +112,43 @@ const HERO_MINI_STATS = [
 export function heroSlider(base = '') {
   const slides = [
     {
-      img: 'assets/img/hero-banner.png',
-      eyebrow: 'AI DATA CENTER INFRASTRUCTURE',
-      headline: 'Building the Intelligent Infrastructure Behind Tomorrow’s Enterprises.',
-      description: 'GreenNext designs and delivers resilient, AI-ready data centers, intelligent automation, and energy-efficient digital infrastructure for forward-looking enterprises.',
-      primary: { text: 'Talk to an Expert', href: 'contact.html' },
-      secondary: { text: 'Explore Solutions', href: 'solutions/index.html' },
+      img: 'assets/img/datacenter-hero.jpg',
+      eyebrow: 'INTELLIGENT DIGITAL INFRASTRUCTURE',
+      headline: 'Build Beyond Compute. Build What’s Next.',
+      description: 'GreenNext brings AI-ready infrastructure, intelligent operations, and energy-conscious engineering together to help enterprises prepare for a data-driven future.',
+      primary: { text: 'Explore Our Infrastructure', href: 'capabilities/index.html' },
+      secondary: { text: 'Talk to an Expert', href: 'contact.html' },
       tags: [
-        { icon: 'server', text: 'AI Optimized' },
-        { icon: 'bolt', text: 'Energy Efficient' },
-        { icon: 'shield', text: '24/7 Monitoring' },
+        { icon: 'server', text: 'AI-Ready Computing' },
+        { icon: 'cpu', text: 'Intelligent Operations' },
+        { icon: 'bolt', text: 'Energy-Aware Design' },
+        { icon: 'network', text: 'Scalable Foundations' },
       ],
     },
     {
       img: 'assets/img/control-room.webp',
-      eyebrow: 'INTELLIGENT AUTOMATION',
-      headline: 'Smarter Infrastructure. Intelligent Operations.',
-      description: 'Automate telemetry, optimize cooling in real time, and eliminate operational blind spots with end-to-end AI workload monitoring and predictive management.',
-      primary: { text: 'Discover Our Capabilities', href: 'capabilities/index.html' },
+      eyebrow: 'INTELLIGENT OPERATIONS WORKFLOW',
+      headline: 'From Infrastructure Data to Better Decisions.',
+      description: 'Observe, understand, predict, optimize, and improve facility operations with high-fidelity telemetry, continuous sensor streaming, and closed-loop control.',
+      primary: { text: 'Discover Capabilities', href: 'capabilities/index.html' },
       secondary: { text: 'Talk to an Expert', href: 'contact.html' },
       tags: [
-        { icon: 'cpu', text: 'Autonomous Telemetry' },
-        { icon: 'spark', text: 'Predictive Alerts' },
-        { icon: 'shield', text: 'Closed-Loop Tuning' },
+        { icon: 'cpu', text: 'Telemetry Streaming' },
+        { icon: 'spark', text: 'Cross-Domain Anomaly Alerts' },
+        { icon: 'shield', text: 'Operational Visibility' },
       ],
     },
     {
       img: 'assets/img/solar-panels.webp',
-      eyebrow: 'SUSTAINABLE DIGITAL FUTURE',
-      headline: 'Powering Digital Growth, Sustainably.',
-      description: 'Pioneering clean computing architectures that integrate renewable energy sources, minimize power usage effectiveness, and drive carbon-conscious scalability.',
-      primary: { text: 'Explore Our Solutions', href: 'solutions/index.html' },
-      secondary: { text: 'Talk to an Expert', href: 'contact.html' },
+      eyebrow: 'ENERGY-AWARE ENGINEERING',
+      headline: 'Engineered for Scale. Designed for Efficiency.',
+      description: 'Harmonizing high-density compute with sustainable engineering, advanced cooling architectures, and responsible power utilization.',
+      primary: { text: 'Plan Your Infrastructure', href: 'contact.html' },
+      secondary: { text: 'Explore Solutions', href: 'solutions/index.html' },
       tags: [
-        { icon: 'bolt', text: 'Solar & Clean Grid' },
-        { icon: 'spark', text: 'High-Efficiency PUE' },
-        { icon: 'network', text: 'Responsible Growth' },
+        { icon: 'bolt', text: 'Energy Monitoring' },
+        { icon: 'spark', text: 'Thermal Optimization' },
+        { icon: 'network', text: 'Regional Connectivity' },
       ],
     },
   ];
@@ -197,36 +198,26 @@ export function heroSlider(base = '') {
   </section>`;
 }
 
-export function hero({ variant = 'light', eyebrow, headline, description, primary, secondary, base = '', compact = true, richMedia = false }) {
-  if (richMedia) {
-    return `
-    <section class="hero hero--photo-bg" style="background-image:url('${link(base, heroImg)}');">
-      <div class="hero-photo-overlay"></div>
-      <div class="container">
-        <div class="hero-content reveal" style="max-width:640px;">
-          ${eyebrow ? `<span class="hero-eyebrow">${eyebrow}</span>` : ''}
-          <h1 class="display-lg hero-title">${headline}</h1>
-          <p class="hero-description">${description}</p>
-          <div class="hero-ctas">
-            ${primary ? cta(primary.text, primary.href, { variant: 'primary', base }) : ''}
-            ${secondary ? cta(secondary.text, secondary.href, { variant: 'ghost', base }) : ''}
-          </div>
-          <div class="hero-mini-stats">
-            ${HERO_MINI_STATS.map(s => `
-              <div class="hero-mini-stat">
-                <span class="hero-mini-stat-icon">${icon(s.icon)}</span>
-                <span><strong>${s.label}</strong><br><span class="hero-mini-stat-sub">${s.sub}</span></span>
-              </div>`).join('')}
-          </div>
-        </div>
-      </div>
-      <div class="float-card float-card-1"><span class="float-card-dot"></span>AI Optimized</div>
-      <div class="float-card float-card-2"><span class="float-card-dot"></span>Energy Efficient</div>
-      <div class="float-card float-card-3"><span class="float-card-dot"></span>24/7 Monitoring</div>
-    </section>`;
-  }
+export function hero({
+  variant = 'dark',
+  eyebrow,
+  headline,
+  description,
+  primary,
+  secondary,
+  base = '',
+  compact = true,
+  img = '',
+  richMedia = false,
+  tags = []
+}) {
+  const resolvedImg = img || (richMedia ? heroImg : '');
+  const hasBg = Boolean(resolvedImg);
+  const secondaryVariant = variant === 'dark' ? 'ghost' : 'secondary';
+
   return `
-  <section class="hero hero--${variant}${compact ? ' hero--compact' : ''}">
+  <section class="hero hero--${variant}${compact ? ' hero--compact' : ''}${hasBg ? ' hero--has-bg' : ''}"${hasBg ? ` style="background-image:url('${link(base, resolvedImg)}');"` : ''}>
+    ${hasBg ? '<div class="hero-photo-overlay"></div>' : ''}
     <div class="${variant === 'dark' ? 'hero-bg-grid' : 'hero-bg-pattern'}"></div>
     <div class="container">
       <div class="hero-content reveal" style="max-width:760px;">
@@ -235,8 +226,16 @@ export function hero({ variant = 'light', eyebrow, headline, description, primar
         <p class="hero-description">${description}</p>
         <div class="hero-ctas">
           ${primary ? cta(primary.text, primary.href, { variant: 'primary', base }) : ''}
-          ${secondary ? cta(secondary.text, secondary.href, { variant: variant === 'dark' ? 'ghost' : 'secondary', base }) : ''}
+          ${secondary ? cta(secondary.text, secondary.href, { variant: secondaryVariant, base }) : ''}
         </div>
+        ${tags && tags.length ? `
+          <div class="hero-mini-stats" style="margin-top:var(--space-8);">
+            ${tags.map(t => `
+              <div class="hero-mini-stat">
+                <span class="hero-mini-stat-icon">${icon(t.icon || 'spark')}</span>
+                <span><strong>${t.label}</strong>${t.sub ? `<br><span class="hero-mini-stat-sub">${t.sub}</span>` : ''}</span>
+              </div>`).join('')}
+          </div>` : ''}
       </div>
     </div>
   </section>`;
@@ -282,24 +281,24 @@ export function cardGrid(base, items, { hrefPrefix, ctaText = 'Learn More', colu
 }
 
 export function metricsStrip() {
-  const metrics = [
-    { icon: 'database', value: '4 Regional Hubs', label: 'Madurai, Coimbatore, Trichy, Mangalore' },
-    { icon: 'shield', value: 'Continuous', label: 'AI Telemetry & Closed-Loop Tuning' },
-    { icon: 'cpu', value: 'AI Workloads', label: 'High-Density Compute Architecture' },
-    { icon: 'bolt', value: 'Low Impact', label: 'PUE & Renewable Energy Optimization' },
+  const pillars = [
+    { icon: 'cpu', title: 'AI-Ready Computing', desc: 'High-density rack configurations and thermal readiness engineered for accelerator clusters.' },
+    { icon: 'spark', title: 'Intelligent Operations', desc: 'Continuous telemetry, telemetry-driven anomaly alerts, and automated operational visibility.' },
+    { icon: 'bolt', title: 'Energy-Aware Design', desc: 'Optimized airflow, modern liquid cooling architectures, and carbon-conscious power management.' },
+    { icon: 'network', title: 'Scalable Foundations', desc: 'Resilient network backbones and strategic regional connectivity built for enterprise change.' },
   ];
   return `
   <section class="metrics-strip">
     <div class="container metrics-strip-inner">
       <div class="metrics-strip-items">
-        ${metrics.map(m => `
+        ${pillars.map(p => `
           <div class="metrics-strip-item">
-            <span class="metrics-strip-icon">${icon(m.icon)}</span>
-            <span><strong>${m.value}</strong><br><span class="metrics-strip-label">${m.label}</span></span>
+            <span class="metrics-strip-icon">${icon(p.icon)}</span>
+            <span><strong>${p.title}</strong><br><span class="metrics-strip-label">${p.desc}</span></span>
           </div>`).join('')}
       </div>
       <div class="metrics-strip-note">
-        SUSTAINABLE. INTELLIGENT. AHEAD. <br>ENTERPRISE DIGITAL PRESENCE <span class="btn-arrow">&rarr;</span>
+        NEXUS INTELLIGENCE <br>ENGINEERING TOMORROW <span class="btn-arrow">&rarr;</span>
       </div>
     </div>
   </section>`;
@@ -433,7 +432,7 @@ export function leadFormSection(bucket, { base = '', prefillLocation } = {}) {
               <div class="form-field--consent">
                 <input type="checkbox" id="consent_${bucket}" name="consent" required>
                 <label for="consent_${bucket}">
-                  I agree to the processing of my contact information in accordance with GreenNext's <a href="${link(base, 'privacy-policy.html')}" target="_blank">Privacy Policy</a>. *
+                  I agree to the processing of my contact information in accordance with GreenNext’s <a href="${link(base, 'privacy-policy.html')}" target="_blank">Privacy Policy</a>. *
                 </label>
               </div>
             </div>
@@ -562,12 +561,12 @@ export function footer(base) {
           </ul>
         </div>`).join('')}
       <div class="footer-col">
-        <h4 class="footer-col-title">Contact &amp; Enquiry</h4>
+        <h4 class="footer-col-title">Contact &amp; Advisory</h4>
         <ul class="footer-links">
-          <li><a href="mailto:hello@greennext.example">hello@greennext.example</a></li>
-          <li><a href="tel:+910000000000">+91 00000 00000</a></li>
+          <li><a href="${link(base, 'contact.html#schedule-consultation')}">Schedule Consultation &rarr;</a></li>
+          <li><a href="${link(base, 'contact.html#enquiry')}">Infrastructure Enquiry &rarr;</a></li>
           <li><a class="footer-whatsapp-link" href="#" data-whatsapp="true">${icon('whatsapp')} Chat on WhatsApp</a></li>
-          <li><a href="${link(base, 'contact.html')}">Consultation Request &rarr;</a></li>
+          <li><a href="${link(base, 'about.html')}">About GreenNext</a></li>
           <li><a href="${link(base, 'privacy-policy.html')}">Privacy Policy</a></li>
           <li><a href="${link(base, 'terms-and-conditions.html')}">Terms &amp; Conditions</a></li>
         </ul>
@@ -721,7 +720,7 @@ export function floatingLeadModal(base = '') {
           <div class="form-field--consent" style="grid-column:span 2;margin-top:var(--space-1);margin-bottom:var(--space-1);display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--color-text-muted);">
             <input type="checkbox" id="consent_floating" name="consent" required style="margin-top:3px;">
             <label for="consent_floating">
-              I agree to the processing of my contact information in accordance with GreenNext's <a href="${link(base, 'privacy-policy.html')}" target="_blank">Privacy Policy</a>. *
+              I agree to the processing of my contact information in accordance with GreenNext’s <a href="${link(base, 'privacy-policy.html')}" target="_blank">Privacy Policy</a>. *
             </label>
           </div>
         </div>
@@ -763,12 +762,13 @@ export function floatingWhatsAppWidget(base = '') {
 }
 
 export function page({ base = '', title, metaDesc, bodyHtml, jsExtra = [] }) {
+  const cleanTitle = title.includes('GreenNext') ? title : `${title} | GreenNext`;
   return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${title} | GreenNext</title>
+<title>${cleanTitle}</title>
 <meta name="description" content="${metaDesc}">
 <link rel="stylesheet" href="${link(base, 'css/main.css')}">
 <link rel="stylesheet" href="${link(base, 'css/nav.css')}">
@@ -839,35 +839,72 @@ export function anchorSection({ id, eyebrow, heading, body }) {
   </section>`;
 }
 
-export function intelligenceDashboardSection() {
+export function intelligenceDashboardSection(base = '') {
   const nodes = [
-    { icon: 'database', label: 'Data Center' },
-    { icon: 'cpu', label: 'AI Monitoring' },
-    { icon: 'spark', label: 'Analysis' },
-    { icon: 'shield', label: 'Prediction' },
-    { icon: 'bolt', label: 'Optimization' },
+    { icon: 'database', label: '1. Observe' },
+    { icon: 'cpu', label: '2. Understand' },
+    { icon: 'spark', label: '3. Predict' },
+    { icon: 'shield', label: '4. Optimize' },
+    { icon: 'bolt', label: '5. Improve' },
   ];
   return `
-  <section class="section bg-soft section-relative">
+  <section class="section bg-space section-relative" id="intelligence">
     <div class="container">
       <div class="intelligence-dashboard-grid">
         <div class="reveal reveal-left">
-          <span class="section-label">Intelligent Automation</span>
-          <h2 class="heading-xl">Intelligence at the Core</h2>
-          <p class="text-base text-muted" style="margin-top:var(--space-4);margin-bottom:var(--space-6);">AI transforms data center operations from reactive to proactive, continually balancing thermal loads, compute bursts, and energy efficiency.</p>
-          ${miniFlowHorizontal(nodes)}
-          <div style="margin-top:var(--space-6);">
-            <a class="btn btn-secondary btn-md" href="capabilities/intelligent-automation.html"><span>See Our Capabilities</span><span class="btn-arrow">&rarr;</span></a>
+          <span class="section-label" style="background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.3);color:var(--color-accent);">INFRASTRUCTURE TELEMETRY</span>
+          <h2 class="heading-xl" style="color:var(--color-white);margin-top:var(--space-2);">See the Signals Behind Your Infrastructure</h2>
+          <p class="text-base" style="color:var(--color-text-muted);margin-top:var(--space-4);margin-bottom:var(--space-6);line-height:1.7;">
+            Continuous multi-sensor telemetry captures thermal distributions, power utilization, and network load across every rack cluster, translating physical telemetry into operational clarity.
+          </p>
+          <div style="margin-bottom:var(--space-6);">
+            <div style="font-size:var(--font-size-xs);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent);margin-bottom:var(--space-3);">Operational Intelligence Lifecycle</div>
+            ${miniFlowHorizontal(nodes)}
+          </div>
+          <div style="display:flex;gap:var(--space-4);flex-wrap:wrap;align-items:center;">
+            <a class="btn btn-primary btn-md" href="${link(base, 'capabilities/intelligent-automation.html')}">
+              <span>Explore Operational Capabilities</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+            <a class="btn btn-ghost btn-md" href="${link(base, 'contact.html')}" data-open-lead-modal="true">
+              <span>Request Architecture Brief</span>
+            </a>
           </div>
         </div>
         <div class="reveal reveal-right">
           <div class="dashboard-mock-wrap">
-            <div class="section-label" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);color:var(--color-accent);margin-bottom:var(--space-5);">Platform View</div>
-            <h3 class="heading-md" style="color:white;margin-bottom:var(--space-2);">A Platform Built to See Everything</h3>
-            <p class="text-sm" style="color:rgba(255,255,255,0.55);margin-bottom:var(--space-6);">A conceptual view of the continuous visibility GreenNext infrastructure is designed to provide.</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4);">
+              <span class="section-label" style="background:rgba(0,212,255,0.12);border-color:rgba(0,212,255,0.3);color:var(--color-accent);">Platform Observability</span>
+              <span style="font-size:11px;color:var(--color-text-dim);font-family:var(--font-family-mono);letter-spacing:0.04em;">NEXUS-OPS // v4.2</span>
+            </div>
+            <h3 class="heading-md" style="color:white;margin-bottom:var(--space-2);">Continuous Facility Telemetry</h3>
+            <p class="text-sm" style="color:rgba(255,255,255,0.65);margin-bottom:var(--space-5);">Unified sensor streaming across power distributions, thermal zones, and non-blocking fabric.</p>
             ${dashboardMock()}
           </div>
         </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+export function architectureSection(base = '') {
+  return `
+  <section class="section bg-midnight section-relative" id="architecture">
+    <div class="cyber-grid-bg"></div>
+    <div class="container" style="position:relative;z-index:1;">
+      <div class="section-header section-header--center">
+        <span class="section-label" style="background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.3);color:var(--color-accent);">TECHNOLOGY &amp; ARCHITECTURE</span>
+        <h2 class="heading-xl" style="color:var(--color-white);margin-top:var(--space-2);">Engineered for Scale. Designed for Change.</h2>
+        <p class="text-lg" style="color:var(--color-text-muted);max-width:740px;margin:var(--space-3) auto 0;">
+          A multi-tiered infrastructure topology integrating high-density compute, resilient connectivity, continuous observability, and policy-driven automation.
+        </p>
+      </div>
+      ${architectureDiagram()}
+      <div style="margin-top:var(--space-8);text-align:center;">
+        <a class="btn btn-primary btn-lg" href="${link(base, 'contact.html')}" data-open-lead-modal="true">
+          <span>Consult on Architectural Deployment</span>
+          <span class="btn-arrow">&rarr;</span>
+        </a>
       </div>
     </div>
   </section>`;
@@ -1015,13 +1052,16 @@ export function useCasesSection(useCases = [], { eyebrow = 'Enterprise Applicati
   </section>`;
 }
 
-export function deepDiveSection({ eyebrow = 'Technical Deep Dive', heading, body, bullets = [], img = 'assets/img/server-hall.webp', alt = '', caption = '', base = '', ctaText = 'Talk to an Expert', ctaHref = 'contact.html', reverse = false } = {}) {
+export function deepDiveSection({ eyebrow = 'Technical Deep Dive', heading, body, bullets = [], img = 'assets/img/server-room.webp', alt = '', caption = '', base = '', ctaText = 'Talk to an Expert', ctaHref = 'contact.html', reverse = false } = {}) {
+  const resolvedHeading = heading || 'Infrastructure Deep Dive';
+  const resolvedAlt = alt || resolvedHeading;
+  const resolvedImg = img || 'assets/img/server-room.webp';
   return `
   <section class="section">
     <div class="container deep-dive-grid${reverse ? ' deep-dive-grid--reverse' : ''}">
       <div class="reveal reveal-${reverse ? 'right' : 'left'}">
         ${eyebrow ? `<span class="section-label">${eyebrow}</span>` : ''}
-        <h2 class="heading-xl" style="margin-bottom:var(--space-4);">${heading}</h2>
+        <h2 class="heading-xl" style="margin-bottom:var(--space-4);">${resolvedHeading}</h2>
         <p class="text-base text-muted" style="margin-bottom:var(--space-4);line-height:1.7;">${body}</p>
         ${bullets && bullets.length ? `
           <div class="deep-dive-bullets">
@@ -1041,7 +1081,7 @@ export function deepDiveSection({ eyebrow = 'Technical Deep Dive', heading, body
       </div>
       <div class="reveal reveal-${reverse ? 'left' : 'right'}">
         <div class="deep-dive-visual">
-          <img src="${link(base, img)}" alt="${alt || heading}" loading="lazy">
+          <img src="${link(base, resolvedImg)}" alt="${resolvedAlt}" loading="lazy">
           ${caption ? `<div class="deep-dive-caption">${caption}</div>` : ''}
         </div>
       </div>

@@ -993,7 +993,7 @@ export const industriesContent = {
     caption: 'High-performance research clusters and resilient campus digital networks.',
     deepDive: {
       eyebrow: 'Research Computing',
-      headline: 'Empowering Scientific Simulation and Multi-Campus Learning Networks',
+      heading: 'Empowering Scientific Simulation and Multi-Campus Learning Networks',
       body: 'Universities and research institutions require dual-purpose digital infrastructure: high-performance computing (HPC) for resource-heavy academic simulations (bioinformatics, physics, engineering), alongside highly available campus networks supporting tens of thousands of concurrent students accessing learning portals and digital libraries.',
       bullets: [
         'Dedicated high-density HPC compute clusters supporting MPI and parallel scientific workloads',

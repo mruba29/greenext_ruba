@@ -1,6 +1,5 @@
-// Original inline SVG/CSS illustrations used across the site. No photography —
-// see project notes: real data-center photography wasn't available to license,
-// so the premium visual layer is built entirely from vector shapes + gradients.
+// Visual layer for GreenNext "Nexus Intelligence"
+// Vector architectures, telemetry dashboards, maps, and workflow diagrams.
 import { icon } from './icons.mjs';
 
 export function curveDivider({ flip = false, fill = 'var(--color-bg)' } = {}) {
@@ -18,8 +17,8 @@ export function processFlow(steps, { id = 'flow' } = {}) {
   return `
   <div class="process-flow" id="${id}">
     ${steps.map((s, i) => `
-      <div class="process-step reveal reveal-delay-${Math.min(i + 1, 4)}">
-        <div class="process-step-icon">${icon(s.icon)}<span class="process-step-num">${i + 1}</span></div>
+      <div class="process-step reveal reveal-delay-${Math.min(i + 1, 5)}">
+        <div class="process-step-icon">${icon(s.icon || 'spark')}<span class="process-step-num">${i + 1}</span></div>
         <h4 class="process-step-title">${s.title}</h4>
         <p class="process-step-desc">${s.desc}</p>
       </div>
@@ -45,7 +44,7 @@ export function miniFlowHorizontal(nodes) {
   return `
   <div class="mini-flow">
     ${nodes.map((n, i) => `
-      <div class="mini-flow-node reveal reveal-delay-${Math.min(i + 1, 4)}">
+      <div class="mini-flow-node reveal reveal-delay-${Math.min(i + 1, 5)}">
         <div class="mini-flow-icon">${icon(n.icon)}</div>
         <span class="mini-flow-label">${n.label}</span>
       </div>
@@ -54,45 +53,159 @@ export function miniFlowHorizontal(nodes) {
   </div>`;
 }
 
-export function dashboardMock() {
-  const rings = [
-    { label: 'Server Utilization', value: 72 },
-    { label: 'Cooling Efficiency', value: 88 },
-    { label: 'AI Optimization', value: 94 },
+export function architectureDiagram() {
+  const layers = [
+    {
+      num: '01',
+      title: 'Compute & Accelerated Storage',
+      desc: 'High-density GPU/CPU node topologies, NVMe-over-Fabrics arrays, and dedicated AI cluster fabrics.',
+      icon: 'server',
+      tags: ['80kW+ Density', 'NVMe-oF Fabric', 'Accelerator Topology'],
+    },
+    {
+      num: '02',
+      title: 'Networking & Connectivity',
+      desc: 'Non-blocking spine-leaf network architecture, ultra-low jitter routing, and carrier-neutral optical backbones.',
+      icon: 'network',
+      tags: ['Sub-ms Latency', 'Carrier-Neutral', 'Redundant Dark Fiber'],
+    },
+    {
+      num: '03',
+      title: 'Monitoring & Observability',
+      desc: 'Continuous real-time telemetry streaming from PDU, rack thermal sensors, and optical transceivers.',
+      icon: 'cpu',
+      tags: ['Sub-second Telemetry', 'Sensor Mesh', 'Thermal Mapping'],
+    },
+    {
+      num: '04',
+      title: 'Automation & Orchestration',
+      desc: 'Policy-governed closed-loop management, dynamic cooling loop balancing, and programmatic failovers.',
+      icon: 'spark',
+      tags: ['Closed-Loop Tuning', 'Automated Containment', 'Failover Scripts'],
+    },
+    {
+      num: '05',
+      title: 'Data Platforms & Analytics',
+      desc: 'Operational data pipelines collecting multi-facility performance baselines for longitudinal efficiency gains.',
+      icon: 'database',
+      tags: ['Long-Term Baselines', 'Efficiency Auditing', 'Multi-Facility Sync'],
+    },
+    {
+      num: '06',
+      title: 'Security-Conscious Design',
+      desc: 'Multi-perimeter biometric access controls, isolated out-of-band management fabrics, and continuous compliance.',
+      icon: 'shield',
+      tags: ['Zero-Trust Architecture', 'Biometric Perimeter', 'Air-Gapped OOBM'],
+    },
   ];
-  const statuses = [
-    { label: 'Network Health', state: 'good' },
-    { label: 'Energy Consumption', state: 'good' },
-    { label: 'Infrastructure Status', state: 'good' },
-  ];
+
   return `
-  <div class="dashboard-mock reveal reveal-scale">
-    <div class="dashboard-mock-header">
-      <span class="dashboard-mock-dot"></span> Infrastructure Monitoring &mdash; illustrative interface
-    </div>
-    <div class="dashboard-mock-grid">
-      ${rings.map(r => `
-        <div class="dashboard-ring-card">
-          <div class="dashboard-ring" style="--val:${r.value}"><span>${r.value}%</span></div>
-          <span class="dashboard-ring-label">${r.label}</span>
-        </div>`).join('')}
-      <div class="dashboard-spark-card">
-        <svg viewBox="0 0 160 50" class="dashboard-spark">
-          <polyline points="0,40 20,32 40,35 60,20 80,24 100,10 120,16 140,6 160,12" fill="none" stroke="#00C97A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="dashboard-ring-label">Network Throughput</span>
-      </div>
-      ${statuses.map(s => `
-        <div class="dashboard-status-card">
-          <span class="dashboard-status-dot dashboard-status-dot--${s.state}"></span>
-          <span class="dashboard-ring-label">${s.label}</span>
-        </div>`).join('')}
+  <div class="arch-topology-wrapper reveal">
+    <div class="arch-topology-grid">
+      ${layers.map((layer, i) => `
+        <div class="arch-card reveal reveal-delay-${(i % 3) + 1}">
+          <div class="arch-card-header">
+            <span class="arch-card-num">${layer.num}</span>
+            <div class="arch-card-icon">${icon(layer.icon)}</div>
+          </div>
+          <h3 class="arch-card-title">${layer.title}</h3>
+          <p class="arch-card-desc">${layer.desc}</p>
+          <div class="arch-card-tags">
+            ${layer.tags.map(t => `<span class="arch-card-tag">${t}</span>`).join('')}
+          </div>
+        </div>
+      `).join('')}
     </div>
   </div>`;
 }
 
-// Approximate relative positions only — a stylized decorative map, not a
-// surveyed/geographic one. Coordinates are in a 0-100 space, scaled below.
+export function dashboardMock() {
+  const telemetry = [
+    {
+      category: 'Infrastructure Health',
+      value: '99.99%',
+      sub: 'All Nodes Nominal',
+      status: 'nominal',
+      icon: 'shield',
+    },
+    {
+      category: 'Resource Utilization',
+      value: '78.4%',
+      sub: 'Optimal Cluster Load',
+      status: 'nominal',
+      icon: 'server',
+    },
+    {
+      category: 'Energy Monitoring',
+      value: '1.14 PUE',
+      sub: 'High Efficiency Baseline',
+      status: 'nominal',
+      icon: 'bolt',
+    },
+    {
+      category: 'Network Performance',
+      value: '0.42 ms',
+      sub: 'Sub-ms Cluster Transit',
+      status: 'nominal',
+      icon: 'network',
+    },
+    {
+      category: 'Operational Events',
+      value: 'Zero Breaches',
+      sub: '24/7 Monitored Stream',
+      status: 'nominal',
+      icon: 'cpu',
+    },
+    {
+      category: 'Optimization Status',
+      value: '+14.2%',
+      sub: 'Containment Tuned',
+      status: 'nominal',
+      icon: 'spark',
+    },
+  ];
+
+  return `
+  <div class="dashboard-mock reveal reveal-scale">
+    <div class="dashboard-mock-header">
+      <div style="display:flex;align-items:center;gap:var(--space-2);">
+        <span class="dashboard-mock-dot"></span>
+        <span style="font-weight:700;color:#FFFFFF;letter-spacing:0.04em;text-transform:uppercase;font-size:11px;">Nexus Telemetry Console</span>
+      </div>
+      <span class="dashboard-demo-badge">SAMPLE DATA &bull; DEMONSTRATION INTERFACE</span>
+    </div>
+
+    <div class="dashboard-mock-grid">
+      ${telemetry.map(t => `
+        <div class="dashboard-telemetry-card">
+          <div class="dashboard-telemetry-top">
+            <span class="dashboard-telemetry-icon">${icon(t.icon)}</span>
+            <span class="dashboard-status-indicator"><span class="dashboard-status-dot dashboard-status-dot--good"></span> Nominal</span>
+          </div>
+          <div class="dashboard-telemetry-val">${t.value}</div>
+          <div class="dashboard-telemetry-cat">${t.category}</div>
+          <div class="dashboard-telemetry-sub">${t.sub}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="dashboard-telemetry-footer">
+      <div class="dashboard-telemetry-spark-row">
+        <div style="flex:1;">
+          <div style="font-size:11px;color:var(--color-cool-grey);margin-bottom:4px;">Dynamic Interconnect Load &amp; Thermal Distribution (Simulated Telemetry Stream)</div>
+          <svg viewBox="0 0 320 40" class="dashboard-spark" style="width:100%;height:32px;">
+            <polyline points="0,30 30,24 60,26 90,14 120,18 150,10 180,14 210,8 240,12 270,6 300,10 320,8" fill="none" stroke="#00D4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="dashboard-telemetry-disclaimer">
+        * Displayed telemetry reflects simulated operational monitoring parameters for demonstration and architectural scoping purposes.
+      </div>
+    </div>
+  </div>`;
+}
+
+// Map positions
 const MAP_POSITIONS = {
   mangalore: { x: 10, y: 14, labelSide: 'right' },
   trichy: { x: 40, y: 42, labelSide: 'right' },
@@ -100,8 +213,6 @@ const MAP_POSITIONS = {
   madurai: { x: 46, y: 68, labelSide: 'right' },
 };
 
-// Stylized organic landmass silhouette (not a real coastline) sized to
-// comfortably enclose the four marker positions above once scaled.
 const LAND_PATH = 'M 70 8 C 108 4 138 22 142 54 C 146 84 128 104 132 132 '
   + 'C 136 162 158 182 150 212 C 142 244 118 258 116 286 '
   + 'C 114 308 96 322 70 320 C 46 318 34 300 32 276 '
@@ -119,15 +230,15 @@ export function locationsMapVisual(locations) {
       <path d="${LAND_PATH}" class="locations-map-land"/>
       <path d="M 15 60 Q 60 40 100 70" class="locations-map-decor-line"/>
       <path d="M 30 250 Q 80 270 130 240" class="locations-map-decor-line"/>
-      <path d="${pathD}" fill="none" stroke="var(--color-primary)" stroke-width="1.4" stroke-dasharray="4 4" class="locations-map-path" opacity="0.4"/>
+      <path d="${pathD}" fill="none" stroke="#00D4FF" stroke-width="1.6" stroke-dasharray="4 4" class="locations-map-path" opacity="0.65"/>
       ${pts.map(p => {
         const s = scale(p);
         const labelX = p.labelSide === 'left' ? s.cx - 12 : s.cx + 12;
         const anchor = p.labelSide === 'left' ? 'end' : 'start';
         return `
         <g class="locations-map-marker${p.featured ? ' locations-map-marker--featured' : ''}" data-city="${p.slug}">
-          <circle cx="${s.cx}" cy="${s.cy}" r="11" class="locations-map-pulse"/>
-          <circle cx="${s.cx}" cy="${s.cy}" r="9" fill="rgba(0,201,122,0.16)"/>
+          <circle cx="${s.cx}" cy="${s.cy}" r="12" class="locations-map-pulse"/>
+          <circle cx="${s.cx}" cy="${s.cy}" r="8" fill="rgba(0, 212, 255, 0.22)"/>
           <circle cx="${s.cx}" cy="${s.cy}" r="4.5" class="locations-map-dot"/>
           <text x="${labelX}" y="${s.cy + 3}" text-anchor="${anchor}" class="locations-map-label">${p.name.toUpperCase()}</text>
         </g>`;

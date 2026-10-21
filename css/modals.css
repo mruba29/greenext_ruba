@@ -182,69 +182,69 @@
 .floating-actions-container,
 .floating-whatsapp {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: clamp(14px, 2.2vh, 24px);
+  right: clamp(14px, 2vw, 24px);
   z-index: 990;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 12px;
+  gap: 10px;
 }
 
 .floating-action-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .floating-lead-btn {
-  height: 50px;
-  padding: 0 20px;
+  height: 42px;
+  padding: 0 16px;
   border-radius: var(--radius-full);
   background: linear-gradient(135deg, #00D4FF 0%, #00B4D8 100%);
   color: #0B1220;
   border: 1px solid rgba(0, 212, 255, 0.5);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   font-weight: 700;
-  font-size: var(--font-size-sm);
-  box-shadow: 0 4px 20px rgba(0, 212, 255, 0.45);
+  font-size: 13px;
+  box-shadow: 0 4px 18px rgba(0, 212, 255, 0.4);
   cursor: pointer;
   transition: all var(--transition-base);
   text-decoration: none;
 }
 
 .floating-lead-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 .floating-lead-btn:hover {
   background: linear-gradient(135deg, #8BE9FF 0%, #00D4FF 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(0, 212, 255, 0.6);
+  box-shadow: 0 8px 26px rgba(0, 212, 255, 0.55);
   color: #0B1220;
 }
 
 .floating-whatsapp-btn {
-  width: 56px;
-  height: 56px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   background: #25D366;
   color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45);
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45);
   transition: all var(--transition-base);
   position: relative;
   text-decoration: none;
 }
 
 .floating-whatsapp-btn svg {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   fill: currentColor;
 }
 
@@ -335,11 +335,11 @@
   grid-column: span 2;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 992px), (max-height: 760px) {
   .floating-actions-container,
   .floating-whatsapp {
-    bottom: 16px;
-    right: 16px;
+    bottom: 14px;
+    right: 14px;
     gap: 8px;
   }
 
@@ -353,12 +353,18 @@
   }
 
   .floating-lead-btn {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     padding: 0;
     justify-content: center;
     border-radius: 50%;
   }
+
+  .floating-whatsapp-btn {
+    width: 44px;
+    height: 44px;
+  }
+}
 
   .gn-modal {
     padding: var(--space-6);

@@ -1,0 +1,2230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GreenNext — Email & Communication Templates</title>
+  <meta name="description" content="Enterprise Email and Communication Templates Module for GreenNext AI Data Center Infrastructure.">
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo-badge.svg">
+  
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&family=Outfit:wght@500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Base GreenNext styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/footer.css">
+
+  <style>
+    :root {
+      --tpl-electric-green: #00FF66;
+      --tpl-electric-green-glow: rgba(0, 255, 102, 0.25);
+      --tpl-midnight-navy: #0B1220;
+      --tpl-obsidian: #070B14;
+      --tpl-surface: #0D1526;
+      --tpl-surface-elevated: #111C35;
+      --tpl-surface-overlay: #152240;
+      --tpl-border: rgba(0, 255, 102, 0.2);
+      --tpl-border-subtle: rgba(255, 255, 255, 0.1);
+      --tpl-text-primary: #FFFFFF;
+      --tpl-text-secondary: #E8EDF5;
+      --tpl-text-muted: #8AA497;
+      --tpl-text-dim: #547063;
+      --tpl-light-grey: #E8EDF5;
+      --tpl-warning: #F59E0B;
+      --tpl-info: #3B82F6;
+      --tpl-danger: #EF4444;
+      --tpl-success: #00FF66;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body.templates-page {
+      background-color: var(--tpl-obsidian);
+      color: var(--tpl-text-secondary);
+      font-family: 'Inter', -apple-system, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* Top Navigation */
+    .templates-nav {
+      background: rgba(11, 18, 32, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--tpl-border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.85rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand-logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .brand-logo-text span {
+      color: var(--tpl-electric-green);
+    }
+
+    .module-badge {
+      font-size: 0.725rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(0, 255, 102, 0.12);
+      color: var(--tpl-electric-green);
+      border: 1px solid rgba(0, 255, 102, 0.3);
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--tpl-surface);
+      color: var(--tpl-text-secondary);
+      border: 1px solid var(--tpl-border-subtle);
+      padding: 0.5rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background: var(--tpl-surface-elevated);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-btn-primary {
+      background: var(--tpl-electric-green);
+      color: var(--tpl-midnight-navy);
+      border-color: var(--tpl-electric-green);
+      font-weight: 700;
+    }
+
+    .nav-btn-primary:hover {
+      background: #39FF14;
+      border-color: #39FF14;
+      color: #030705;
+      box-shadow: 0 0 16px var(--tpl-electric-green-glow);
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.775rem;
+      color: var(--tpl-text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--tpl-border-subtle);
+      padding: 0.4rem 0.75rem;
+      border-radius: 9999px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--tpl-electric-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--tpl-electric-green);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+
+    /* Main Container */
+    .templates-container {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 2.25rem 1.75rem 4rem 1.75rem;
+    }
+
+    /* Header Section */
+    .templates-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.75rem;
+      border-bottom: 1px solid var(--tpl-border-subtle);
+    }
+
+    .header-text h1 {
+      font-family: 'Outfit', 'Montserrat', sans-serif;
+      font-size: 2.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .header-text p {
+      font-size: 0.95rem;
+      color: var(--tpl-text-muted);
+      max-width: 720px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .stat-pill {
+      background: var(--tpl-surface);
+      border: 1px solid var(--tpl-border-subtle);
+      border-radius: 10px;
+      padding: 0.65rem 1.1rem;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .stat-value {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-value.accent {
+      color: var(--tpl-electric-green);
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tpl-text-muted);
+      font-weight: 600;
+    }
+
+    /* Controls Bar: Search & Category Filters */
+    .controls-panel {
+      background: var(--tpl-surface);
+      border: 1px solid var(--tpl-border-subtle);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      justify-content: space-between;
+    }
+
+    .search-box-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 280px;
+      max-width: 560px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--tpl-text-muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--tpl-obsidian);
+      border: 1px solid var(--tpl-border-subtle);
+      border-radius: 8px;
+      padding: 0.65rem 1rem 0.65rem 2.6rem;
+      color: #fff;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--tpl-electric-green);
+      box-shadow: 0 0 10px var(--tpl-electric-green-glow);
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .select-dropdown {
+      background: var(--tpl-obsidian);
+      color: #fff;
+      border: 1px solid var(--tpl-border-subtle);
+      border-radius: 8px;
+      padding: 0.65rem 1rem;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .select-dropdown:focus {
+      border-color: var(--tpl-electric-green);
+    }
+
+    /* Category Pill Tabs */
+    .categories-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .category-tab {
+      background: transparent;
+      color: var(--tpl-text-muted);
+      border: 1px solid transparent;
+      border-radius: 9999px;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .category-tab:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .category-tab.active {
+      background: rgba(0, 255, 102, 0.12);
+      color: var(--tpl-electric-green);
+      border-color: rgba(0, 255, 102, 0.35);
+      font-weight: 700;
+    }
+
+    .results-count {
+      font-size: 0.8rem;
+      color: var(--tpl-text-muted);
+      margin-left: auto;
+    }
+
+    /* Template Cards Grid */
+    .templates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .template-card {
+      background: var(--tpl-surface);
+      border: 1px solid var(--tpl-border-subtle);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .template-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--tpl-border);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    /* Category Badges */
+    .cat-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .cat-badge--welcome { background: rgba(59, 130, 246, 0.15); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .cat-badge--lead { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .cat-badge--consultation { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .cat-badge--followup { background: rgba(168, 85, 247, 0.15); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .cat-badge--proposal { background: rgba(0, 255, 102, 0.15); color: #00FF66; border: 1px solid rgba(0, 255, 102, 0.3); }
+    .cat-badge--thankyou { background: rgba(236, 72, 153, 0.15); color: #F472B6; border: 1px solid rgba(236, 72, 153, 0.3); }
+
+    /* Status Badges */
+    .status-badge {
+      font-size: 0.675rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .status-badge--active {
+      background: rgba(0, 255, 102, 0.1);
+      color: var(--tpl-electric-green);
+      border: 1px solid rgba(0, 255, 102, 0.3);
+    }
+
+    .status-badge--active::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--tpl-electric-green);
+      border-radius: 50%;
+    }
+
+    .status-badge--draft {
+      background: rgba(245, 158, 11, 0.1);
+      color: #FBBF24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .status-badge--draft::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: #FBBF24;
+      border-radius: 50%;
+    }
+
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 0.5rem 0;
+      line-height: 1.35;
+    }
+
+    .card-subject {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.825rem;
+      color: var(--tpl-text-muted);
+      margin-bottom: 0.85rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-subject strong {
+      color: #E2E8F0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-excerpt {
+      font-size: 0.85rem;
+      color: var(--tpl-text-muted);
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex-grow: 1;
+    }
+
+    .card-placeholders {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .placeholder-chip {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.675rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #AAB7CB;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+
+    .placeholder-chip.accent {
+      background: rgba(0, 255, 102, 0.08);
+      border-color: rgba(0, 255, 102, 0.25);
+      color: var(--tpl-electric-green);
+    }
+
+    .card-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .card-timestamp {
+      font-size: 0.725rem;
+      color: var(--tpl-text-dim);
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-icon {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--tpl-text-secondary);
+      border: 1px solid var(--tpl-border-subtle);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-icon:hover {
+      background: var(--tpl-surface-elevated);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-icon.btn-preview:hover {
+      border-color: var(--tpl-electric-green);
+      color: var(--tpl-electric-green);
+    }
+
+    .btn-icon.btn-delete:hover {
+      border-color: var(--tpl-danger);
+      color: var(--tpl-danger);
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    /* Modals & Overlays */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(3, 7, 5, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-dialog {
+      background: var(--tpl-midnight-navy);
+      border: 1px solid var(--tpl-border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 960px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      transform: scale(0.97);
+      transition: transform 0.25s ease;
+      overflow: hidden;
+    }
+
+    .modal-overlay.active .modal-dialog {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.75rem;
+      background: var(--tpl-surface);
+      border-bottom: 1px solid var(--tpl-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      color: #fff;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--tpl-text-muted);
+      cursor: pointer;
+      padding: 0.35rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .modal-close-btn:hover {
+      color: #fff;
+    }
+
+    .modal-body {
+      padding: 1.5rem 1.75rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-footer {
+      padding: 1.1rem 1.75rem;
+      background: var(--tpl-surface);
+      border-top: 1px solid var(--tpl-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.775rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--tpl-text-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      background: var(--tpl-obsidian);
+      border: 1px solid var(--tpl-border-subtle);
+      border-radius: 8px;
+      padding: 0.7rem 0.95rem;
+      color: #fff;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--tpl-electric-green);
+      box-shadow: 0 0 10px var(--tpl-electric-green-glow);
+    }
+
+    .form-textarea {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      resize: vertical;
+      min-height: 220px;
+    }
+
+    /* Placeholder Toolbar */
+    .placeholder-toolbar {
+      background: var(--tpl-surface-elevated);
+      border: 1px solid var(--tpl-border-subtle);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .placeholder-toolbar-title {
+      font-size: 0.725rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--tpl-text-muted);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .placeholder-toolbar-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .insert-pill-btn {
+      background: rgba(0, 255, 102, 0.08);
+      border: 1px solid rgba(0, 255, 102, 0.25);
+      color: var(--tpl-electric-green);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.725rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .insert-pill-btn:hover {
+      background: rgba(0, 255, 102, 0.2);
+      border-color: var(--tpl-electric-green);
+      transform: translateY(-1px);
+    }
+
+    /* Live Validation Banner */
+    .validation-banner {
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.825rem;
+      margin-bottom: 1.25rem;
+      display: none;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .validation-banner.warning {
+      display: flex;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #FCD34D;
+    }
+
+    .validation-banner.success {
+      display: flex;
+      background: rgba(0, 255, 102, 0.1);
+      border: 1px solid rgba(0, 255, 102, 0.3);
+      color: var(--tpl-electric-green);
+    }
+
+    /* Preview Modal Inner Components */
+    .preview-tabs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--tpl-border-subtle);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .preview-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--tpl-text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .preview-tab-btn.active {
+      background: var(--tpl-surface-elevated);
+      color: #fff;
+    }
+
+    .preview-viewport-toggle {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--tpl-obsidian);
+      padding: 3px;
+      border-radius: 6px;
+      border: 1px solid var(--tpl-border-subtle);
+    }
+
+    .viewport-btn {
+      background: transparent;
+      border: none;
+      color: var(--tpl-text-muted);
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+    }
+
+    .viewport-btn.active {
+      background: var(--tpl-surface-elevated);
+      color: #fff;
+    }
+
+    .preview-stage {
+      background: #030705;
+      border: 1px solid var(--tpl-border-subtle);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+    }
+
+    .email-frame-container {
+      width: 100%;
+      max-width: 620px;
+      transition: max-width 0.3s ease;
+      background: #0B1220;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .email-frame-container.mobile-view {
+      max-width: 380px;
+    }
+
+    .email-frame-header {
+      background: linear-gradient(135deg, #0B1220 0%, #111C35 100%);
+      padding: 24px 28px;
+      border-bottom: 2px solid var(--tpl-electric-green);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .email-frame-logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .email-frame-logo span {
+      color: var(--tpl-electric-green);
+    }
+
+    .email-frame-meta {
+      background: var(--tpl-obsidian);
+      padding: 12px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 13px;
+      color: var(--tpl-text-muted);
+    }
+
+    .email-frame-meta div {
+      margin: 3px 0;
+    }
+
+    .email-frame-meta strong {
+      color: #fff;
+    }
+
+    .email-frame-body {
+      padding: 28px 28px;
+      color: var(--tpl-light-grey);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .email-frame-body p {
+      margin: 0 0 16px 0;
+    }
+
+    .email-frame-body ul, .email-frame-body ol {
+      margin: 0 0 16px 0;
+      padding-left: 20px;
+    }
+
+    .email-frame-body li {
+      margin-bottom: 8px;
+    }
+
+    .email-frame-footer {
+      background: var(--tpl-obsidian);
+      padding: 20px 28px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+      color: var(--tpl-text-muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* Sample Data Drawer in Preview */
+    .sample-data-section {
+      background: var(--tpl-surface-elevated);
+      border: 1px solid var(--tpl-border-subtle);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .sample-data-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .sample-data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .sample-input-group label {
+      display: block;
+      font-size: 0.7rem;
+      font-family: 'Fira Code', monospace;
+      color: var(--tpl-electric-green);
+      margin-bottom: 0.25rem;
+    }
+
+    .sample-input-group input {
+      width: 100%;
+      background: var(--tpl-obsidian);
+      border: 1px solid var(--tpl-border-subtle);
+      border-radius: 6px;
+      padding: 0.45rem 0.65rem;
+      color: #fff;
+      font-size: 0.825rem;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .sample-input-group input:focus {
+      border-color: var(--tpl-electric-green);
+    }
+
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: var(--tpl-surface-elevated);
+      border: 1px solid var(--tpl-border);
+      border-radius: 10px;
+      padding: 0.85rem 1.25rem;
+      color: #fff;
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 280px;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: auto;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast-success { border-color: var(--tpl-electric-green); }
+    .toast-success .toast-icon { color: var(--tpl-electric-green); }
+    .toast-error { border-color: var(--tpl-danger); }
+    .toast-error .toast-icon { color: var(--tpl-danger); }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 1.5rem;
+      background: var(--tpl-surface);
+      border: 1px dashed var(--tpl-border);
+      border-radius: 14px;
+      grid-column: 1 / -1;
+    }
+
+    .empty-state-icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 1.25rem auto;
+      color: var(--tpl-electric-green);
+      opacity: 0.85;
+    }
+
+    .empty-state h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.45rem;
+      color: #fff;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .empty-state p {
+      color: var(--tpl-text-muted);
+      max-width: 480px;
+      margin: 0 auto 1.5rem auto;
+      font-size: 0.925rem;
+      line-height: 1.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .templates-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .templates-grid {
+        grid-template-columns: 1fr;
+      }
+      .search-box-wrap {
+        max-width: 100%;
+      }
+      .filter-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body class="templates-page">
+
+  <!-- Top Navigation -->
+  <header class="templates-nav">
+    <div class="brand-wrap">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-logo-text">Green<span>Next</span></div>
+      </a>
+      <span class="module-badge">Communication Templates</span>
+    </div>
+
+    <div class="nav-links">
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span id="sync-status">Backend Connected</span>
+      </div>
+      <a href="analytics.html" class="nav-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <span>Analytics Dashboard</span>
+      </a>
+      <button class="nav-btn nav-btn-primary" id="btn-create-top">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        <span>Create Template</span>
+      </button>
+      <a href="index.html" class="nav-btn">
+        <span>Exit to Site &rarr;</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="templates-container">
+
+    <!-- Header Section -->
+    <section class="templates-header">
+      <div class="header-text">
+        <h1>Email & Communication Templates</h1>
+        <p>Manage, customize, and preview standardized email communication templates across client onboarding, lead triage, consultation bookings, and infrastructure proposals.</p>
+      </div>
+      <div class="header-stats">
+        <div class="stat-pill">
+          <div class="stat-value accent" id="stat-total">0</div>
+          <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-value" id="stat-active" style="color:#00FF66;">0</div>
+          <div class="stat-label">Active</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-value" id="stat-draft" style="color:#FBBF24;">0</div>
+          <div class="stat-label">Draft</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls Panel: Search & Filters -->
+    <section class="controls-panel">
+      <div class="search-row">
+        <div class="search-box-wrap">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="search-input" class="search-input" placeholder="Search by template name, subject line, placeholder or keyword...">
+        </div>
+
+        <div class="filter-actions">
+          <select id="status-filter" class="select-dropdown">
+            <option value="All">All Statuses</option>
+            <option value="Active">Active Only</option>
+            <option value="Draft">Draft Only</option>
+          </select>
+
+          <button class="nav-btn nav-btn-primary" id="btn-create-filter">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+            <span>New Template</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="categories-bar" id="categories-bar">
+        <button class="category-tab active" data-cat="All">All Templates</button>
+        <button class="category-tab" data-cat="Welcome Emails">1. Welcome Emails</button>
+        <button class="category-tab" data-cat="Lead Notifications">2. Lead Notifications</button>
+        <button class="category-tab" data-cat="Consultation Confirmations">3. Consultation Confirmations</button>
+        <button class="category-tab" data-cat="Follow-up Emails">4. Follow-up Emails</button>
+        <button class="category-tab" data-cat="Proposal Emails">5. Proposal Emails</button>
+        <button class="category-tab" data-cat="Thank-you Emails">6. Thank-you Emails</button>
+        <span class="results-count" id="results-count">Loading templates...</span>
+      </div>
+    </section>
+
+    <!-- Template Cards Grid -->
+    <section class="templates-grid" id="templates-grid">
+      <!-- Injected via JavaScript -->
+    </section>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: Template Editor (Create / Edit)                                 -->
+  <!-- ===================================================================== -->
+  <div class="modal-overlay" id="editor-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="editor-modal-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span id="editor-title-text">Create Template</span>
+        </h2>
+        <button class="modal-close-btn" id="editor-close-btn" title="Close editor">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form id="template-form">
+          <input type="hidden" id="form-template-id">
+
+          <!-- Row: Name, Category, Status -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="form-name">Template Name *</label>
+              <input type="text" id="form-name" class="form-input" placeholder="e.g. Client Welcome & Solutions Overview" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="form-category">Category *</label>
+              <select id="form-category" class="form-select" required>
+                <option value="Welcome Emails">1. Welcome Emails</option>
+                <option value="Lead Notifications">2. Lead Notifications</option>
+                <option value="Consultation Confirmations">3. Consultation Confirmations</option>
+                <option value="Follow-up Emails">4. Follow-up Emails</option>
+                <option value="Proposal Emails">5. Proposal Emails</option>
+                <option value="Thank-you Emails">6. Thank-you Emails</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="form-status">Status</label>
+              <select id="form-status" class="form-select">
+                <option value="Active">Active</option>
+                <option value="Draft">Draft</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Email Subject -->
+          <div class="form-group">
+            <label class="form-label" for="form-subject">Email Subject Line *</label>
+            <input type="text" id="form-subject" class="form-input" placeholder="e.g. Welcome to GreenNext" required>
+          </div>
+
+          <!-- Placeholders Toolbar -->
+          <div class="placeholder-toolbar">
+            <div class="placeholder-toolbar-title">
+              <span>Insert Approved Placeholders (Click to Add at Cursor)</span>
+              <span style="font-weight: 400; color: #547063;">Safe Variable Substitution</span>
+            </div>
+            <div class="placeholder-toolbar-pills">
+              <button type="button" class="insert-pill-btn" data-tag="{{customer_name}}">+ {{customer_name}}</button>
+              <button type="button" class="insert-pill-btn" data-tag="{{customer_email}}">+ {{customer_email}}</button>
+              <button type="button" class="insert-pill-btn" data-tag="{{company_name}}">+ {{company_name}}</button>
+              <button type="button" class="insert-pill-btn" data-tag="{{enquiry_type}}">+ {{enquiry_type}}</button>
+              <button type="button" class="insert-pill-btn" data-tag="{{requirements}}">+ {{requirements}}</button>
+              <button type="button" class="insert-pill-btn" data-tag="{{consultation_date}}">+ {{consultation_date}}</button>
+              <button type="button" class="insert-pill-btn" data-tag="{{consultation_time}}">+ {{consultation_time}}</button>
+              <button type="button" class="insert-pill-btn" data-tag="{{proposal_link}}">+ {{proposal_link}}</button>
+              <button type="button" class="insert-pill-btn" data-tag="{{submission_time}}">+ {{submission_time}}</button>
+            </div>
+          </div>
+
+          <!-- Validation Warning Area -->
+          <div class="validation-banner" id="editor-validation-banner">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+            <span id="editor-validation-text"></span>
+          </div>
+
+          <!-- Email Body (HTML / Rich text structure) -->
+          <div class="form-group">
+            <label class="form-label" for="form-body">Email Body (HTML / Formatted Content) *</label>
+            <textarea id="form-body" class="form-textarea" placeholder="<p>Hello {{customer_name}},</p>&#10;&#10;<p>Welcome to GreenNext...</p>" required></textarea>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="nav-btn" id="editor-cancel-btn">Cancel</button>
+        <button type="button" class="nav-btn" id="editor-preview-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Live Preview</span>
+        </button>
+        <button type="button" class="nav-btn" id="editor-save-draft-btn">Save as Draft</button>
+        <button type="button" class="nav-btn nav-btn-primary" id="editor-save-btn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: Template Preview & Test Email Dispatch                         -->
+  <!-- ===================================================================== -->
+  <div class="modal-overlay" id="preview-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span id="preview-modal-title">Template Preview</span>
+        </h2>
+        <button class="modal-close-btn" id="preview-close-btn" title="Close preview">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="preview-tabs">
+          <button class="preview-tab-btn active" id="tab-visual">Email Rendering</button>
+          <button class="preview-tab-btn" id="tab-html">HTML Output</button>
+          
+          <div class="preview-viewport-toggle">
+            <button class="viewport-btn active" id="btn-view-desktop" title="Desktop width (620px)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              <span>Desktop</span>
+            </button>
+            <button class="viewport-btn" id="btn-view-mobile" title="Mobile responsive view (380px)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg>
+              <span>Mobile</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Visual Stage Container -->
+        <div class="preview-stage" id="preview-visual-stage">
+          <div class="email-frame-container" id="email-frame">
+            <div class="email-frame-header">
+              <div>
+                <div class="email-frame-logo">Green<span>Next</span></div>
+                <div style="font-size: 10px; color: #8AA497; text-transform: uppercase; letter-spacing: 1px; margin-top: 3px;">
+                  AI Data Center Digital Infrastructure
+                </div>
+              </div>
+              <span id="preview-category-badge" class="cat-badge cat-badge--welcome">Welcome Emails</span>
+            </div>
+
+            <div class="email-frame-meta">
+              <div><strong>Subject:</strong> <span id="preview-meta-subject">Welcome to GreenNext</span></div>
+              <div><strong>From:</strong> GreenNext &lt;notifications@greennext.in&gt;</div>
+              <div><strong>To:</strong> <span id="preview-meta-recipient">Aravind Raman &lt;aravind.raman@ai-core.tech&gt;</span></div>
+            </div>
+
+            <div class="email-frame-body" id="preview-rendered-body">
+              <!-- Rendered with safe placeholders -->
+            </div>
+
+            <div class="email-frame-footer">
+              <p style="margin: 0 0 6px 0;">GreenNext Digital Infrastructure Private Limited &bull; AI Infrastructure & Compute Engineering</p>
+              <p style="margin: 0; color: #547063;">Bangalore &bull; Coimbatore &bull; Singapore &bull; <a href="https://greennext.in" style="color: #00FF66; text-decoration: none;">greennext.in</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- HTML Source Stage -->
+        <div class="preview-stage" id="preview-html-stage" style="display: none;">
+          <pre id="preview-html-code" style="color: #00FF66; font-family: 'Fira Code', monospace; font-size: 13px; margin: 0; white-space: pre-wrap; word-break: break-all; width: 100%;"></pre>
+        </div>
+
+        <!-- Sample Placeholders Data Drawer -->
+        <div class="sample-data-section">
+          <div class="sample-data-header" id="sample-data-toggle">
+            <span style="font-size: 0.825rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              Customize Test Placeholder Data
+            </span>
+            <span style="font-size: 0.75rem; color: var(--tpl-electric-green);">Click to modify values</span>
+          </div>
+          <div class="sample-data-grid" id="sample-data-grid">
+            <div class="sample-input-group">
+              <label>{{customer_name}}</label>
+              <input type="text" data-key="customer_name" value="Aravind Raman" class="sample-field">
+            </div>
+            <div class="sample-input-group">
+              <label>{{customer_email}}</label>
+              <input type="text" data-key="customer_email" value="aravind.raman@ai-core.tech" class="sample-field">
+            </div>
+            <div class="sample-input-group">
+              <label>{{company_name}}</label>
+              <input type="text" data-key="company_name" value="AICore Technologies" class="sample-field">
+            </div>
+            <div class="sample-input-group">
+              <label>{{enquiry_type}}</label>
+              <input type="text" data-key="enquiry_type" value="AI Data Center Sizing" class="sample-field">
+            </div>
+            <div class="sample-input-group">
+              <label>{{requirements}}</label>
+              <input type="text" data-key="requirements" value="120kW high-density rack deployment with direct-to-chip liquid cooling for H100 cluster." class="sample-field">
+            </div>
+            <div class="sample-input-group">
+              <label>{{consultation_date}}</label>
+              <input type="text" data-key="consultation_date" value="November 12, 2026" class="sample-field">
+            </div>
+            <div class="sample-input-group">
+              <label>{{consultation_time}}</label>
+              <input type="text" data-key="consultation_time" value="03:30 PM" class="sample-field">
+            </div>
+            <div class="sample-input-group">
+              <label>{{proposal_link}}</label>
+              <input type="text" data-key="proposal_link" value="https://greennext.in/proposals/sample-proposal.pdf" class="sample-field">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="nav-btn" id="preview-edit-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span>Edit This Template</span>
+        </button>
+        <button type="button" class="nav-btn nav-btn-primary" id="preview-send-test-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span>Send Test Email</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: Send Test Email Dialog                                         -->
+  <!-- ===================================================================== -->
+  <div class="modal-overlay" id="test-email-modal">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-header">
+        <h2>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span>Send Test Email</span>
+        </h2>
+        <button class="modal-close-btn" id="test-email-close-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size: 0.875rem; color: var(--tpl-text-muted); margin-top: 0;">
+          Dispatch a live rendered preview of this template with verified sample variables to your inbox.
+        </p>
+
+        <div class="form-group">
+          <label class="form-label" for="test-recipient-email">Recipient Email Address *</label>
+          <input type="email" id="test-recipient-email" class="form-input" placeholder="e.g. yourname@company.com" value="ruba.int2027g3@gmail.com" required>
+        </div>
+
+        <div id="test-email-status-box" style="display:none; padding: 12px; border-radius: 8px; font-size: 13px; line-height: 1.5;"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="nav-btn" id="test-email-cancel-btn">Cancel</button>
+        <button type="button" class="nav-btn nav-btn-primary" id="test-email-submit-btn">
+          <span>Dispatch Test Email</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL: Delete Confirmation                                            -->
+  <!-- ===================================================================== -->
+  <div class="modal-overlay" id="delete-modal">
+    <div class="modal-dialog" style="max-width: 480px;">
+      <div class="modal-header">
+        <h2 style="color: var(--tpl-danger);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          <span>Delete Template</span>
+        </h2>
+        <button class="modal-close-btn" id="delete-close-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p style="margin: 0 0 10px 0; font-size: 0.95rem; color: #fff;">
+          Are you sure you want to permanently delete <strong id="delete-template-name" style="color: var(--tpl-electric-green);"></strong>?
+        </p>
+        <p style="margin: 0; font-size: 0.825rem; color: var(--tpl-text-muted);">
+          This destructive action cannot be undone. Saved instances of this template will be removed from the server repository.
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <input type="hidden" id="delete-template-id">
+        <button type="button" class="nav-btn" id="delete-cancel-btn">Keep Template</button>
+        <button type="button" class="nav-btn" id="delete-confirm-btn" style="background: var(--tpl-danger); color: #fff; border-color: var(--tpl-danger);">Delete Permanently</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ===================================================================== -->
+  <!-- APPLICATION LOGIC                                                     -->
+  <!-- ===================================================================== -->
+  <script>
+    (function() {
+      'use strict';
+
+      // Approved Placeholders Catalog
+      const APPROVED_PLACEHOLDERS = [
+        'customer_name',
+        'customer_email',
+        'company_name',
+        'enquiry_type',
+        'requirements',
+        'consultation_date',
+        'consultation_time',
+        'proposal_link',
+        'submission_time'
+      ];
+
+      // Default sample substitution data
+      const sampleData = {
+        customer_name: 'Aravind Raman',
+        customer_email: 'aravind.raman@ai-core.tech',
+        company_name: 'AICore Technologies',
+        enquiry_type: 'AI Data Center Sizing',
+        requirements: '120kW high-density rack deployment with direct-to-chip liquid cooling for H100 cluster.',
+        consultation_date: 'November 12, 2026',
+        consultation_time: '03:30 PM',
+        proposal_link: 'https://greennext.in/proposals/gnx-prop-2026-aicore.pdf',
+        submission_time: '29 Oct 2026, 08:00 PM IST'
+      };
+
+      // State
+      let templates = [];
+      let activeCategory = 'All';
+      let activeStatus = 'All';
+      let activeSearch = '';
+      let currentActiveTemplate = null;
+
+      // DOM Elements
+      const grid = document.getElementById('templates-grid');
+      const searchInput = document.getElementById('search-input');
+      const statusFilter = document.getElementById('status-filter');
+      const categoriesBar = document.getElementById('categories-bar');
+      const resultsCount = document.getElementById('results-count');
+      const statTotal = document.getElementById('stat-total');
+      const statActive = document.getElementById('stat-active');
+      const statDraft = document.getElementById('stat-draft');
+
+      // Modals
+      const editorModal = document.getElementById('editor-modal');
+      const previewModal = document.getElementById('preview-modal');
+      const testEmailModal = document.getElementById('test-email-modal');
+      const deleteModal = document.getElementById('delete-modal');
+
+      // Form Elements
+      const templateForm = document.getElementById('template-form');
+      const formTemplateId = document.getElementById('form-template-id');
+      const formName = document.getElementById('form-name');
+      const formCategory = document.getElementById('form-category');
+      const formStatus = document.getElementById('form-status');
+      const formSubject = document.getElementById('form-subject');
+      const formBody = document.getElementById('form-body');
+      const editorValidationBanner = document.getElementById('editor-validation-banner');
+      const editorValidationText = document.getElementById('editor-validation-text');
+
+      // Toast Notification helper
+      function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        
+        const iconSvg = type === 'success' 
+          ? '<svg class="toast-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
+          : '<svg class="toast-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+
+        toast.innerHTML = `${iconSvg}<span>${escapeHtml(message)}</span>`;
+        container.appendChild(toast);
+        
+        requestAnimationFrame(() => toast.classList.add('show'));
+        setTimeout(() => {
+          toast.classList.remove('show');
+          setTimeout(() => toast.remove(), 350);
+        }, 4000);
+      }
+
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function sanitizeEmailHtml(html) {
+        if (!html) return '';
+        // Strip dangerous scripts or iframes while preserving safe formatting
+        return html
+          .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+          .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+          .replace(/on\w+="[^"]*"/gi, '')
+          .replace(/on\w+='[^']*'/gi, '');
+      }
+
+      function getCategoryBadgeClass(category) {
+        if (!category) return 'cat-badge--welcome';
+        if (category.includes('Welcome')) return 'cat-badge--welcome';
+        if (category.includes('Lead')) return 'cat-badge--lead';
+        if (category.includes('Consultation')) return 'cat-badge--consultation';
+        if (category.includes('Follow-up')) return 'cat-badge--followup';
+        if (category.includes('Proposal')) return 'cat-badge--proposal';
+        if (category.includes('Thank-you')) return 'cat-badge--thankyou';
+        return 'cat-badge--welcome';
+      }
+
+      function formatTimestamp(isoStr) {
+        if (!isoStr) return 'Just now';
+        try {
+          const d = new Date(isoStr);
+          return d.toLocaleDateString('en-IN', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          });
+        } catch (e) {
+          return isoStr;
+        }
+      }
+
+      function stripHtml(html) {
+        if (!html) return '';
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || '';
+      }
+
+      // Placeholder substitution
+      function substitutePlaceholders(text, data) {
+        if (!text) return '';
+        return text.replace(/\{\{([a-zA-Z0-9_]+)\}\}/g, (match, key) => {
+          return data[key] !== undefined ? data[key] : match;
+        });
+      }
+
+      // Validate Placeholders in subject and body
+      function checkPlaceholderHealth(subject, body) {
+        const combined = (subject || '') + ' ' + (body || '');
+        const matches = combined.match(/\{\{([a-zA-Z0-9_]+)\}\}/g) || [];
+        const detected = [...new Set(matches.map(m => m.replace(/[\{\}]/g, '').trim()))];
+        
+        const invalid = detected.filter(p => !APPROVED_PLACEHOLDERS.includes(p));
+        return {
+          detected,
+          invalid,
+          hasInvalid: invalid.length > 0
+        };
+      }
+
+      // -----------------------------------------------------------------------
+      // API Interactions (Persistent Backend)
+      // -----------------------------------------------------------------------
+      async function fetchTemplates() {
+        try {
+          const res = await fetch('/api/templates');
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (data && Array.isArray(data.templates)) {
+            templates = data.templates;
+            // Also store in localStorage for offline resilience
+            try { localStorage.setItem('gnx_templates_cache', JSON.stringify(templates)); } catch(e){}
+            renderDashboard();
+            return;
+          }
+        } catch (err) {
+          console.warn('[Templates] Backend fetch error, attempting local cache fallback:', err.message);
+          try {
+            const cached = localStorage.getItem('gnx_templates_cache');
+            if (cached) {
+              templates = JSON.parse(cached);
+              renderDashboard();
+              document.getElementById('sync-status').textContent = 'Local Cache Active';
+              return;
+            }
+          } catch(e){}
+          showToast('Could not reach backend template service', 'error');
+        }
+      }
+
+      async function persistTemplate(templatePayload) {
+        const isUpdate = !!templatePayload.id;
+        const res = await fetch('/api/templates', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(templatePayload)
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'Failed to save template');
+        }
+        return data;
+      }
+
+      async function deleteTemplateFromApi(templateId) {
+        const res = await fetch('/api/templates', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'delete', id: templateId })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'Failed to delete template');
+        }
+        return data;
+      }
+
+      async function duplicateTemplateOnApi(templateId) {
+        const res = await fetch('/api/templates', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'duplicate', id: templateId })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.error || 'Failed to duplicate template');
+        }
+        return data;
+      }
+
+      // -----------------------------------------------------------------------
+      // UI Rendering
+      // -----------------------------------------------------------------------
+      function renderDashboard() {
+        // Compute stats
+        const total = templates.length;
+        const active = templates.filter(t => (t.status || 'Active').toLowerCase() === 'active').length;
+        const draft = total - active;
+
+        statTotal.textContent = total;
+        statActive.textContent = active;
+        statDraft.textContent = draft;
+
+        // Filter templates
+        let filtered = templates.slice();
+
+        // 1. Category Filter
+        if (activeCategory !== 'All') {
+          filtered = filtered.filter(t => t.category === activeCategory);
+        }
+
+        // 2. Status Filter
+        if (activeStatus !== 'All') {
+          filtered = filtered.filter(t => (t.status || 'Active').toLowerCase() === activeStatus.toLowerCase());
+        }
+
+        // 3. Search Filter
+        if (activeSearch) {
+          const q = activeSearch.toLowerCase().trim();
+          filtered = filtered.filter(t => 
+            (t.name && t.name.toLowerCase().includes(q)) ||
+            (t.subject && t.subject.toLowerCase().includes(q)) ||
+            (t.category && t.category.toLowerCase().includes(q)) ||
+            (t.body && t.body.toLowerCase().includes(q)) ||
+            (t.placeholders && t.placeholders.some(p => p.toLowerCase().includes(q)))
+          );
+        }
+
+        resultsCount.textContent = `Showing ${filtered.length} of ${total} templates`;
+
+        if (filtered.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state">
+              <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <h3>No matching templates found</h3>
+              <p>Try refining your search keyword, selecting a different category, or create a brand new communication template.</p>
+              <button class="nav-btn nav-btn-primary" id="btn-empty-create">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                <span>Create New Template</span>
+              </button>
+            </div>
+          `;
+          const emptyBtn = document.getElementById('btn-empty-create');
+          if (emptyBtn) emptyBtn.addEventListener('click', openCreateModal);
+          return;
+        }
+
+        grid.innerHTML = filtered.map(t => {
+          const catClass = getCategoryBadgeClass(t.category);
+          const statusClass = (t.status || 'Active').toLowerCase() === 'draft' ? 'status-badge--draft' : 'status-badge--active';
+          const plainExcerpt = stripHtml(t.body);
+          const placeholders = t.placeholders && t.placeholders.length > 0 
+            ? t.placeholders.slice(0, 4).map(p => `<span class="placeholder-chip accent">{{${escapeHtml(p)}}}</span>`).join('') + (t.placeholders.length > 4 ? `<span class="placeholder-chip">+${t.placeholders.length - 4} more</span>` : '')
+            : '<span class="placeholder-chip">Standard static</span>';
+
+          return `
+            <div class="template-card" data-id="${t.id}">
+              <div class="card-top">
+                <span class="cat-badge ${catClass}">${escapeHtml(t.category || 'General')}</span>
+                <span class="status-badge ${statusClass}">${escapeHtml(t.status || 'Active')}</span>
+              </div>
+
+              <h3 class="card-title">${escapeHtml(t.name)}</h3>
+
+              <div class="card-subject" title="${escapeHtml(t.subject)}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <strong>${escapeHtml(t.subject)}</strong>
+              </div>
+
+              <div class="card-excerpt">${escapeHtml(plainExcerpt)}</div>
+
+              <div class="card-placeholders">
+                ${placeholders}
+              </div>
+
+              <div class="card-footer">
+                <span class="card-timestamp">Updated ${formatTimestamp(t.updatedAt || t.createdAt)}</span>
+                <div class="card-actions">
+                  <button class="btn-icon btn-preview" data-id="${t.id}" title="Preview template">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                  <button class="btn-icon btn-edit" data-id="${t.id}" title="Edit template">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                  </button>
+                  <button class="btn-icon btn-duplicate" data-id="${t.id}" title="Duplicate template">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  </button>
+                  <button class="btn-icon btn-delete" data-id="${t.id}" title="Delete template">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Attach action handlers
+        grid.querySelectorAll('.btn-preview').forEach(btn => {
+          btn.addEventListener('click', () => openPreviewModal(btn.dataset.id));
+        });
+        grid.querySelectorAll('.btn-edit').forEach(btn => {
+          btn.addEventListener('click', () => openEditModal(btn.dataset.id));
+        });
+        grid.querySelectorAll('.btn-duplicate').forEach(btn => {
+          btn.addEventListener('click', () => handleDuplicate(btn.dataset.id));
+        });
+        grid.querySelectorAll('.btn-delete').forEach(btn => {
+          btn.addEventListener('click', () => openDeleteModal(btn.dataset.id));
+        });
+      }
+
+      // -----------------------------------------------------------------------
+      // Modal Open/Close Controls
+      // -----------------------------------------------------------------------
+      function openModal(modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal(modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function openCreateModal() {
+        formTemplateId.value = '';
+        formName.value = '';
+        formCategory.value = activeCategory !== 'All' ? activeCategory : 'Welcome Emails';
+        formStatus.value = 'Active';
+        formSubject.value = '';
+        formBody.value = '';
+        document.getElementById('editor-title-text').textContent = 'Create New Template';
+        editorValidationBanner.className = 'validation-banner';
+        openModal(editorModal);
+        formName.focus();
+      }
+
+      function openEditModal(templateId) {
+        const t = templates.find(x => x.id === templateId);
+        if (!t) return;
+        currentActiveTemplate = t;
+
+        formTemplateId.value = t.id;
+        formName.value = t.name || '';
+        formCategory.value = t.category || 'Welcome Emails';
+        formStatus.value = t.status || 'Active';
+        formSubject.value = t.subject || '';
+        formBody.value = t.body || '';
+        document.getElementById('editor-title-text').textContent = `Edit Template: ${t.name}`;
+
+        validateFormPlaceholders();
+        openModal(editorModal);
+      }
+
+      function validateFormPlaceholders() {
+        const health = checkPlaceholderHealth(formSubject.value, formBody.value);
+        if (health.hasInvalid) {
+          editorValidationBanner.className = 'validation-banner warning';
+          editorValidationText.innerHTML = `<strong>Notice:</strong> Unrecognized placeholder(s): <code>${health.invalid.map(p => '{{' + p + '}}').join(', ')}</code>. These will render as plain text.`;
+        } else if (health.detected.length > 0) {
+          editorValidationBanner.className = 'validation-banner success';
+          editorValidationText.innerHTML = `<strong>Verified:</strong> ${health.detected.length} approved placeholder(s) configured.`;
+        } else {
+          editorValidationBanner.className = 'validation-banner';
+        }
+      }
+
+      formSubject.addEventListener('input', validateFormPlaceholders);
+      formBody.addEventListener('input', validateFormPlaceholders);
+
+      // Insert placeholder at cursor in active input/textarea
+      document.querySelectorAll('.insert-pill-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tag = btn.dataset.tag;
+          const activeElem = document.activeElement === formSubject ? formSubject : formBody;
+          const start = activeElem.selectionStart || activeElem.value.length;
+          const end = activeElem.selectionEnd || activeElem.value.length;
+          const text = activeElem.value;
+          activeElem.value = text.substring(0, start) + tag + text.substring(end);
+          activeElem.selectionStart = activeElem.selectionEnd = start + tag.length;
+          activeElem.focus();
+          validateFormPlaceholders();
+        });
+      });
+
+      // -----------------------------------------------------------------------
+      // Preview Rendering Modal
+      // -----------------------------------------------------------------------
+      function openPreviewModal(templateId) {
+        const t = templates.find(x => x.id === templateId);
+        if (!t) return;
+        currentActiveTemplate = t;
+
+        document.getElementById('preview-modal-title').textContent = t.name;
+        document.getElementById('preview-category-badge').textContent = t.category;
+        document.getElementById('preview-category-badge').className = `cat-badge ${getCategoryBadgeClass(t.category)}`;
+
+        updatePreviewRender();
+        openModal(previewModal);
+      }
+
+      function getLiveSampleData() {
+        const current = { ...sampleData };
+        document.querySelectorAll('.sample-field').forEach(input => {
+          const key = input.dataset.key;
+          if (key) current[key] = input.value;
+        });
+        return current;
+      }
+
+      function updatePreviewRender() {
+        if (!currentActiveTemplate) return;
+        const currentData = getLiveSampleData();
+
+        const renderedSubj = substitutePlaceholders(currentActiveTemplate.subject, currentData);
+        const renderedHtml = sanitizeEmailHtml(substitutePlaceholders(currentActiveTemplate.body, currentData));
+
+        document.getElementById('preview-meta-subject').textContent = renderedSubj;
+        document.getElementById('preview-meta-recipient').textContent = `${currentData.customer_name} <${currentData.customer_email}>`;
+        document.getElementById('preview-rendered-body').innerHTML = renderedHtml;
+
+        // Also update HTML raw output
+        document.getElementById('preview-html-code').textContent = renderedHtml;
+      }
+
+      // Live updates when editing sample data fields
+      document.querySelectorAll('.sample-field').forEach(field => {
+        field.addEventListener('input', updatePreviewRender);
+      });
+
+      // Preview tabs
+      const tabVisual = document.getElementById('tab-visual');
+      const tabHtml = document.getElementById('tab-html');
+      const visualStage = document.getElementById('preview-visual-stage');
+      const htmlStage = document.getElementById('preview-html-stage');
+
+      tabVisual.addEventListener('click', () => {
+        tabVisual.classList.add('active');
+        tabHtml.classList.remove('active');
+        visualStage.style.display = 'flex';
+        htmlStage.style.display = 'none';
+      });
+
+      tabHtml.addEventListener('click', () => {
+        tabHtml.classList.add('active');
+        tabVisual.classList.remove('active');
+        visualStage.style.display = 'none';
+        htmlStage.style.display = 'block';
+      });
+
+      // Viewport toggle
+      const btnViewDesktop = document.getElementById('btn-view-desktop');
+      const btnViewMobile = document.getElementById('btn-view-mobile');
+      const emailFrame = document.getElementById('email-frame');
+
+      btnViewDesktop.addEventListener('click', () => {
+        btnViewDesktop.classList.add('active');
+        btnViewMobile.classList.remove('active');
+        emailFrame.classList.remove('mobile-view');
+      });
+
+      btnViewMobile.addEventListener('click', () => {
+        btnViewMobile.classList.add('active');
+        btnViewDesktop.classList.remove('active');
+        emailFrame.classList.add('mobile-view');
+      });
+
+      // -----------------------------------------------------------------------
+      // Save & Edit Handlers
+      // -----------------------------------------------------------------------
+      async function handleSave(statusOverride = null) {
+        const name = formName.value.trim();
+        const category = formCategory.value;
+        const status = statusOverride || formStatus.value;
+        const subject = formSubject.value.trim();
+        const body = formBody.value.trim();
+
+        if (!name) {
+          showToast('Please enter a template name', 'error');
+          formName.focus();
+          return;
+        }
+        if (!subject) {
+          showToast('Please enter an email subject line', 'error');
+          formSubject.focus();
+          return;
+        }
+        if (!body) {
+          showToast('Please enter email body content', 'error');
+          formBody.focus();
+          return;
+        }
+
+        const id = formTemplateId.value;
+        const payload = {
+          action: id ? 'update' : 'create',
+          id: id || undefined,
+          name,
+          category,
+          status,
+          subject,
+          body
+        };
+
+        const saveBtn = document.getElementById('editor-save-btn');
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving...';
+
+        try {
+          const res = await persistTemplate(payload);
+          showToast(res.message || 'Template saved successfully');
+          closeModal(editorModal);
+          await fetchTemplates();
+        } catch (err) {
+          showToast(err.message || 'Failed to persist template', 'error');
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.textContent = 'Save Changes';
+        }
+      }
+
+      document.getElementById('editor-save-btn').addEventListener('click', () => handleSave());
+      document.getElementById('editor-save-draft-btn').addEventListener('click', () => handleSave('Draft'));
+
+      document.getElementById('editor-preview-btn').addEventListener('click', () => {
+        const name = formName.value.trim() || 'Untitled Template';
+        const category = formCategory.value;
+        const subject = formSubject.value.trim() || 'No Subject';
+        const body = formBody.value.trim() || '<p>No content provided</p>';
+
+        currentActiveTemplate = {
+          id: formTemplateId.value || 'temp_preview',
+          name,
+          category,
+          subject,
+          body
+        };
+
+        openPreviewModal(currentActiveTemplate.id);
+      });
+
+      // -----------------------------------------------------------------------
+      // Duplicate Template Handler
+      // -----------------------------------------------------------------------
+      async function handleDuplicate(templateId) {
+        try {
+          const res = await duplicateTemplateOnApi(templateId);
+          showToast(res.message || 'Template duplicated successfully');
+          await fetchTemplates();
+        } catch (err) {
+          showToast(err.message || 'Failed to duplicate template', 'error');
+        }
+      }
+
+      // -----------------------------------------------------------------------
+      // Delete Template Handler
+      // -----------------------------------------------------------------------
+      function openDeleteModal(templateId) {
+        const t = templates.find(x => x.id === templateId);
+        if (!t) return;
+        document.getElementById('delete-template-id').value = t.id;
+        document.getElementById('delete-template-name').textContent = t.name;
+        openModal(deleteModal);
+      }
+
+      document.getElementById('delete-confirm-btn').addEventListener('click', async () => {
+        const id = document.getElementById('delete-template-id').value;
+        if (!id) return;
+        const btn = document.getElementById('delete-confirm-btn');
+        btn.disabled = true;
+        btn.textContent = 'Deleting...';
+
+        try {
+          await deleteTemplateFromApi(id);
+          showToast('Template removed successfully');
+          closeModal(deleteModal);
+          await fetchTemplates();
+        } catch (err) {
+          showToast(err.message || 'Failed to delete template', 'error');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Delete Permanently';
+        }
+      });
+
+      // -----------------------------------------------------------------------
+      // Send Test Email Flow
+      // -----------------------------------------------------------------------
+      document.getElementById('preview-send-test-btn').addEventListener('click', () => {
+        const statusBox = document.getElementById('test-email-status-box');
+        statusBox.style.display = 'none';
+        openModal(testEmailModal);
+      });
+
+      document.getElementById('test-email-submit-btn').addEventListener('click', async () => {
+        const recipient = document.getElementById('test-recipient-email').value.trim();
+        if (!recipient || !recipient.includes('@')) {
+          showToast('Please enter a valid recipient email address', 'error');
+          return;
+        }
+
+        const btn = document.getElementById('test-email-submit-btn');
+        const statusBox = document.getElementById('test-email-status-box');
+        btn.disabled = true;
+        btn.innerHTML = '<span>Dispatching...</span>';
+        statusBox.style.display = 'none';
+
+        try {
+          const payload = {
+            action: 'test_email',
+            recipient_email: recipient,
+            subject: currentActiveTemplate.subject,
+            body: currentActiveTemplate.body,
+            sample_data: getLiveSampleData()
+          };
+
+          const res = await fetch('/api/templates', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+
+          if (data.configured === false) {
+            statusBox.style.display = 'block';
+            statusBox.style.background = 'rgba(245, 158, 11, 0.15)';
+            statusBox.style.border = '1px solid rgba(245, 158, 11, 0.35)';
+            statusBox.style.color = '#FCD34D';
+            statusBox.innerHTML = `
+              <strong>Simulation Mode:</strong> ${escapeHtml(data.message)}<br><br>
+              <span style="color:#E2E8F0; font-size: 12px;"><strong>Instructions:</strong> ${escapeHtml(data.setupInstructions)}</span>
+            `;
+            showToast('Preview verified (no live credentials configured)');
+          } else if (data.success) {
+            statusBox.style.display = 'block';
+            statusBox.style.background = 'rgba(0, 255, 102, 0.1)';
+            statusBox.style.border = '1px solid rgba(0, 255, 102, 0.3)';
+            statusBox.style.color = '#00FF66';
+            statusBox.innerHTML = `<strong>Success:</strong> ${escapeHtml(data.message)}`;
+            showToast(`Test email delivered to ${recipient}`);
+          } else {
+            statusBox.style.display = 'block';
+            statusBox.style.background = 'rgba(239, 68, 68, 0.15)';
+            statusBox.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+            statusBox.style.color = '#FCA5A5';
+            statusBox.innerHTML = `<strong>Delivery Notice:</strong> ${escapeHtml(data.error || 'Unable to send')}`;
+            showToast('Delivery issue encountered', 'error');
+          }
+        } catch (err) {
+          statusBox.style.display = 'block';
+          statusBox.style.background = 'rgba(239, 68, 68, 0.15)';
+          statusBox.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+          statusBox.style.color = '#FCA5A5';
+          statusBox.textContent = 'Connection error: ' + err.message;
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<span>Dispatch Test Email</span>';
+        }
+      });
+
+      // -----------------------------------------------------------------------
+      // Event Listeners for Filters & Modals
+      // -----------------------------------------------------------------------
+      document.getElementById('btn-create-top').addEventListener('click', openCreateModal);
+      document.getElementById('btn-create-filter').addEventListener('click', openCreateModal);
+
+      // Category tab clicks
+      categoriesBar.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('category-tab')) return;
+        categoriesBar.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+        e.target.classList.add('active');
+        activeCategory = e.target.dataset.cat;
+        renderDashboard();
+      });
+
+      // Status dropdown
+      statusFilter.addEventListener('change', (e) => {
+        activeStatus = e.target.value;
+        renderDashboard();
+      });
+
+      // Search input
+      searchInput.addEventListener('input', (e) => {
+        activeSearch = e.target.value;
+        renderDashboard();
+      });
+
+      // Close modal buttons
+      document.getElementById('editor-close-btn').addEventListener('click', () => closeModal(editorModal));
+      document.getElementById('editor-cancel-btn').addEventListener('click', () => closeModal(editorModal));
+      document.getElementById('preview-close-btn').addEventListener('click', () => closeModal(previewModal));
+      document.getElementById('test-email-close-btn').addEventListener('click', () => closeModal(testEmailModal));
+      document.getElementById('test-email-cancel-btn').addEventListener('click', () => closeModal(testEmailModal));
+      document.getElementById('delete-close-btn').addEventListener('click', () => closeModal(deleteModal));
+      document.getElementById('delete-cancel-btn').addEventListener('click', () => closeModal(deleteModal));
+
+      document.getElementById('preview-edit-btn').addEventListener('click', () => {
+        if (currentActiveTemplate) {
+          closeModal(previewModal);
+          openEditModal(currentActiveTemplate.id);
+        }
+      });
+
+      // Close on backdrop click
+      [editorModal, previewModal, testEmailModal, deleteModal].forEach(modal => {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal(modal);
+        });
+      });
+
+      // Close on Escape key
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          [editorModal, previewModal, testEmailModal, deleteModal].forEach(m => closeModal(m));
+        }
+      });
+
+      // Initial Fetch
+      fetchTemplates();
+
+    })();
+  </script>
+</body>
+</html>
+

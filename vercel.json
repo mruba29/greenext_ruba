@@ -3,6 +3,7 @@
   "rewrites": [
     { "source": "/analytics", "destination": "/analytics.html" },
     { "source": "/dashboard", "destination": "/analytics.html" },
+    { "source": "/templates", "destination": "/templates.html" },
     { "source": "/capabilities", "destination": "/capabilities/index.html" },
     { "source": "/industries", "destination": "/industries/index.html" },
     { "source": "/solutions", "destination": "/solutions/index.html" },

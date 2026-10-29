@@ -14,6 +14,7 @@ import jiraHandler from '../api/jira.js';
 import airtableHandler from '../api/airtable.js';
 import bookingHandler from '../api/booking.js';
 import analyticsHandler from '../api/analytics.js';
+import templatesHandler from '../api/templates.js';
 
 const ROOT = join(fileURLToPath(import.meta.url), '..', '..');
 const PORT = process.env.PORT || 3000;
@@ -54,10 +55,38 @@ const server = createServer(async (req, res) => {
     let path = decodeURIComponent(req.url.split('?')[0]);
 
     // Handle CORS preflight for API routes
-    if (req.method === 'OPTIONS' && (path === '/api/enquiry' || path === '/api/analytics')) {
+    if (req.method === 'OPTIONS' && (path === '/api/enquiry' || path === '/api/analytics' || path === '/api/templates')) {
       setCors();
       res.writeHead(204);
       res.end();
+      return;
+    }
+
+    // -------------------------------------------------------------------------
+    // API ROUTE: /api/templates (Email & Communication Templates API)
+    // -------------------------------------------------------------------------
+    if (path === '/api/templates') {
+      setCors();
+      res.status = (code) => { res.statusCode = code; return res; };
+      res.json = (data) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(data, null, 2));
+      };
+
+      if (req.method === 'POST' || req.method === 'DELETE' || req.method === 'PUT') {
+        let bodyRaw = '';
+        for await (const chunk of req) { bodyRaw += chunk; }
+        try {
+          req.body = JSON.parse(bodyRaw);
+        } catch (e) {
+          req.body = {};
+        }
+      }
+
+      const urlObj = new URL(req.url, `http://localhost:${PORT}`);
+      req.query = Object.fromEntries(urlObj.searchParams.entries());
+
+      await templatesHandler(req, res);
       return;
     }
 
@@ -173,6 +202,7 @@ const server = createServer(async (req, res) => {
 
     let filePath = join(ROOT, path);
     if (path === '/dashboard') filePath = join(ROOT, 'analytics.html');
+    if (path === '/templates') filePath = join(ROOT, 'templates.html');
 
     let s = await stat(filePath).catch(() => null);
     if (s && s.isDirectory()) filePath = join(filePath, 'index.html');

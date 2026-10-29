@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "generate": "node scripts/generate.mjs",
-    "test": "node scripts/validate-all.mjs && node scripts/test-analytics-live.mjs",
-    "test:all": "node scripts/validate-all.mjs && node scripts/test-analytics-live.mjs && node scripts/test-jira-integration.mjs && node scripts/test-email-notification.mjs",
+    "test": "node scripts/validate-all.mjs && node scripts/test-analytics-live.mjs && node scripts/test-templates-module.mjs",
+    "test:all": "node scripts/validate-all.mjs && node scripts/test-analytics-live.mjs && node scripts/test-jira-integration.mjs && node scripts/test-email-notification.mjs && node scripts/test-templates-module.mjs",
+    "test:templates": "node scripts/test-templates-module.mjs",
     "test:email": "node scripts/test-email-notification.mjs",
     "test:analytics": "node scripts/test-analytics-live.mjs"
   }

@@ -844,3 +844,171 @@ export async function sendLeadNotificationEmail(lead, options = {}) {
   };
 }
 
+/**
+ * Send a custom rendered email (e.g. for Template Testing or manual notifications)
+ */
+export async function sendCustomEmail({ to, subject, html, text = '', from = null }) {
+  const recipient = (to || '').trim();
+  if (!recipient || !recipient.includes('@')) {
+    return {
+      success: false,
+      error: 'Valid recipient email address is required',
+      provider: 'none',
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  const fromEmail = (from || process.env.EMAIL_FROM || 'GreenNext <notifications@greennext.in>').trim();
+  const plainText = text || html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+
+  // 1. Resend API
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: fromEmail.includes('@') ? fromEmail : 'onboarding@resend.dev',
+          to: [recipient],
+          subject: subject || '[GreenNext] Communication',
+          html,
+          text: plainText
+        }),
+        signal: AbortSignal.timeout(10000)
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.id) {
+        return {
+          success: true,
+          provider: 'resend',
+          messageId: data.id,
+          recipient,
+          subject,
+          timestamp: new Date().toISOString()
+        };
+      }
+      return {
+        success: false,
+        provider: 'resend',
+        error: data?.message || `HTTP ${res.status}`,
+        recipient,
+        timestamp: new Date().toISOString()
+      };
+    } catch (err) {
+      return {
+        success: false,
+        provider: 'resend',
+        error: err.message,
+        recipient,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  // 2. SendGrid API
+  if (process.env.SENDGRID_API_KEY) {
+    try {
+      const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.SENDGRID_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          personalizations: [{ to: [{ email: recipient }] }],
+          from: { email: fromEmail.replace(/.*<([^>]+)>.*/, '$1').trim() || 'notifications@greennext.in', name: 'GreenNext' },
+          subject: subject || '[GreenNext] Communication',
+          content: [
+            { type: 'text/plain', value: plainText },
+            { type: 'text/html', value: html }
+          ]
+        }),
+        signal: AbortSignal.timeout(10000)
+      });
+      if (res.status >= 200 && res.status < 300) {
+        return {
+          success: true,
+          provider: 'sendgrid',
+          messageId: res.headers.get('x-message-id') || 'sg-' + Date.now(),
+          recipient,
+          subject,
+          timestamp: new Date().toISOString()
+        };
+      }
+      const data = await res.json().catch(() => null);
+      return {
+        success: false,
+        provider: 'sendgrid',
+        error: data?.errors?.[0]?.message || `HTTP ${res.status}`,
+        recipient,
+        timestamp: new Date().toISOString()
+      };
+    } catch (err) {
+      return {
+        success: false,
+        provider: 'sendgrid',
+        error: err.message,
+        recipient,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  // 3. Google Apps Script Web App Forwarding
+  const gasUrl = process.env.GOOGLE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbzoSXPulFt49lQ1ibWJX2CFNw7iiuT4YBAShuiEcckEovty7FauYnspHCuHQmSqFZk/exec';
+  if (gasUrl) {
+    try {
+      const res = await fetch(gasUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'send_custom_email',
+          recipient,
+          subject: subject || '[GreenNext] Communication',
+          html,
+          text: plainText
+        }),
+        signal: AbortSignal.timeout(12000)
+      });
+      const data = await res.json().catch(() => null);
+      if (data && data.emailSent) {
+        return {
+          success: true,
+          provider: 'google_apps_script',
+          messageId: data.messageId || 'gas-' + Date.now(),
+          recipient,
+          subject,
+          timestamp: new Date().toISOString()
+        };
+      }
+      return {
+        success: false,
+        provider: 'google_apps_script',
+        error: data?.emailError || data?.message || 'Email forward action not recognized by GAS deployment',
+        recipient,
+        timestamp: new Date().toISOString()
+      };
+    } catch (err) {
+      return {
+        success: false,
+        provider: 'google_apps_script',
+        error: err.message,
+        recipient,
+        timestamp: new Date().toISOString()
+      };
+    }
+  }
+
+  return {
+    success: false,
+    provider: 'none',
+    error: 'No email service provider configured (RESEND_API_KEY, SENDGRID_API_KEY, or GOOGLE_APPS_SCRIPT_URL)',
+    recipient,
+    timestamp: new Date().toISOString()
+  };
+}
+
+

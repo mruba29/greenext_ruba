@@ -24,21 +24,44 @@
   function highlightActiveNav() {
     var path = window.location.pathname.replace(/\/index\.html$/, '/').replace(/^\//, '');
     if (!path || path === '') path = 'index.html';
+    var hash = window.location.hash;
 
     var navLinks = document.querySelectorAll('.nav-link, .dropdown-item, .mobile-nav-item, .mobile-accordion-link');
+    document.querySelectorAll('.nav-item.active, .nav-link.active, .dropdown-item.active').forEach(function(el) {
+      el.classList.remove('active');
+    });
+
     navLinks.forEach(function (link) {
       var href = link.getAttribute('href');
       if (!href) return;
       var cleanHref = href.replace(/^\.\.\//, '').replace(/^\//, '');
 
-      if (cleanHref === path || (path.startsWith(cleanHref.replace('.html', '')) && cleanHref !== 'index.html')) {
+      // Hash match prioritized when hash exists on page
+      if (hash && (cleanHref === path + hash || cleanHref === hash || cleanHref === 'index.html' + hash)) {
         link.classList.add('active');
         var parentItem = link.closest('.nav-item');
         if (parentItem) parentItem.classList.add('active');
+      } else if (!hash) {
+        if (cleanHref === path || (path !== 'index.html' && path.startsWith(cleanHref.replace('.html', '')) && cleanHref !== 'index.html')) {
+          link.classList.add('active');
+          var pItem = link.closest('.nav-item');
+          if (pItem) pItem.classList.add('active');
+        }
       }
     });
+
+    // Default to Home if on index without active link
+    if (!document.querySelector('.nav-item.active') && (path === 'index.html' || path === '')) {
+      var homeLink = document.querySelector('.nav-link[href="index.html"], .nav-link[href="../index.html"]');
+      if (homeLink) {
+        homeLink.classList.add('active');
+        var p = homeLink.closest('.nav-item');
+        if (p) p.classList.add('active');
+      }
+    }
   }
   highlightActiveNav();
+  window.addEventListener('hashchange', highlightActiveNav);
 
   // Desktop dropdowns
   var navItems = document.querySelectorAll('.nav-item');

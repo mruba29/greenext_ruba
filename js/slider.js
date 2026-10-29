@@ -11,7 +11,7 @@
   var prevBtn = slider.querySelector('.slider-arrow--prev');
   var nextBtn = slider.querySelector('.slider-arrow--next');
 
-  if (!slides.length) return;
+  if (slides.length <= 1) return;
 
   var currentIndex = 0;
   var autoplayTimer = null;

@@ -1,6 +1,6 @@
 import { icon } from './icons.mjs';
 import { nav, footerData, finalCTA, formConfigs, careersFormConfig, tagline, heroImg } from './data.mjs';
-import { curveDivider, blobDecor, processFlow, miniFlowHorizontal, dashboardMock, locationsMapVisual, architectureDiagram } from './visuals.mjs';
+import { curveDivider, blobDecor, processFlow, miniFlowHorizontal, dashboardMock, locationsMapVisual, architectureDiagram, systemArchitectureDiagram, treeOfThoughtVisual, regionalImpactMatrixVisual } from './visuals.mjs';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -16,24 +16,64 @@ function cta(text, href, { variant = 'primary', size = 'lg', base = '', openLead
   return `<a class="${cls}" href="${link(base, href)}"${modalAttr}><span>${text}</span><span class="btn-arrow">&rarr;</span></a>`;
 }
 
-function dropdownItems(base, children) {
-  return children.map(child => `
-    <a class="dropdown-item" href="${link(base, child.href)}">
-      <span class="dropdown-item-icon">${icon(child.icon || 'spark')}</span>
-      <span class="dropdown-item-text"><span class="dropdown-item-label">${child.label}</span></span>
-    </a>`).join('');
+function renderMegaMenu(base, item) {
+  const m = item.mega;
+  if (!m) return '';
+  return `
+    <div class="nav-mega-dropdown" role="region" aria-label="${item.label} Submenu">
+      <div class="nav-mega-inner">
+        <!-- LEFT HIGHLIGHT PANEL -->
+        <div class="nav-mega-panel">
+          <div>
+            <span class="nav-mega-badge">${m.category}</span>
+            <h3 class="nav-mega-heading">${m.title}</h3>
+            <p class="nav-mega-intro">${m.intro}</p>
+          </div>
+          ${m.highlight ? `
+            <div class="nav-mega-highlight">
+              <span class="nav-mega-highlight-badge">${m.highlight.badge}</span>
+              <strong class="nav-mega-highlight-title">${m.highlight.title}</strong>
+              <p class="nav-mega-highlight-desc">${m.highlight.desc}</p>
+            </div>
+          ` : ''}
+          ${m.cta ? `
+            <a class="nav-mega-cta" href="${link(base, m.cta.href)}">
+              <span>${m.cta.text}</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+          ` : ''}
+        </div>
+
+        <!-- RIGHT MULTI-COLUMN MENU ITEMS -->
+        <div class="nav-mega-columns">
+          ${m.columns.map(col => `
+            <div class="nav-mega-col">
+              ${col.map(c => `
+                <a class="nav-mega-item" href="${link(base, c.href)}">
+                  <span class="nav-mega-icon">${icon(c.icon || 'spark')}</span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">${c.label}</span>
+                    <span class="nav-mega-item-desc">${c.desc}</span>
+                  </div>
+                </a>
+              `).join('')}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>`;
 }
 
 function desktopNav(base) {
   return nav.main.map(item => {
-    if (item.children) {
+    if (item.mega) {
       return `
         <li class="nav-item">
           <a class="nav-link" href="${link(base, item.href)}">${item.label}</a>
           <button class="nav-link-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Show ${item.label} menu">
             <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
           </button>
-          <div class="nav-dropdown">${dropdownItems(base, item.children)}</div>
+          ${renderMegaMenu(base, item)}
         </li>`;
     }
     return `<li class="nav-item"><a class="nav-link" href="${link(base, item.href)}">${item.label}</a></li>`;
@@ -42,16 +82,29 @@ function desktopNav(base) {
 
 function mobileNav(base) {
   return nav.main.map((item, i) => {
-    if (item.children) {
+    if (item.mega) {
+      const allItems = item.mega.columns.flat();
       return `
         <div class="mobile-nav-section">
           <button class="mobile-accordion-trigger" data-accordion="mob-${i}" aria-expanded="false">
-            ${item.label}
+            <span>${item.label}</span>
             <svg class="mobile-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="mobile-accordion-content" id="mob-${i}">
-            <a class="mobile-accordion-link mobile-accordion-link--all" href="${link(base, item.href)}">View All ${item.label} &rarr;</a>
-            ${item.children.map(c => `<a class="mobile-accordion-link" href="${link(base, c.href)}">${c.label}</a>`).join('')}
+            <div class="mobile-mega-intro-box">
+              <span class="mobile-mega-badge">${item.mega.category}</span>
+              <p class="mobile-mega-intro">${item.mega.intro}</p>
+              <a class="mobile-accordion-link mobile-accordion-link--all" href="${link(base, item.href)}">${item.mega.cta ? item.mega.cta.text : 'View All ' + item.label} &rarr;</a>
+            </div>
+            ${allItems.map(c => `
+              <a class="mobile-accordion-link mobile-mega-sublink" href="${link(base, c.href)}">
+                <span class="mobile-mega-icon">${icon(c.icon || 'spark')}</span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">${c.label}</span>
+                  <span class="mobile-mega-desc">${c.desc}</span>
+                </div>
+              </a>
+            `).join('')}
           </div>
         </div>`;
     }
@@ -64,7 +117,7 @@ export function headerAndNav(base) {
   <header id="gn-header">
     <div class="container nav-wrapper">
       <a class="nav-logo" href="${link(base, 'index.html')}">
-        <span class="nav-logo-icon">${icon('spark')}</span>
+        <span class="nav-logo-icon">${icon('brandLeaf')}</span>
         <span class="nav-logo-text-wrap">
           <span class="nav-logo-text">Green<span>Next</span></span>
           <span class="nav-logo-tagline">${tagline}</span>
@@ -110,90 +163,33 @@ const HERO_MINI_STATS = [
 ];
 
 export function heroSlider(base = '') {
-  const slides = [
-    {
-      img: 'assets/img/datacenter-hero.jpg',
-      eyebrow: 'INTELLIGENT DIGITAL INFRASTRUCTURE',
-      headline: 'Build Beyond Compute. Build What’s Next.',
-      description: 'GreenNext brings AI-ready infrastructure, intelligent operations, and energy-conscious engineering together to help enterprises prepare for a data-driven future.',
-      primary: { text: 'Explore Our Infrastructure', href: 'capabilities/index.html' },
-      secondary: { text: 'Talk to an Expert', href: 'contact.html' },
-      tags: [
-        { icon: 'server', text: 'AI-Ready Computing' },
-        { icon: 'cpu', text: 'Intelligent Operations' },
-        { icon: 'bolt', text: 'Energy-Aware Design' },
-        { icon: 'network', text: 'Scalable Foundations' },
-      ],
-    },
-    {
-      img: 'assets/img/control-room.webp',
-      eyebrow: 'INTELLIGENT OPERATIONS WORKFLOW',
-      headline: 'From Infrastructure Data to Better Decisions.',
-      description: 'Observe, understand, predict, optimize, and improve facility operations with high-fidelity telemetry, continuous sensor streaming, and closed-loop control.',
-      primary: { text: 'Discover Capabilities', href: 'capabilities/index.html' },
-      secondary: { text: 'Talk to an Expert', href: 'contact.html' },
-      tags: [
-        { icon: 'cpu', text: 'Telemetry Streaming' },
-        { icon: 'spark', text: 'Cross-Domain Anomaly Alerts' },
-        { icon: 'shield', text: 'Operational Visibility' },
-      ],
-    },
-    {
-      img: 'assets/img/solar-panels.webp',
-      eyebrow: 'ENERGY-AWARE ENGINEERING',
-      headline: 'Engineered for Scale. Designed for Efficiency.',
-      description: 'Harmonizing high-density compute with sustainable engineering, advanced cooling architectures, and responsible power utilization.',
-      primary: { text: 'Plan Your Infrastructure', href: 'contact.html' },
-      secondary: { text: 'Explore Solutions', href: 'solutions/index.html' },
-      tags: [
-        { icon: 'bolt', text: 'Energy Monitoring' },
-        { icon: 'spark', text: 'Thermal Optimization' },
-        { icon: 'network', text: 'Regional Connectivity' },
-      ],
-    },
-  ];
-
   return `
-  <section class="hero-slider" aria-roledescription="carousel" aria-label="GreenNext Infrastructure Solutions">
+  <section class="hero-slider" aria-label="GreenNext Intelligent Digital Infrastructure">
     <div class="hero-slider-track">
-      ${slides.map((s, idx) => `
-        <div class="hero-slide${idx === 0 ? ' active' : ''}" style="background-image:url('${link(base, s.img)}');" role="group" aria-roledescription="slide" aria-label="${idx + 1} of ${slides.length}" aria-hidden="${idx === 0 ? 'false' : 'true'}">
-          <div class="hero-slide-overlay"></div>
-          <div class="container hero-slide-content">
-            <div class="hero-slide-inner reveal visible">
-              <div class="hero-slide-eyebrow">
-                <span class="hero-slide-eyebrow-dot"></span>
-                <span>${s.eyebrow}</span>
-              </div>
-              <h1 class="hero-slide-title">${s.headline}</h1>
-              <p class="hero-slide-desc">${s.description}</p>
-              <div class="hero-slide-actions">
-                ${cta(s.primary.text, s.primary.href, { variant: 'primary', size: 'lg', base })}
-                ${cta(s.secondary.text, s.secondary.href, { variant: 'ghost', size: 'lg', base })}
-                <a class="hero-whatsapp-btn" href="#" data-whatsapp="true">
-                  ${icon('whatsapp')} <span>Chat on WhatsApp</span>
-                </a>
-              </div>
-              <div class="hero-slide-tags">
-                ${s.tags.map(t => `<span class="hero-slide-tag">${icon(t.icon)} ${t.text}</span>`).join('')}
-              </div>
+      <div class="hero-slide active" style="background-image:url('${link(base, 'assets/img/hero-banner.png')}');" role="region" aria-label="GreenNext Intelligent Digital Infrastructure">
+        <div class="hero-slide-overlay"></div>
+        <div class="container hero-slide-content">
+          <div class="hero-slide-inner reveal visible">
+            <span class="hero-eyebrow">INTELLIGENT DIGITAL INFRASTRUCTURE</span>
+            <h1 class="hero-slide-title">Build Beyond Compute.<br>Build What's Next.</h1>
+            <p class="hero-slide-desc">GreenNext brings together AI-ready infrastructure, intelligent operations, energy optimization, and data-driven insights to support reliable and sustainable digital infrastructure.</p>
+            <div class="hero-corridors">
+              <span class="hero-corridor-label">Target Service Locations:</span>
+              <span class="hero-corridor-pill">Madurai</span>
+              <span class="hero-corridor-sep">&bull;</span>
+              <span class="hero-corridor-pill">Coimbatore</span>
+              <span class="hero-corridor-sep">&bull;</span>
+              <span class="hero-corridor-pill">Trichy</span>
+              <span class="hero-corridor-sep">&bull;</span>
+              <span class="hero-corridor-pill">Mangalore</span>
+            </div>
+            <div class="hero-slide-actions">
+              ${cta('Explore Our Infrastructure', 'capabilities/index.html', { variant: 'primary', size: 'lg', base })}
+              ${cta('Plan Your Infrastructure', 'contact.html', { variant: 'ghost', size: 'lg', base, openLeadModal: true })}
             </div>
           </div>
-        </div>`).join('')}
-    </div>
-
-    <button class="slider-arrow slider-arrow--prev" aria-label="Previous slide">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 19l-7-7 7-7"/></svg>
-    </button>
-    <button class="slider-arrow slider-arrow--next" aria-label="Next slide">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"/></svg>
-    </button>
-
-    <div class="slider-indicators" role="tablist" aria-label="Slide selectors">
-      ${slides.map((_, idx) => `
-        <button class="slider-indicator${idx === 0 ? ' active' : ''}" role="tab" aria-selected="${idx === 0 ? 'true' : 'false'}" aria-label="Slide ${idx + 1}">
-          <span class="slider-indicator-label">Slide ${idx + 1}</span>
-        </button>`).join('')}
+        </div>
+      </div>
     </div>
   </section>`;
 }
@@ -281,24 +277,57 @@ export function cardGrid(base, items, { hrefPrefix, ctaText = 'Learn More', colu
 }
 
 export function metricsStrip() {
-  const pillars = [
-    { icon: 'cpu', title: 'AI-Ready Computing', desc: 'High-density rack configurations and thermal readiness engineered for accelerator clusters.' },
-    { icon: 'spark', title: 'Intelligent Operations', desc: 'Continuous telemetry, telemetry-driven anomaly alerts, and automated operational visibility.' },
-    { icon: 'bolt', title: 'Energy-Aware Design', desc: 'Optimized airflow, modern liquid cooling architectures, and carbon-conscious power management.' },
-    { icon: 'network', title: 'Scalable Foundations', desc: 'Resilient network backbones and strategic regional connectivity built for enterprise change.' },
+  const metrics = [
+    {
+      stat: '99.95%',
+      label: 'Uptime SLA Availability',
+      tag: 'Tier-Grade Reliability',
+      icon: 'shield',
+      desc: 'Dual-bus 2N electrical continuity and concurrent maintainability guaranteeing uninterrupted AI model execution.'
+    },
+    {
+      stat: '40%',
+      label: 'Operational Energy Savings',
+      tag: 'PUE Optimization',
+      icon: 'bolt',
+      desc: 'Precision cold/hot aisle containment coupled with variable liquid cooling loops eliminating parasitic fan and chiller waste.'
+    },
+    {
+      stat: '60%',
+      label: 'Carbon Footprint Reduction',
+      tag: 'Regional Clean Grid',
+      icon: 'leaf',
+      desc: 'Direct solar microgrid ingestion and wind corridor power contracts across Madurai, Coimbatore, and Trichy facilities.'
+    },
+    {
+      stat: '40–80kW+',
+      label: 'High-Density Rack Headroom',
+      tag: 'Accelerated Density',
+      icon: 'cpu',
+      desc: 'Engineered for extreme compute densities, direct-to-chip heat extraction, and non-blocking 800G GPU interconnect fabrics.'
+    }
   ];
+
   return `
-  <section class="metrics-strip">
-    <div class="container metrics-strip-inner">
-      <div class="metrics-strip-items">
-        ${pillars.map(p => `
-          <div class="metrics-strip-item">
-            <span class="metrics-strip-icon">${icon(p.icon)}</span>
-            <span><strong>${p.title}</strong><br><span class="metrics-strip-label">${p.desc}</span></span>
-          </div>`).join('')}
+  <section class="metrics-strip" id="enterprise-metrics">
+    <div class="container">
+      <div class="metrics-strip-headline">
+        <span class="section-label" style="background:rgba(46,204,113,0.12);border-color:rgba(46,204,113,0.3);color:var(--color-primary);">INFRASTRUCTURE AT A GLANCE</span>
+        <h2 class="metrics-strip-title">Enterprise-Grade Performance &amp; Sustainability Metrics</h2>
+        <p class="metrics-strip-subtitle">Engineered specifically for South India’s high-density AI clusters and green power grids.</p>
       </div>
-      <div class="metrics-strip-note">
-        NEXUS INTELLIGENCE <br>ENGINEERING TOMORROW <span class="btn-arrow">&rarr;</span>
+      <div class="metrics-grid">
+        ${metrics.map((m, i) => `
+          <div class="metrics-card reveal reveal-delay-${i + 1}">
+            <div class="metrics-card-header">
+              <div class="metrics-card-icon">${icon(m.icon)}</div>
+              <span class="metrics-card-tag">${m.tag}</span>
+            </div>
+            <div class="metrics-card-stat">${m.stat}</div>
+            <div class="metrics-card-label">${m.label}</div>
+            <p class="metrics-card-desc">${m.desc}</p>
+          </div>
+        `).join('')}
       </div>
     </div>
   </section>`;
@@ -539,10 +568,12 @@ export function footer(base) {
     <div class="container footer-main">
       <div class="footer-brand">
         <a class="nav-logo" href="${link(base, 'index.html')}">
-          <span class="nav-logo-icon">${icon('spark')}</span>
-          <span class="nav-logo-text" style="color:white;">Green<span>Next</span></span>
+          <span class="nav-logo-icon">${icon('brandLeaf')}</span>
+          <span class="nav-logo-text-wrap">
+            <span class="nav-logo-text" style="color:white;">Green<span>Next</span></span>
+            <span class="nav-logo-tagline">${tagline}</span>
+          </span>
         </a>
-        <p class="footer-tagline">${tagline}</p>
         <p class="footer-brand-desc">AI-driven infrastructure, data centers, and intelligent automation engineered for enterprise performance and sustainability.</p>
         <div class="footer-socials">
           <a class="footer-social-link" href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="GreenNext on LinkedIn" title="LinkedIn">
@@ -592,7 +623,7 @@ export function welcomeModal(base = '') {
           <span class="gn-modal-badge-dot"></span>
           <span class="gn-welcome-badge-text">Welcome to GreenNext</span>
         </div>
-        <h2 class="gn-modal-title gn-welcome-title" id="welcome-modal-title">Welcome to GreenNext 🌿</h2>
+        <h2 class="gn-modal-title gn-welcome-title" id="welcome-modal-title">Welcome to GreenNext</h2>
       </div>
       <p class="gn-modal-body gn-welcome-body-text">
         Discover intelligent infrastructure designed for a smarter, more sustainable future.
@@ -617,10 +648,10 @@ export function exitModal(base = '') {
     <div class="gn-modal gn-modal--exit">
       <button class="gn-modal-close" data-dismiss="modal" aria-label="Close exit modal">&times;</button>
       <div class="gn-modal-icon-circle">
-        ${icon('spark')}
+        ${icon('brandLeaf')}
       </div>
       <div class="gn-modal-header">
-        <h2 class="gn-modal-title" id="exit-modal-title">Thank You for Visiting GreenNext! 🌿</h2>
+        <h2 class="gn-modal-title" id="exit-modal-title">Thank You for Visiting GreenNext</h2>
       </div>
       <p class="gn-modal-body">
         We appreciate your interest in intelligent, sustainable infrastructure. We look forward to connecting with you.
@@ -643,7 +674,7 @@ export function thankYouModal(base = '') {
       </div>
       <div class="gn-modal-header">
         <span class="gn-modal-badge"><span class="gn-modal-badge-dot"></span> Request Confirmed</span>
-        <h2 class="gn-modal-title" id="thankyou-modal-title">Thank You, <span class="gn-thankyou-name">Valued Visitor</span>! 🌿</h2>
+        <h2 class="gn-modal-title" id="thankyou-modal-title">Thank You, <span class="gn-thankyou-name">Valued Visitor</span>!</h2>
       </div>
       <p class="gn-modal-body">
         We appreciate your interest in GreenNext infrastructure solutions. Our enterprise solutions team has received your enquiry and will connect with you shortly.
@@ -740,21 +771,45 @@ export function floatingLeadModal(base = '') {
 
 export function floatingActionWidgets(base = '') {
   return `
-  <aside class="floating-actions-container" id="gn-floating-actions" aria-label="Quick Connect Options">
+  <!-- Floating WhatsApp (Bottom Left - Dedicated Quick Connect) -->
+  <aside class="floating-whatsapp-container" id="gn-floating-whatsapp" aria-label="WhatsApp Quick Connect">
+    <div class="floating-action-item">
+      <a class="floating-whatsapp-btn" id="floating-whatsapp" href="#" data-whatsapp="true" aria-label="Chat with GreenNext on WhatsApp" title="Chat on WhatsApp">
+        ${icon('whatsapp')}
+      </a>
+      <span class="floating-whatsapp-tooltip">Chat on WhatsApp</span>
+    </div>
+  </aside>
+
+  <!-- Floating Consultation Request (Bottom Right - Stacked Above AI Assistant) -->
+  <aside class="floating-actions-container" id="gn-floating-actions" aria-label="Infrastructure Consultation Request">
     <div class="floating-action-item">
       <span class="floating-action-tooltip">Request Consultation</span>
       <button type="button" class="floating-lead-btn" id="floating-lead-trigger" data-open-lead-modal="true" aria-label="Request Infrastructure Consultation">
-        ${icon('spark')}
+        ${icon('brandLeaf')}
         <span class="floating-lead-btn-label">Consultation</span>
       </button>
     </div>
-    <div class="floating-action-item">
-      <span class="floating-action-tooltip">Chat on WhatsApp</span>
-      <a class="floating-whatsapp-btn" id="floating-whatsapp" href="#" data-whatsapp="true" aria-label="Chat with GreenNext on WhatsApp">
-        ${icon('whatsapp')}
-      </a>
-    </div>
   </aside>`;
+}
+
+export function preloader(base = '') {
+  return `
+  <!-- GreenNext Brand Preloader (Respects reduced-motion) -->
+  <div class="gn-preloader" id="gn-preloader" aria-hidden="true">
+    <div class="gn-preloader-inner">
+      <div class="gn-preloader-leaf-wrap">
+        ${icon('brandLeaf')}
+      </div>
+      <div class="gn-preloader-brand">
+        <span class="gn-preloader-text">Green<span>Next</span></span>
+        <span class="gn-preloader-tagline">${tagline}</span>
+      </div>
+      <div class="gn-preloader-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="gn-preloader-bar"></div>
+      </div>
+    </div>
+  </div>`;
 }
 
 export function floatingWhatsAppWidget(base = '') {
@@ -770,6 +825,7 @@ export function page({ base = '', title, metaDesc, bodyHtml, jsExtra = [] }) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${cleanTitle}</title>
 <meta name="description" content="${metaDesc}">
+<link rel="icon" type="image/svg+xml" href="${link(base, 'assets/favicon.svg')}">
 <link rel="stylesheet" href="${link(base, 'css/main.css')}">
 <link rel="stylesheet" href="${link(base, 'css/nav.css')}">
 <link rel="stylesheet" href="${link(base, 'css/forms.css')}">
@@ -780,6 +836,7 @@ export function page({ base = '', title, metaDesc, bodyHtml, jsExtra = [] }) {
 <link rel="stylesheet" href="${link(base, 'css/modals.css')}">
 </head>
 <body>
+${preloader(base)}
 ${headerAndNav(base)}
 <main class="page-transition">
 ${bodyHtml}
@@ -790,6 +847,23 @@ ${exitModal(base)}
 ${thankYouModal(base)}
 ${floatingLeadModal(base)}
 ${floatingActionWidgets(base)}
+<script>
+(function(){
+  function dismissPreloader(){
+    var p = document.getElementById('gn-preloader');
+    if(p && !p.classList.contains('loaded')){
+      p.classList.add('loaded');
+      setTimeout(function(){ if(p && p.parentNode) p.parentNode.removeChild(p); }, 400);
+    }
+  }
+  if(document.readyState === 'complete'){
+    dismissPreloader();
+  } else {
+    window.addEventListener('load', dismissPreloader);
+    setTimeout(dismissPreloader, 350);
+  }
+})();
+</script>
 <script src="${link(base, 'js/config.js')}" defer></script>
 <script src="${link(base, 'js/analytics.js')}" defer></script>
 <script src="${link(base, 'js/nav.js')}" defer></script>
@@ -798,6 +872,7 @@ ${floatingActionWidgets(base)}
 <script src="${link(base, 'js/motion.js')}" defer></script>
 <script src="${link(base, 'js/slider.js')}" defer></script>
 <script src="${link(base, 'js/modals.js')}" defer></script>
+<script src="${link(base, 'js/chatbot.js')}" defer></script>
 ${jsExtra.join('\n')}
 </body>
 </html>
@@ -847,18 +922,55 @@ export function intelligenceDashboardSection(base = '') {
     { icon: 'shield', label: '4. Optimize' },
     { icon: 'bolt', label: '5. Improve' },
   ];
+
+  const intelligencePillars = [
+    {
+      icon: 'cpu',
+      badge: 'Core Intelligence',
+      title: 'AI Models',
+      desc: 'Purpose-trained neural architectures continuously modeling facility thermodynamics, workload distribution, and physical server states.',
+      items: [
+        'Neural Thermal Optimization Engine (NTOE) mapping dynamic heat dissipation curves',
+        'Deep Reinforcement Learning agents dynamically balancing cooling pumps and fan speeds for minimum PUE',
+        'High-dimensional autoencoders detecting minute sensor drifts and power anomalies across 50,000+ points'
+      ]
+    },
+    {
+      icon: 'spark',
+      badge: 'Proactive Telemetry',
+      title: 'Predictive Insights',
+      desc: 'Anticipates operational events and grid demand shifts up to 24 hours in advance to prevent throttling or outages.',
+      items: [
+        '20-Minute Pre-Heat Warning alerts before GPU/accelerator thermal safety thresholds are breached',
+        '24-Hour Predictive PUE Modeling correlated with Tamil Nadu and Karnataka regional weather patterns',
+        'MTBF & Component Health Analytics forecasting capacitor, valve, and UPS degradation before failure'
+      ]
+    },
+    {
+      icon: 'bolt',
+      badge: 'Autonomous Execution',
+      title: 'Automation Flows',
+      desc: 'Deterministic closed-loop actuation that stabilizes temperatures and energy efficiency in milliseconds without manual intervention.',
+      items: [
+        'Sub-second 250ms sensor streaming across power busways, CRAC units, and liquid manifolds',
+        'Cross-Domain Root-Cause Correlation validating alarms against active compute profiles to stop false positives',
+        'Closed-Loop Valve & Fan Actuation executing policy-governed cooling adjustments within strict safety boundaries'
+      ]
+    }
+  ];
+
   return `
   <section class="section bg-space section-relative" id="intelligence">
     <div class="container">
       <div class="intelligence-dashboard-grid">
         <div class="reveal reveal-left">
-          <span class="section-label" style="background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.3);color:var(--color-accent);">INFRASTRUCTURE TELEMETRY</span>
+          <span class="section-label" style="background:rgba(46,204,113,0.12);border-color:rgba(46,204,113,0.3);color:var(--color-primary);">INFRASTRUCTURE TELEMETRY &amp; AI</span>
           <h2 class="heading-xl" style="color:var(--color-white);margin-top:var(--space-2);">See the Signals Behind Your Infrastructure</h2>
           <p class="text-base" style="color:var(--color-text-muted);margin-top:var(--space-4);margin-bottom:var(--space-6);line-height:1.7;">
-            Continuous multi-sensor telemetry captures thermal distributions, power utilization, and network load across every rack cluster, translating physical telemetry into operational clarity.
+            Continuous multi-sensor telemetry captures thermal distributions, power utilization, and network load across every rack cluster, translating physical telemetry into autonomous operational clarity.
           </p>
           <div style="margin-bottom:var(--space-6);">
-            <div style="font-size:var(--font-size-xs);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-accent);margin-bottom:var(--space-3);">Operational Intelligence Lifecycle</div>
+            <div style="font-size:var(--font-size-xs);font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-primary);margin-bottom:var(--space-3);">Operational Intelligence Lifecycle</div>
             ${miniFlowHorizontal(nodes)}
           </div>
           <div style="display:flex;gap:var(--space-4);flex-wrap:wrap;align-items:center;">
@@ -874,7 +986,7 @@ export function intelligenceDashboardSection(base = '') {
         <div class="reveal reveal-right">
           <div class="dashboard-mock-wrap">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4);">
-              <span class="section-label" style="background:rgba(0,212,255,0.12);border-color:rgba(0,212,255,0.3);color:var(--color-accent);">Platform Observability</span>
+              <span class="section-label" style="background:rgba(46,204,113,0.12);border-color:rgba(46,204,113,0.3);color:var(--color-primary);">Platform Observability</span>
               <span style="font-size:11px;color:var(--color-text-dim);font-family:var(--font-family-mono);letter-spacing:0.04em;">NEXUS-OPS // v4.2</span>
             </div>
             <h3 class="heading-md" style="color:white;margin-bottom:var(--space-2);">Continuous Facility Telemetry</h3>
@@ -882,6 +994,136 @@ export function intelligenceDashboardSection(base = '') {
             ${dashboardMock()}
           </div>
         </div>
+      </div>
+
+      <div class="intelligence-pillars-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-6);margin-top:var(--space-12);">
+        ${intelligencePillars.map((p, i) => `
+          <div class="card card--dark reveal reveal-delay-${i + 1}" style="padding:var(--space-6);display:flex;flex-direction:column;justify-content:space-between;background:rgba(10,37,64,0.7);border:1px solid rgba(46,204,113,0.25);border-radius:var(--radius-xl);">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);margin-bottom:var(--space-4);">
+                <div class="card-icon" style="width:38px;height:38px;margin:0;background:rgba(46,204,113,0.14);color:var(--color-primary);">${icon(p.icon)}</div>
+                <span style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--color-primary);">${p.badge}</span>
+              </div>
+              <h3 class="heading-md" style="color:#FFFFFF;margin-bottom:var(--space-2);">${p.title}</h3>
+              <p class="text-sm" style="color:rgba(255,255,255,0.7);margin-bottom:var(--space-4);line-height:1.6;">${p.desc}</p>
+              <ul style="display:flex;flex-direction:column;gap:var(--space-2);padding:0;margin:0;list-style:none;">
+                ${p.items.map(it => `
+                  <li style="display:flex;align-items:flex-start;gap:var(--space-2);font-size:13px;color:rgba(255,255,255,0.88);line-height:1.5;">
+                    <span style="color:var(--color-primary);font-weight:bold;flex-shrink:0;">✓</span>
+                    <span>${it}</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+            <div style="margin-top:var(--space-6);padding-top:var(--space-4);border-top:1px solid rgba(255,255,255,0.1);">
+              <a href="${link(base, 'capabilities/intelligent-automation.html')}" style="color:var(--color-primary);font-size:var(--font-size-sm);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+                Learn Technical Architecture &rarr;
+              </a>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+export function treeOfThoughtSection(base = '') {
+  return `
+  <section class="section bg-soft section-relative" id="tot-framework">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">ARCHITECTURAL METHODOLOGY</span>
+        <h2 class="heading-xl">Tree of Thought: Sustainable AI Architecture</h2>
+        <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+          A unified 4-layer architectural framework connecting deep clean-power roots with high-density physical compute, autonomous intelligence, and regional industry outcomes.
+        </p>
+      </div>
+      ${treeOfThoughtVisual()}
+      <div style="margin-top:var(--space-8);text-align:center;display:flex;justify-content:center;gap:var(--space-4);flex-wrap:wrap;">
+        <a class="btn btn-primary btn-lg" href="${link(base, 'contact.html')}" data-open-lead-modal="true">
+          <span>Deploy on Tree of Thought Architecture</span>
+          <span class="btn-arrow">&rarr;</span>
+        </a>
+        <a class="btn btn-secondary btn-lg" href="${link(base, 'solutions/index.html')}">
+          <span>Explore All Solutions</span>
+          <span class="btn-arrow">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>`;
+}
+
+export function regionalImpactSection(base = '') {
+  return `
+  <section class="section section-relative" id="regional-impact">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">REGIONAL INDUSTRY CATALYST</span>
+        <h2 class="heading-xl">Regional Economic Impact Across South India</h2>
+        <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+          Purpose-built compute infrastructure customized for South India's distinct economic powerhouses: Madurai (IT Growth), Coimbatore (Industry Hub), Trichy (Education & Research), and Mangalore (Maritime Trade).
+        </p>
+      </div>
+      ${regionalImpactMatrixVisual()}
+      <div style="margin-top:var(--space-8);text-align:center;display:flex;justify-content:center;gap:var(--space-4);flex-wrap:wrap;">
+        <a class="btn btn-primary btn-md" href="${link(base, 'locations/index.html')}">
+          <span>Explore All Regional Hubs</span>
+          <span class="btn-arrow">&rarr;</span>
+        </a>
+        <a class="btn btn-ghost btn-md" href="${link(base, 'contact.html')}" data-open-lead-modal="true">
+          <span>Consult Regional Architecture Desk</span>
+        </a>
+      </div>
+    </div>
+  </section>`;
+}
+
+export function regionalOfficesSection(offices = [], base = '') {
+  if (!offices || !offices.length) return '';
+  return `
+  <section class="section bg-soft" id="regional-offices">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">REGIONAL PRESENCE</span>
+        <h2 class="heading-xl">Regional Offices &amp; Engineering Centers</h2>
+        <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+          Direct, on-the-ground engineering advisory and 24/7 mission-critical operations across South India's core technology corridors.
+        </p>
+      </div>
+      <div class="grid-2" style="gap:var(--space-6);margin-top:var(--space-8);">
+        ${offices.map((office, i) => `
+          <div class="regional-office-card card reveal reveal-delay-${i + 1}" style="padding:var(--space-6);display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--color-border);background:var(--color-surface);border-radius:var(--radius-xl);">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);margin-bottom:var(--space-3);">
+                <div style="display:flex;align-items:center;gap:var(--space-2);">
+                  <span class="card-icon" style="width:36px;height:36px;margin:0;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--radius-md);background:rgba(46,204,113,0.12);color:var(--color-primary);">${icon('pin')}</span>
+                  <h3 class="heading-sm" style="margin:0;color:var(--color-midnight);">${office.city}</h3>
+                </div>
+                <span class="regional-impact-tag" style="font-size:11px;padding:3px 10px;border-radius:var(--radius-full);background:rgba(10,37,64,0.06);color:var(--color-midnight);font-weight:700;">${office.badge}</span>
+              </div>
+              <h4 style="font-size:var(--font-size-base);color:var(--color-primary);margin-bottom:var(--space-3);font-family:var(--font-heading);font-weight:700;">${office.title}</h4>
+              <p class="text-sm" style="color:var(--color-text-muted);margin-bottom:var(--space-3);line-height:1.6;">
+                <strong>Address:</strong> ${office.address}
+              </p>
+              <div style="display:flex;flex-direction:column;gap:6px;font-size:var(--font-size-sm);color:var(--color-text-main);margin-bottom:var(--space-4);">
+                <div><strong>Phone:</strong> <a href="tel:${office.phone.replace(/[^+\d]/g, '')}" style="color:var(--color-midnight);font-weight:600;text-decoration:none;">${office.phone}</a></div>
+                <div><strong>Email:</strong> <a href="mailto:${office.email}" style="color:var(--color-primary);font-weight:600;text-decoration:none;">${office.email}</a></div>
+                <div style="font-size:12px;color:var(--color-text-dim);"><strong>Hours:</strong> ${office.hours}</div>
+              </div>
+              <div style="padding:var(--space-2) var(--space-3);background:rgba(46,204,113,0.08);border-left:3px solid var(--color-primary);border-radius:var(--radius-sm);font-size:12px;color:var(--color-midnight);line-height:1.5;">
+                ${office.impact}
+              </div>
+            </div>
+            <div style="margin-top:var(--space-5);display:flex;gap:var(--space-3);align-items:center;flex-wrap:wrap;">
+              <a class="btn btn-secondary btn-sm" href="${link(base, `locations/${office.city.toLowerCase()}.html`)}">
+                <span>View Facility Details</span> &rarr;
+              </a>
+              <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:7px 14px;font-size:12px;">
+                ${icon('whatsapp')} <span>WhatsApp Desk</span>
+              </a>
+            </div>
+          </div>
+        `).join('')}
       </div>
     </div>
   </section>`;
@@ -1122,11 +1364,195 @@ export function relatedLinksBar(links = [], base = '') {
   <section class="container" style="padding-bottom:var(--space-8);">
     <div class="related-nav-bar">
       <div class="related-nav-title">
-        <span class="nav-logo-icon" style="width:20px;height:20px;">${icon('spark')}</span>
+        <span class="nav-logo-icon" style="width:20px;height:20px;">${icon('brandLeaf')}</span>
         <span>Related Solutions &amp; Infrastructure:</span>
       </div>
       <div class="related-nav-pills">
         ${links.map(l => `<a class="related-nav-pill" href="${link(base, l.href)}">${l.label} &rarr;</a>`).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+export function glanceCardsSection(base = '', cards = []) {
+  if (!cards || !cards.length) return '';
+  return `
+  <section class="section" id="glance">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">INFRASTRUCTURE AT A GLANCE</span>
+        <h2 class="heading-xl">Infrastructure Designed Around Your Next Move</h2>
+        <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+          From high-density accelerated compute clusters to carrier-neutral regional networks, GreenNext integrates critical infrastructure layers into unified, resilient foundations.
+        </p>
+      </div>
+      <div class="grid-4" style="gap:var(--space-6);margin-top:var(--space-10);">
+        ${cards.map((card, i) => `
+          <div class="card reveal reveal-delay-${i + 1}" style="padding:var(--space-6);display:flex;flex-direction:column;justify-content:space-between;background:rgba(11,18,32,0.7);border:1px solid rgba(0,255,102,0.2);border-radius:var(--radius-xl);">
+            <div>
+              <div class="card-icon" style="width:44px;height:44px;border-radius:10px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-4);">
+                ${icon(card.icon)}
+              </div>
+              <h3 class="heading-md" style="color:#FFFFFF;margin-bottom:var(--space-2);">${card.title}</h3>
+              <p class="text-sm" style="color:#AAB7CB;line-height:1.6;margin-bottom:var(--space-4);">${card.desc}</p>
+            </div>
+            <div>
+              <a class="location-card-link" href="${link(base, card.href)}">
+                <span>Learn More</span> <span class="btn-arrow">&rarr;</span>
+              </a>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+export function challengesSection(base = '', challenges = []) {
+  if (!challenges || !challenges.length) return '';
+  return `
+  <section class="section bg-soft section-relative" id="challenges">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">CRITICAL CHALLENGES WE ADDRESS</span>
+        <h2 class="heading-xl">Engineering Solutions for High-Density Operational Hurdles</h2>
+        <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+          As computing densities accelerate, data center operators face escalating thermal, electrical, and visibility constraints. Here is how GreenNext resolves them.
+        </p>
+      </div>
+      <div class="grid-3" style="gap:var(--space-6);margin-top:var(--space-10);">
+        ${challenges.map((c, i) => `
+          <div class="card card--dark reveal reveal-delay-${(i % 3) + 1}" style="padding:var(--space-6);display:flex;flex-direction:column;justify-content:space-between;background:rgba(11,18,32,0.85);border:1px solid rgba(0,255,102,0.2);border-radius:var(--radius-xl);">
+            <div>
+              <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4);">
+                <div class="card-icon" style="width:36px;height:36px;border-radius:8px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin:0;">
+                  ${icon(c.icon)}
+                </div>
+                <h3 class="heading-sm" style="color:#FFFFFF;margin:0;">${c.title}</h3>
+              </div>
+              
+              <div style="margin-bottom:var(--space-3);padding:var(--space-3);background:rgba(220,38,38,0.06);border-left:3px solid #EF4444;border-radius:var(--radius-sm);font-size:12px;color:#E8EDF5;line-height:1.5;">
+                <strong style="color:#F87171;display:block;margin-bottom:2px;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;">Challenge:</strong>
+                ${c.problem}
+              </div>
+
+              <div style="margin-bottom:var(--space-3);padding:var(--space-3);background:rgba(0,255,102,0.06);border-left:3px solid #00FF66;border-radius:var(--radius-sm);font-size:12px;color:#E8EDF5;line-height:1.5;">
+                <strong style="color:#00FF66;display:block;margin-bottom:2px;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;">GreenNext Approach:</strong>
+                ${c.solution}
+              </div>
+
+              <div style="padding:var(--space-3);background:rgba(57,255,20,0.04);border-left:3px solid #39FF14;border-radius:var(--radius-sm);font-size:12px;color:#AAB7CB;line-height:1.5;">
+                <strong style="color:#39FF14;display:block;margin-bottom:2px;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;">Measurable Benefit:</strong>
+                ${c.benefit}
+              </div>
+            </div>
+
+            <div style="margin-top:var(--space-5);padding-top:var(--space-3);border-top:1px solid rgba(255,255,255,0.08);">
+              <a class="location-card-link" href="${link(base, c.href)}">
+                <span>View Solution Architecture</span> &rarr;
+              </a>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+export function howGreenNextWorksSection(base = '', steps = []) {
+  if (!steps || !steps.length) return '';
+  return `
+  <section class="section bg-midnight section-relative" id="how-it-works">
+    <div class="cyber-grid-bg"></div>
+    <div class="container" style="position:relative;z-index:1;">
+      <div class="section-header section-header--center">
+        <span class="section-label" style="background:rgba(0,255,102,0.1);border-color:rgba(0,255,102,0.3);color:var(--color-primary);">OPERATIONAL LIFECYCLE</span>
+        <h2 class="heading-xl" style="color:#FFFFFF;margin-top:var(--space-2);">How GreenNext Works</h2>
+        <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+          A disciplined 6-stage lifecycle taking enterprise facilities from initial density assessment through autonomous optimization and continuous enhancement.
+        </p>
+      </div>
+      
+      <div class="how-works-timeline" style="display:flex;align-items:stretch;gap:var(--space-3);margin-top:var(--space-10);overflow-x:auto;padding-bottom:var(--space-4);">
+        ${steps.map((s, i) => `
+          <div class="how-works-step reveal reveal-delay-${(i % 3) + 1}" style="flex:1;min-width:170px;background:rgba(11,18,32,0.85);border:1px solid rgba(0,255,102,0.25);border-radius:var(--radius-xl);padding:var(--space-5);display:flex;flex-direction:column;justify-content:space-between;">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3);">
+                <span style="font-size:10px;font-weight:800;letter-spacing:0.1em;color:#00FF66;background:rgba(0,255,102,0.12);padding:2px 8px;border-radius:4px;border:1px solid rgba(0,255,102,0.3);">STAGE ${s.step}</span>
+                <div style="width:28px;height:28px;border-radius:6px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;">${icon(s.icon)}</div>
+              </div>
+              <h3 class="heading-sm" style="color:#FFFFFF;margin-bottom:var(--space-2);">${s.name}</h3>
+              <p class="text-xs" style="color:#AAB7CB;line-height:1.5;">${s.desc}</p>
+            </div>
+            ${i < steps.length - 1 ? '<div style="margin-top:var(--space-4);text-align:right;color:#00FF66;font-size:14px;font-weight:bold;">&rarr;</div>' : ''}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+export function systemArchitectureSection(base = '') {
+  return `
+  <section class="section section-relative" id="system-architecture">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">END-TO-END DATAFLOW PIPELINE</span>
+        <h2 class="heading-xl">System Architecture: Sensors to Operational Decisions</h2>
+        <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+          A connected operational dataflow capturing physical sensor signals across facilities, translating telemetry into 10 key performance indicators, and driving policy-governed decisions.
+        </p>
+      </div>
+      ${systemArchitectureDiagram()}
+    </div>
+  </section>`;
+}
+
+export function whyGreenNextSection(base = '', pillars = []) {
+  if (!pillars || !pillars.length) return '';
+  return `
+  <section class="section bg-soft section-relative" id="why-greennext">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">WHY GREENNEXT</span>
+        <h2 class="heading-xl">Enterprise Digital Infrastructure Built for Tomorrow</h2>
+        <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+          Unified visibility, verified efficiency, and modular scalability that ensure your computing infrastructure stays resilient under accelerating AI workloads.
+        </p>
+      </div>
+      <div class="grid-3" style="gap:var(--space-6);margin-top:var(--space-10);">
+        ${pillars.map((p, i) => `
+          <div class="card reveal reveal-delay-${(i % 3) + 1}" style="padding:var(--space-6);background:rgba(11,18,32,0.7);border:1px solid rgba(0,255,102,0.2);border-radius:var(--radius-xl);">
+            <div class="card-icon" style="width:40px;height:40px;border-radius:10px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-4);">
+              ${icon(p.icon)}
+            </div>
+            <h3 class="heading-sm" style="color:#FFFFFF;margin-bottom:var(--space-2);">${p.title}</h3>
+            <p class="text-sm" style="color:#AAB7CB;line-height:1.6;">${p.desc}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </section>`;
+}
+
+export function consultationCTASection(base = '') {
+  return `
+  <section class="section bg-midnight section-relative" id="consultation-cta" style="padding:var(--space-16) 0;">
+    <div class="cyber-grid-bg"></div>
+    <div class="container" style="position:relative;z-index:1;max-width:900px;text-align:center;">
+      <span class="section-label" style="background:rgba(0,255,102,0.1);border-color:rgba(0,255,102,0.3);color:var(--color-primary);">PARTNER WITH GREENNEXT</span>
+      <h2 class="heading-2xl" style="color:#FFFFFF;margin-top:var(--space-3);margin-bottom:var(--space-4);">Let's Plan Your Infrastructure.</h2>
+      <p class="text-lg" style="color:#AAB7CB;max-width:720px;margin:0 auto var(--space-8);line-height:1.65;">
+        Discuss your infrastructure requirements, operational challenges, and digital transformation priorities with GreenNext.
+      </p>
+      <div style="display:flex;justify-content:center;gap:var(--space-4);flex-wrap:wrap;align-items:center;">
+        <a class="btn btn-primary btn-lg" href="${link(base, 'contact.html')}" data-open-lead-modal="true">
+          <span>Plan Your Infrastructure</span>
+          <span class="btn-arrow">&rarr;</span>
+        </a>
+        <a class="btn btn-secondary btn-lg" href="${link(base, 'solutions/index.html')}">
+          <span>Explore All Solutions</span>
+        </a>
       </div>
     </div>
   </section>`;

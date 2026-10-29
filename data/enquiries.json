@@ -110,5 +110,50 @@
     },
     "emailNotificationStatus": "Failed",
     "lastUpdated": "2026-10-19T18:06:22.398Z"
+  },
+  {
+    "enquiryId": "GN-20261026-0001",
+    "submittedAt": "2026-10-26T18:31:43.404Z",
+    "formType": "Short Form",
+    "fullName": "Verification Bot",
+    "businessEmail": "bot@greennext.in",
+    "phoneNumber": "",
+    "companyName": "—",
+    "areaOfInterest": "AI Data Centers",
+    "projectRequirements": "—",
+    "metadata": {
+      "page_url": "https://greenext.in/",
+      "page_title": "",
+      "referrer": "",
+      "utm_source": "test_runner",
+      "utm_medium": "",
+      "utm_campaign": "",
+      "utm_term": "",
+      "utm_content": ""
+    },
+    "status": "New",
+    "jira": {
+      "success": false,
+      "status": "jira_disabled",
+      "message": "Jira integration credentials not configured"
+    },
+    "email": {
+      "success": true,
+      "provider": "google_apps_script",
+      "messageId": "gas-mail-1793039505915",
+      "recipient": "ruba.int2027g3@gmail.com",
+      "subject": "[GreenNext] New Quick Enquiry — Verification Bot (GN-20261026-0001)",
+      "timestamp": "2026-10-26T18:31:48.063Z"
+    },
+    "airtable": {
+      "success": false,
+      "configured": false,
+      "status": "missing_credentials",
+      "message": "Airtable Personal Access Token (AIRTABLE_PAT) is not configured in server environment.",
+      "enquiryId": "GN-20261026-0001"
+    },
+    "airtableRecordId": null,
+    "emailNotificationStatus": "Sent",
+    "lastUpdated": "2026-10-26T18:31:48.064Z"
   }
 ]

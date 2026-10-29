@@ -1,8 +1,8 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { capabilities, industries, solutions, locations, operationalWorkflowSteps } from './data.mjs';
+import { capabilities, industries, solutions, locations, operationalWorkflowSteps, glanceCards, challenges, howGreenNextWorksSteps, systemArchitectureSteps, whyGreenNextPillars, tenKpis } from './data.mjs';
 import {
   capabilitiesContent,
   industriesContent,
@@ -19,8 +19,11 @@ import {
   aboutSplitSection, anchorSection, intelligenceDashboardSection, processFlowSection, architectureSection,
   sustainabilitySection, futureVisionSection, locationsMapSection,
   benefitsSection, useCasesSection, deepDiveSection, faqSection, relatedLinksBar,
+  treeOfThoughtSection, regionalImpactSection, regionalOfficesSection,
+  glanceCardsSection, challengesSection, howGreenNextWorksSection, systemArchitectureSection, whyGreenNextSection, consultationCTASection,
 } from './templates.mjs';
 import { icon } from './icons.mjs';
+import { dashboardMock } from './visuals.mjs';
 
 const featuredCapabilities = capabilities.filter(c => c.featured);
 const featuredSolutions = solutions.filter(s => s.featured);
@@ -85,19 +88,14 @@ function write(relPath, html) {
   const body = `
 ${heroSlider(base)}
 
-<section class="section" style="padding-bottom:0;" id="glance">
-  <div class="container">
-    <div class="section-header section-header--center">
-      <span class="section-label">Infrastructure at a Glance</span>
-      <h2 class="heading-xl">Infrastructure Designed Around Your Next Move</h2>
-      <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
-        From high-density accelerated compute clusters to carrier-neutral regional networks, GreenNext integrates critical infrastructure layers into unified, resilient foundations.
-      </p>
-    </div>
-  </div>
-</section>
+<!-- Section 2: Infrastructure at a Glance -->
+${glanceCardsSection(base, glanceCards)}
 ${metricsStrip()}
 
+<!-- Section 3: Challenges We Address -->
+${challengesSection(base, challenges)}
+
+<!-- Section 4: Infrastructure Capabilities -->
 <section class="section" style="padding-bottom:0;" id="capabilities">
   <div class="container">
     <div class="section-header" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);margin-bottom:var(--space-10);">
@@ -110,10 +108,36 @@ ${metricsStrip()}
     </div>
   </div>
 </section>
-${cardGrid(base, featuredCapabilities, { hrefPrefix: 'capabilities/', ctaText: 'Learn More', columns: 5, withPhoto: true })}
+${cardGrid(base, featuredCapabilities, { hrefPrefix: 'capabilities/', ctaText: 'Learn More', columns: 3, withPhoto: true })}
 
-${processFlowSection({ eyebrow: 'INTELLIGENT OPERATIONS WORKFLOW', heading: 'From Infrastructure Data to Better Decisions', steps: operationalWorkflowSteps })}
+<!-- Section 5: Intelligent Solutions -->
+<section class="section bg-soft" style="padding-bottom:0;" id="solutions">
+  <div class="container">
+    <div class="section-header" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);margin-bottom:var(--space-10);">
+      <div>
+        <span class="section-label">Intelligent Solutions</span>
+        <h2 class="heading-xl">Engineered Solutions for Modern Workloads</h2>
+        <p class="text-base text-muted" style="margin-top:var(--space-2);">Connect infrastructure data, operational visibility, and intelligent monitoring to support better decisions.</p>
+      </div>
+      <a class="location-card-link" href="solutions/index.html">Explore All Solutions <span class="btn-arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+${cardGrid(base, featuredSolutions, { hrefPrefix: 'solutions/', ctaText: 'Explore Solution', columns: 3, withPhoto: true })}
 
+<!-- Section 6: How GreenNext Works -->
+${howGreenNextWorksSection(base, howGreenNextWorksSteps)}
+
+<!-- Section 7: Infrastructure Intelligence (10 KPIs Telemetry Console) -->
+${intelligenceDashboardSection(base)}
+
+<!-- Section 8: System Architecture -->
+${systemArchitectureSection(base)}
+
+<!-- Tree of Thought Architecture Section -->
+${treeOfThoughtSection(base)}
+
+<!-- Section 9: Industry Applications -->
 <section class="section bg-soft" id="industries">
   <div class="container">
     <div class="section-header section-header--center">
@@ -123,22 +147,22 @@ ${processFlowSection({ eyebrow: 'INTELLIGENT OPERATIONS WORKFLOW', heading: 'Fro
         Different sectors face distinct physical and architectural hurdles—from microsecond financial determinism to healthcare regulatory compliance.
       </p>
     </div>
-    <div class="grid-4" style="gap:var(--space-5);margin-top:var(--space-8);">
-      ${industries.map((ind, i) => `
-        <div class="card reveal reveal-delay-${(i % 4) + 1}" style="display:flex;flex-direction:column;justify-content:space-between;padding:var(--space-6);">
+    <div class="grid-3" style="gap:var(--space-5);margin-top:var(--space-8);">
+      ${industries.slice(0, 6).map((ind, i) => `
+        <div class="card reveal reveal-delay-${(i % 3) + 1}" style="display:flex;flex-direction:column;justify-content:space-between;padding:var(--space-6);background:rgba(11,18,32,0.7);border:1px solid rgba(0,255,102,0.2);border-radius:var(--radius-xl);">
           <div>
             <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4);">
-              <div class="card-icon" style="width:40px;height:40px;margin-bottom:0;">${icon(ind.icon)}</div>
-              <h3 class="feature-title" style="margin:0;font-size:var(--font-size-base);">${ind.name}</h3>
+              <div class="card-icon" style="width:40px;height:40px;border-radius:10px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin-bottom:0;">${icon(ind.icon)}</div>
+              <h3 class="feature-title" style="margin:0;font-size:var(--font-size-base);color:#FFFFFF;">${ind.name}</h3>
             </div>
-            <div style="margin-bottom:var(--space-3);font-size:var(--font-size-xs);line-height:1.6;color:var(--color-text-muted);">
-              <strong style="color:var(--color-text-main);display:block;margin-bottom:2px;">Challenge:</strong> ${ind.challenge}
+            <div style="margin-bottom:var(--space-3);font-size:var(--font-size-xs);line-height:1.6;color:var(--color-cool-grey);">
+              <strong style="color:#FFFFFF;display:block;margin-bottom:2px;">Challenge:</strong> ${ind.challenge}
             </div>
-            <div style="margin-bottom:var(--space-3);font-size:var(--font-size-xs);line-height:1.6;color:var(--color-text-muted);">
-              <strong style="color:var(--color-text-main);display:block;margin-bottom:2px;">Capability:</strong> ${ind.capability}
+            <div style="margin-bottom:var(--space-3);font-size:var(--font-size-xs);line-height:1.6;color:var(--color-cool-grey);">
+              <strong style="color:#FFFFFF;display:block;margin-bottom:2px;">Capability:</strong> ${ind.capability}
             </div>
-            <div style="padding:var(--space-2) var(--space-3);background:rgba(0,212,255,0.06);border-left:2px solid var(--color-primary);border-radius:var(--radius-sm);font-size:11px;color:var(--color-text-dim);line-height:1.5;">
-              <strong style="color:var(--color-text-main);">Outcome:</strong> ${ind.outcome}
+            <div style="padding:var(--space-2) var(--space-3);background:rgba(0,255,102,0.06);border-left:2px solid #00FF66;border-radius:var(--radius-sm);font-size:11px;color:#AAB7CB;line-height:1.5;">
+              <strong style="color:#00FF66;">Outcome:</strong> ${ind.outcome}
             </div>
           </div>
           <div style="margin-top:var(--space-5);">
@@ -149,15 +173,14 @@ ${processFlowSection({ eyebrow: 'INTELLIGENT OPERATIONS WORKFLOW', heading: 'Fro
   </div>
 </section>
 
-${architectureSection(base)}
-
+<!-- Section 10: Regional Focus -->
 <section class="section bg-soft" style="padding-bottom: 0;" id="locations">
   <div class="container">
     <div class="section-header section-header--center">
-      <span class="section-label">Regional Presence</span>
+      <span class="section-label">Regional Focus</span>
       <h2 class="heading-xl">Closer to the Next Wave of Digital Growth</h2>
       <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
-        Strategic proximity across South India's high-growth industrial and academic corridors: Madurai, Coimbatore, Trichy, and Mangalore.
+        Target service locations and strategic connectivity across South India's high-growth industrial and academic corridors: Madurai, Coimbatore, Trichy, and Mangalore.
       </p>
       <a class="location-card-link" href="locations/index.html" style="justify-content:center;margin-top:var(--space-4);">Explore Regional Hubs <span class="btn-arrow">&rarr;</span></a>
     </div>
@@ -166,8 +189,10 @@ ${architectureSection(base)}
 <div class="bg-soft">
 ${locationsMapSection(base, locations, 'locations/')}
 </div>
+${regionalImpactSection(base)}
 
-${intelligenceDashboardSection(base)}
+<!-- Section 11: Why GreenNext -->
+${whyGreenNextSection(base, whyGreenNextPillars)}
 
 ${sustainabilitySection(base)}
 
@@ -179,6 +204,9 @@ ${aboutSplitSection({
   img: 'assets/img/control-room.webp',
   id: 'about-greennext',
 })}
+
+<!-- Section 12: Consultation CTA -->
+${consultationCTASection(base)}
 
 <section class="section bg-soft" id="consultation" style="padding-top: var(--space-12);">
   <div class="container" style="max-width: 900px;">
@@ -288,6 +316,7 @@ ${hero({
   secondary: { text: 'Quick Enquiry', href: 'contact.html#quick-enquiry' },
 })}
 ${cardGrid(base, industries, { hrefPrefix: 'industries/', ctaText: 'Explore Industry', columns: 4 })}
+${regionalImpactSection(base)}
 ${finalCTASection(base)}
 `;
   write('industries/index.html', page({
@@ -354,6 +383,7 @@ ${hero({
   secondary: { text: 'Quick Enquiry', href: 'contact.html#quick-enquiry' },
 })}
 ${cardGrid(base, solutions, { hrefPrefix: 'solutions/', columns: 4, withPhoto: true })}
+${treeOfThoughtSection(base)}
 ${finalCTASection(base)}
 `;
   write('solutions/index.html', page({
@@ -660,22 +690,25 @@ ${hero({
 })}
 <div class="container" id="contact-information" style="margin-top: var(--space-10);">
   <div id="pathways"></div>
-  <div class="grid-3" style="gap: var(--space-6);">
+  <div class="grid-4" style="gap: var(--space-5);">
     ${contactContent.pathways.map((pw, i) => `
-      <div class="feature-card reveal reveal-delay-${i + 1}" ${pw.isWhatsApp ? 'id="whatsapp"' : ''} style="text-align: center;display:flex;flex-direction:column;justify-content:space-between;">
+      <div class="feature-card reveal reveal-delay-${i + 1}" ${pw.isWhatsApp ? 'id="whatsapp"' : ''} style="text-align: center;display:flex;flex-direction:column;justify-content:space-between;padding:var(--space-6);">
         <div>
           <div class="feature-icon" style="margin: 0 auto var(--space-4);${pw.isWhatsApp ? 'color:#25D366;' : ''}">${icon(pw.icon)}</div>
-          <h3 class="feature-title">${pw.title}</h3>
-          <p class="feature-desc">${pw.desc}</p>
+          <h3 class="feature-title" style="font-size:var(--font-size-base);">${pw.title}</h3>
+          <p class="feature-desc" style="font-size:var(--font-size-xs);">${pw.desc}</p>
         </div>
-        <div style="margin-top:var(--space-6);">
+        <div style="margin-top:var(--space-5);">
           ${pw.isWhatsApp
-            ? `<a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="justify-content:center;margin:0 auto;display:inline-flex;">${icon('whatsapp')} <span>${pw.actionText}</span></a>`
-            : `<a class="btn btn-secondary btn-sm" href="${pw.actionHref}"><span>${pw.actionText}</span> &rarr;</a>`}
+            ? `<a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="justify-content:center;margin:0 auto;display:inline-flex;padding:9px 16px;font-size:var(--font-size-xs);">${icon('whatsapp')} <span>${pw.actionText}</span></a>`
+            : pw.isChatbot
+              ? `<button type="button" class="btn btn-primary btn-sm" data-open-chat="true" style="width:100%;justify-content:center;"><span>${pw.actionText}</span> &rarr;</button>`
+              : `<a class="btn btn-secondary btn-sm" href="${pw.actionHref}" style="width:100%;justify-content:center;"><span>${pw.actionText}</span> &rarr;</a>`}
         </div>
       </div>`).join('')}
   </div>
 </div>
+${regionalOfficesSection(contactContent.regionalOffices, base)}
 <div id="talk-to-an-expert">
   <div id="enquiry">
     ${leadFormSection('consultation', { base })}
@@ -808,4 +841,351 @@ ${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: title }])}
   }));
 }
 
-console.log('GreenNext site successfully generated for all primary pages and 404.');
+// ---------------------------------------------------------------------------
+// 21. TECHNOLOGY & ENGINEERING (technology.html)
+// ---------------------------------------------------------------------------
+{
+  const base = '';
+  const techBody = `
+${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Technology & Engineering' }])}
+${hero({
+  base,
+  variant: 'dark',
+  img: 'assets/img/circuit-board.webp',
+  eyebrow: 'TECHNOLOGY &amp; ENGINEERING',
+  headline: 'Layer-One Engineering for Extreme-Density AI Computing',
+  description: 'Explore the physical engineering principles behind GreenNext: 2N electrical power topologies, direct-to-chip liquid cooling loops, 800G non-blocking optical fabrics, and autonomous closed-loop controls.',
+  primary: { text: 'Schedule Technical Review', href: '#enquiry' },
+  secondary: { text: 'Quick Enquiry', href: '#quick-enquiry' },
+})}
+
+<section class="section">
+  <div class="container">
+    <div class="section-header section-header--center">
+      <span class="section-label">PHYSICAL INFRASTRUCTURE ARCHITECTURE</span>
+      <h2 class="heading-xl">Engineered for 40kW–80kW+ Extreme Rack Densities</h2>
+      <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+        Modern AI model training generates intense localized thermal loads that overwhelm legacy data center designs. GreenNext re-engineers the physical layer from the ground up.
+      </p>
+    </div>
+    
+    <div class="grid-3" style="gap:var(--space-6);margin-top:var(--space-10);">
+      <div class="card reveal" style="padding:var(--space-6);background:rgba(11,18,32,0.8);border:1px solid rgba(0,255,102,0.25);border-radius:var(--radius-xl);">
+        <div class="card-icon" style="width:40px;height:40px;border-radius:10px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-4);">${icon('bolt')}</div>
+        <h3 class="heading-sm" style="color:#FFFFFF;margin-bottom:var(--space-2);">2N Isolated Power Trains</h3>
+        <p class="text-sm" style="color:#AAB7CB;line-height:1.6;">Dual independent medium-voltage utility feeds paired with high-efficiency double-conversion modular UPS units and active harmonic filtration.</p>
+      </div>
+      <div class="card reveal" style="padding:var(--space-6);background:rgba(11,18,32,0.8);border:1px solid rgba(0,255,102,0.25);border-radius:var(--radius-xl);">
+        <div class="card-icon" style="width:40px;height:40px;border-radius:10px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-4);">${icon('spark')}</div>
+        <h3 class="heading-sm" style="color:#FFFFFF;margin-bottom:var(--space-2);">Direct-to-Chip Liquid Loops</h3>
+        <p class="text-sm" style="color:#AAB7CB;line-height:1.6;">Precision dielectric cold-plate cooling extracting thermal energy directly from high-TDP accelerators, reducing compressor workload and parasitic PUE loss.</p>
+      </div>
+      <div class="card reveal" style="padding:var(--space-6);background:rgba(11,18,32,0.8);border:1px solid rgba(0,255,102,0.25);border-radius:var(--radius-xl);">
+        <div class="card-icon" style="width:40px;height:40px;border-radius:10px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-4);">${icon('network')}</div>
+        <h3 class="heading-sm" style="color:#FFFFFF;margin-bottom:var(--space-2);">800G Non-Blocking Fabrics</h3>
+        <p class="text-sm" style="color:#AAB7CB;line-height:1.6;">Deterministic spine-leaf optical networking interconnecting multi-node GPU clusters with sub-microsecond latency and zero packet drop under heavy all-reduce jobs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+${architectureSection(base)}
+${systemArchitectureSection(base)}
+
+<section class="section bg-soft" id="quick-enquiry" style="padding-top:var(--space-12);">
+  <div class="container" style="max-width:900px;">
+    ${quickEnquirySection({ base, title: 'Schedule an Engineering Consultation', subtitle: 'Connect with GreenNext systems architects to discuss rack thermal modeling and electrical specifications.' })}
+  </div>
+</section>
+<div id="enquiry">
+  ${leadFormSection('general', { base })}
+</div>
+${finalCTASection(base)}
+`;
+
+  write('technology.html', page({
+    base,
+    title: 'Technology & Engineering | GreenNext High-Density AI Infrastructure',
+    metaDesc: 'Explore GreenNext technology: 2N power topologies, direct-to-chip liquid cooling, 800G non-blocking optical backbones, and autonomous closed-loop facility telemetry.',
+    bodyHtml: techBody,
+  }));
+}
+
+// ---------------------------------------------------------------------------
+// 22. CONSULTATION BOOKING (book-consultation.html)
+// ---------------------------------------------------------------------------
+{
+  const base = '';
+  const consultBody = `
+${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Book a Consultation' }])}
+${hero({
+  base,
+  variant: 'dark',
+  img: 'assets/img/control-room.webp',
+  eyebrow: 'PRIORITY ARCHITECTURE CONSULTATION',
+  headline: 'Plan Your Digital Infrastructure With GreenNext Experts',
+  description: 'Discuss your power capacity, cooling density, workload distribution, and regional connectivity roadmap directly with our senior infrastructure engineering desk.',
+  primary: { text: 'Schedule Priority Call', href: '#consultation-form' },
+  secondary: { text: 'WhatsApp Technical Desk', href: '#whatsapp' },
+})}
+
+<section class="section" id="consultation-form">
+  <div class="container" style="max-width:900px;">
+    <div class="section-header section-header--center">
+      <span class="section-label">DIRECT ADVISORY BOOKING</span>
+      <h2 class="heading-xl">Let’s Plan Your Infrastructure</h2>
+      <p class="text-base text-muted" style="max-width:720px;margin:var(--space-3) auto 0;">
+        Share your operational requirements, compute density targets, or target service corridor (Madurai, Coimbatore, Trichy, Mangalore) to connect with a systems architect.
+      </p>
+    </div>
+    ${leadFormSection('consultation', { base })}
+  </div>
+</section>
+
+<section class="section bg-soft" id="whatsapp" style="text-align:center;padding:var(--space-12) 0;">
+  <div class="container" style="max-width:700px;">
+    <div style="width:54px;height:54px;border-radius:50%;background:rgba(37,211,102,0.15);color:#25D366;display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-4);font-size:24px;">
+      ${icon('whatsapp')}
+    </div>
+    <h3 class="heading-md" style="color:#FFFFFF;margin-bottom:var(--space-2);">Prefer Direct Messaging?</h3>
+    <p class="text-sm text-muted" style="margin-bottom:var(--space-5);">Our engineering desk is available on WhatsApp for immediate technical queries regarding facility availability, power densities, and site scoping.</p>
+    <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="justify-content:center;margin:0 auto;display:inline-flex;padding:12px 24px;font-size:var(--font-size-sm);">
+      ${icon('whatsapp')} <span>Connect on WhatsApp (+91 94433 66100)</span>
+    </a>
+  </div>
+</section>
+
+${finalCTASection(base)}
+`;
+
+  write('book-consultation.html', page({
+    base,
+    title: 'Plan Your Infrastructure | Book a Consultation with GreenNext',
+    metaDesc: 'Schedule an enterprise consultation with GreenNext senior engineers. Discuss AI rack density, cooling optimization, power availability, and regional site scoping.',
+    bodyHtml: consultBody,
+  }));
+}
+
+// ---------------------------------------------------------------------------
+// 23. INTELLIGENCE SUITE (intelligence/index.html & sub-pages)
+// ---------------------------------------------------------------------------
+{
+  const base = '../';
+  
+  // 1. Intelligence Hub / Index
+  const intHubBody = `
+${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Intelligence' }])}
+${hero({
+  base,
+  variant: 'dark',
+  img: 'assets/img/control-room.webp',
+  eyebrow: 'INFRASTRUCTURE INTELLIGENCE // NEXUS-OPS',
+  headline: 'Real-Time Telemetry & 10-KPI Performance Center',
+  description: 'Unified operational observability across compute, electrical, thermal, and network tiers with continuous KPI computation and predictive anomaly alerts.',
+  primary: { text: 'View Telemetry Console', href: '#telemetry-console' },
+  secondary: { text: 'Open Executive Dashboard', href: '../analytics.html' },
+})}
+
+<section class="section" id="telemetry-console">
+  <div class="container">
+    <div class="section-header section-header--center">
+      <span class="section-label">OBSERVABILITY SUITE</span>
+      <h2 class="heading-xl">Ten Mission-Critical Infrastructure KPIs</h2>
+      <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+        Validated formulas, target thresholds, and real-time calculation engines monitoring facility health, energy efficiency, and sustainability.
+      </p>
+    </div>
+    ${dashboardMock()}
+  </div>
+</section>
+
+<section class="section bg-soft" id="intelligence-modules">
+  <div class="container">
+    <div class="section-header section-header--center">
+      <span class="section-label">INTELLIGENCE MODULES</span>
+      <h2 class="heading-xl">Deep-Dive Telemetry Domains</h2>
+      <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+        Explore specialized analytics modules designed for facility engineers, energy managers, and executive leadership.
+      </p>
+    </div>
+    
+    <div class="grid-4" style="gap:var(--space-6);margin-top:var(--space-10);">
+      <div class="card reveal" style="padding:var(--space-6);background:rgba(11,18,32,0.85);border:1px solid rgba(0,255,102,0.25);border-radius:var(--radius-xl);display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div class="card-icon" style="width:36px;height:36px;border-radius:8px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-3);">${icon('bolt')}</div>
+          <h3 class="heading-sm" style="color:#FFFFFF;margin-bottom:var(--space-2);">Energy Intelligence</h3>
+          <p class="text-xs" style="color:#AAB7CB;line-height:1.5;">Continuous PUE analysis, chiller COP tracking, and branch-circuit electrical power profiling.</p>
+        </div>
+        <div style="margin-top:var(--space-4);"><a class="location-card-link" href="energy-intelligence.html">Explore Energy &rarr;</a></div>
+      </div>
+
+      <div class="card reveal" style="padding:var(--space-6);background:rgba(11,18,32,0.85);border:1px solid rgba(0,255,102,0.25);border-radius:var(--radius-xl);display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div class="card-icon" style="width:36px;height:36px;border-radius:8px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-3);">${icon('database')}</div>
+          <h3 class="heading-sm" style="color:#FFFFFF;margin-bottom:var(--space-2);">Capacity Analytics</h3>
+          <p class="text-xs" style="color:#AAB7CB;line-height:1.5;">3D spatial utilization, structural floor weight runway, and electrical panel expansion planning.</p>
+        </div>
+        <div style="margin-top:var(--space-4);"><a class="location-card-link" href="capacity-analytics.html">Explore Capacity &rarr;</a></div>
+      </div>
+
+      <div class="card reveal" style="padding:var(--space-6);background:rgba(11,18,32,0.85);border:1px solid rgba(0,255,102,0.25);border-radius:var(--radius-xl);display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div class="card-icon" style="width:36px;height:36px;border-radius:8px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-3);">${icon('spark')}</div>
+          <h3 class="heading-sm" style="color:#FFFFFF;margin-bottom:var(--space-2);">Sustainability Reporting</h3>
+          <p class="text-xs" style="color:#AAB7CB;line-height:1.5;">CUE, WUE, and Renewable Energy Factor (REF) monitoring aligned with ISO 50001 and ESG standards.</p>
+        </div>
+        <div style="margin-top:var(--space-4);"><a class="location-card-link" href="sustainability-reporting.html">Explore ESG &rarr;</a></div>
+      </div>
+
+      <div class="card reveal" style="padding:var(--space-6);background:rgba(11,18,32,0.85);border:1px solid rgba(0,255,102,0.25);border-radius:var(--radius-xl);display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div class="card-icon" style="width:36px;height:36px;border-radius:8px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-3);">${icon('shield')}</div>
+          <h3 class="heading-sm" style="color:#FFFFFF;margin-bottom:var(--space-2);">Infrastructure Performance</h3>
+          <p class="text-xs" style="color:#AAB7CB;line-height:1.5;">99.999% availability verification, sub-millisecond network transit, and MTTR incident benchmarks.</p>
+        </div>
+        <div style="margin-top:var(--space-4);"><a class="location-card-link" href="infrastructure-performance.html">Explore Performance &rarr;</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+${systemArchitectureSection(base)}
+${finalCTASection(base)}
+`;
+
+  write('intelligence/index.html', page({
+    base,
+    title: 'Infrastructure KPI Dashboard & Intelligence Center | GreenNext',
+    metaDesc: 'GreenNext Infrastructure Intelligence: Ten mission-critical KPIs, live telemetry architecture, energy optimization metrics, and continuous capacity analytics.',
+    bodyHtml: intHubBody,
+  }));
+
+  // Helper generator for sub-intelligence pages
+  const subPages = [
+    {
+      slug: 'energy-intelligence',
+      title: 'Energy Intelligence & Thermal Telemetry',
+      eyebrow: 'ENERGY INTELLIGENCE',
+      headline: 'Sub-Second Power Telemetry & PUE Optimization',
+      desc: 'Real-time electrical distribution tracking, phase load balancing, and precision cooling COP monitoring designed for extreme-density AI environments.',
+      kpis: ['pue', 'cer', 'cost'],
+      focus: 'Thermal Heat Dissipation & Power Utilization'
+    },
+    {
+      slug: 'capacity-analytics',
+      title: 'Capacity Analytics & Spatial Runway Modeling',
+      eyebrow: 'CAPACITY RUNWAY',
+      headline: 'Multi-Dimensional Space, Power & Cooling Runway',
+      desc: 'Predictive modeling simulating structural floor loads, electrical distribution headroom, and thermal exhaust limits to prevent stranded capacity.',
+      kpis: ['cap', 'util'],
+      focus: 'Modular Expansion & Hardware Refresh Planning'
+    },
+    {
+      slug: 'sustainability-reporting',
+      title: 'Sustainability Reporting & ESG Accounting',
+      eyebrow: 'SUSTAINABILITY ANALYTICS',
+      headline: 'Automated Carbon, Water & Renewable Energy Accounting',
+      desc: 'Replaces manual carbon estimates with verified continuous telemetry measuring CUE, WUE, and hourly matching with clean solar and wind microgrids.',
+      kpis: ['cue', 'wue', 'ref'],
+      focus: 'Scope 1, 2, and 3 Verified ESG Telemetry'
+    },
+    {
+      slug: 'infrastructure-performance',
+      title: 'Infrastructure Performance & Reliability SLAs',
+      eyebrow: 'PERFORMANCE BENCHMARKS',
+      headline: 'Fault-Tolerant Availability & Microsecond Fabric SLAs',
+      desc: 'Continuous verification of tier-grade concurrent maintainability, sub-millisecond east-west packet transit, and rapid MTTR incident isolation.',
+      kpis: ['avail', 'mttr'],
+      focus: 'Deterministic Compute Continuity'
+    }
+  ];
+
+  for (const sp of subPages) {
+    const spBody = `
+${breadcrumb(base, [{ label: 'Home', href: 'index.html' }, { label: 'Intelligence', href: 'intelligence/index.html' }, { label: sp.title }])}
+${hero({
+  base,
+  variant: 'dark',
+  img: 'assets/img/control-room.webp',
+  eyebrow: sp.eyebrow,
+  headline: sp.headline,
+  description: sp.desc,
+  primary: { text: 'Connect With Operations Desk', href: '#enquiry' },
+  secondary: { text: 'All Intelligence Modules', href: 'index.html' },
+})}
+
+<section class="section">
+  <div class="container">
+    <div class="section-header section-header--center">
+      <span class="section-label">KPI FOCUS: ${sp.focus}</span>
+      <h2 class="heading-xl">Core Telemetry Benchmarks</h2>
+      <p class="text-base text-muted" style="max-width:760px;margin:var(--space-3) auto 0;">
+        Simulated operational telemetry parameters and continuous formula calculations.
+      </p>
+    </div>
+    
+    <div class="dashboard-mock" style="margin-top:var(--space-8);">
+      <div class="dashboard-kpis-grid" style="grid-template-columns:repeat(${sp.kpis.length}, 1fr);">
+        ${tenKpis.filter(k => sp.kpis.includes(k.id)).map(k => `
+          <div class="dashboard-telemetry-card">
+            <div class="dashboard-telemetry-top">
+              <span class="dashboard-telemetry-icon">${icon(k.id === 'pue' || k.id === 'ref' ? 'bolt' : k.id === 'avail' || k.id === 'mttr' ? 'shield' : 'spark')}</span>
+              <span class="dashboard-status-indicator"><span class="dashboard-status-dot dashboard-status-dot--good"></span> ${k.status}</span>
+            </div>
+            <div class="dashboard-telemetry-val" style="color:#00FF66;font-family:var(--font-family-mono);font-size:1.8rem;font-weight:700;">${k.value}</div>
+            <div class="dashboard-telemetry-cat" style="font-size:13px;font-weight:600;color:#FFFFFF;margin-top:4px;">${k.name}</div>
+            <div style="font-size:11px;color:#AAB7CB;margin-top:6px;line-height:1.4;">${k.def}</div>
+            <div style="font-size:10px;color:#00FF66;margin-top:6px;font-family:var(--font-family-mono);background:rgba(0,255,102,0.08);padding:4px 8px;border-radius:4px;">
+              Formula: ${k.formula}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="margin-top:var(--space-6);font-size:11px;color:#AAB7CB;text-align:center;">
+        * Notice: Telemetry parameters shown reflect demonstration baselines for architectural scoping. Live telemetry streams under active SLAs.
+      </div>
+    </div>
+  </div>
+</section>
+
+${systemArchitectureSection(base)}
+
+<div id="enquiry">
+  ${leadFormSection('general', { base })}
+</div>
+${finalCTASection(base)}
+`;
+
+    write(`intelligence/${sp.slug}.html`, page({
+      base,
+      title: `${sp.title} | GreenNext Intelligence`,
+      metaDesc: sp.desc,
+      bodyHtml: spBody,
+    }));
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 24. CAPABILITY ALIASES FOR EXACT MEGA MENU ROUTE CONSISTENCY
+// ---------------------------------------------------------------------------
+{
+  const aliases = [
+    { from: 'capabilities/ai-infrastructure.html', to: 'capabilities/ai-data-centers.html' },
+    { from: 'capabilities/data-center-solutions.html', to: 'capabilities/data-center-engineering.html' },
+    { from: 'capabilities/intelligent-automation.html', to: 'capabilities/intelligent-operations.html' },
+    { from: 'solutions/automation-solutions.html', to: 'solutions/operational-automation.html' },
+  ];
+
+  for (const { from, to } of aliases) {
+    try {
+      const fullFrom = join(ROOT, from);
+      const fullTo = join(ROOT, to);
+      const content = readFileSync(fullFrom, 'utf8');
+      writeFileSync(fullTo, content, 'utf8');
+    } catch (e) {
+      // If source file not read yet, ignore
+    }
+  }
+}
+
+console.log('GreenNext site successfully generated for all primary pages, intelligence suite, and 404.');

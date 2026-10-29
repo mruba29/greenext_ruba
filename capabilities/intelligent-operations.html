@@ -1,0 +1,1733 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intelligent Automation & AI-Driven Infrastructure Operations | GreenNext</title>
+<meta name="description" content="Closed-loop data center automation, predictive hardware maintenance, automated thermal balancing, and telemetry-driven operational intelligence.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/nav.css">
+<link rel="stylesheet" href="../css/forms.css">
+<link rel="stylesheet" href="../css/footer.css">
+<link rel="stylesheet" href="../css/pages.css">
+<link rel="stylesheet" href="../css/visual.css">
+<link rel="stylesheet" href="../css/slider.css">
+<link rel="stylesheet" href="../css/modals.css">
+</head>
+<body>
+
+  <!-- GreenNext Brand Preloader (Respects reduced-motion) -->
+  <div class="gn-preloader" id="gn-preloader" aria-hidden="true">
+    <div class="gn-preloader-inner">
+      <div class="gn-preloader-leaf-wrap">
+        <span class="icon-wrap"><svg class="gn-leaf-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="GreenNext Logo Leaf"><defs><linearGradient id="gn-leaf-grad" x1="4" y1="32" x2="32" y2="4" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00FF66"/><stop offset="100%" stop-color="#39FF14"/></linearGradient><filter id="gn-leaf-glow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="1.8" flood-color="#00FF66" flood-opacity="0.7"/></filter></defs><path d="M7 29 C4.5 21 6.5 12 13 6 C18 1.5 25 1.5 31 3 C31.5 9 31.5 16 26.5 22.5 C20.5 29 13.5 30.5 7 29 Z" fill="rgba(0, 255, 102, 0.10)" stroke="url(#gn-leaf-grad)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" filter="url(#gn-leaf-glow)"/><path d="M7 29 C12 25 18 19 24.5 10" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round" filter="url(#gn-leaf-glow)"/><path d="M18 17 L25.5 14" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="25.5" cy="14" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M14 21 L8.5 18" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="8.5" cy="18" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M10.5 25.5 L17 24.5" stroke="#00FF66" stroke-width="1.3" stroke-linecap="round"/><circle cx="17" cy="24.5" r="1.2" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><circle cx="31" cy="3" r="1.4" fill="#FFFFFF" stroke="#39FF14" stroke-width="0.8"/><path d="M7 29 C5 31.5 3.5 33 2.5 34" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      </div>
+      <div class="gn-preloader-brand">
+        <span class="gn-preloader-text">Green<span>Next</span></span>
+        <span class="gn-preloader-tagline">Powering Intelligence. Engineering Tomorrow.</span>
+      </div>
+      <div class="gn-preloader-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="gn-preloader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <header id="gn-header">
+    <div class="container nav-wrapper">
+      <a class="nav-logo" href="../index.html">
+        <span class="nav-logo-icon"><span class="icon-wrap"><svg class="gn-leaf-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="GreenNext Logo Leaf"><defs><linearGradient id="gn-leaf-grad" x1="4" y1="32" x2="32" y2="4" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00FF66"/><stop offset="100%" stop-color="#39FF14"/></linearGradient><filter id="gn-leaf-glow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="1.8" flood-color="#00FF66" flood-opacity="0.7"/></filter></defs><path d="M7 29 C4.5 21 6.5 12 13 6 C18 1.5 25 1.5 31 3 C31.5 9 31.5 16 26.5 22.5 C20.5 29 13.5 30.5 7 29 Z" fill="rgba(0, 255, 102, 0.10)" stroke="url(#gn-leaf-grad)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" filter="url(#gn-leaf-glow)"/><path d="M7 29 C12 25 18 19 24.5 10" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round" filter="url(#gn-leaf-glow)"/><path d="M18 17 L25.5 14" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="25.5" cy="14" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M14 21 L8.5 18" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="8.5" cy="18" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M10.5 25.5 L17 24.5" stroke="#00FF66" stroke-width="1.3" stroke-linecap="round"/><circle cx="17" cy="24.5" r="1.2" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><circle cx="31" cy="3" r="1.4" fill="#FFFFFF" stroke="#39FF14" stroke-width="0.8"/><path d="M7 29 C5 31.5 3.5 33 2.5 34" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round"/></svg></span></span>
+        <span class="nav-logo-text-wrap">
+          <span class="nav-logo-text">Green<span>Next</span></span>
+          <span class="nav-logo-tagline">Powering Intelligence. Engineering Tomorrow.</span>
+        </span>
+      </a>
+      <nav aria-label="Main">
+        <ul class="nav-menu"><li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+        <li class="nav-item">
+          <a class="nav-link" href="../capabilities/index.html">Infrastructure</a>
+          <button class="nav-link-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Show Infrastructure menu">
+            <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          
+    <div class="nav-mega-dropdown" role="region" aria-label="Infrastructure Submenu">
+      <div class="nav-mega-inner">
+        <!-- LEFT HIGHLIGHT PANEL -->
+        <div class="nav-mega-panel">
+          <div>
+            <span class="nav-mega-badge">INFRASTRUCTURE</span>
+            <h3 class="nav-mega-heading">Scalable & High-Density Compute Foundations</h3>
+            <p class="nav-mega-intro">Explore the infrastructure capabilities that support scalable, efficient, and reliable digital operations.</p>
+          </div>
+          
+            <div class="nav-mega-highlight">
+              <span class="nav-mega-highlight-badge">High-Density AI</span>
+              <strong class="nav-mega-highlight-title">40kW–80kW+ Per Rack</strong>
+              <p class="nav-mega-highlight-desc">Purpose-engineered compute clusters, direct liquid cooling loops, and tier-grade electrical distribution.</p>
+            </div>
+          
+          
+            <a class="nav-mega-cta" href="../capabilities/index.html">
+              <span>View All Infrastructure</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+          
+        </div>
+
+        <!-- RIGHT MULTI-COLUMN MENU ITEMS -->
+        <div class="nav-mega-columns">
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../capabilities/ai-infrastructure.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><circle cx="7" cy="7" r="0.9" fill="currentColor" stroke="none"/><circle cx="7" cy="17" r="0.9" fill="currentColor" stroke="none"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">AI Data Centers</span>
+                    <span class="nav-mega-item-desc">Purpose-engineered compute clusters, high-bandwidth fabrics, and thermal headroom.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../capabilities/data-center-solutions.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.66 3.58 3 8 3s8-1.34 8-3v-13"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Data Center Engineering</span>
+                    <span class="nav-mega-item-desc">Facility master planning, precision power topologies, and structural resilience.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../capabilities/power-infrastructure.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12.5 2 4 14h6l-1 8 8.5-12H12l1-8z"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Power Infrastructure</span>
+                    <span class="nav-mega-item-desc">Dual-feed distribution, clean power conditioning, and tier-grade UPS topologies.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../capabilities/cooling-systems.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Cooling Systems</span>
+                    <span class="nav-mega-item-desc">Variable liquid cooling loops, precision aisle containment, and water-free options.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../capabilities/intelligent-automation.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Intelligent Operations</span>
+                    <span class="nav-mega-item-desc">Continuous telemetry capture, multi-layer event correlation, and closed-loop control.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../capabilities/infrastructure-monitoring.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="4" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M12 6v5m0 0-6 5m6-5 6 5"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Infrastructure Monitoring</span>
+                    <span class="nav-mega-item-desc">Sub-second sensor streaming capturing power, thermal distribution, and air velocity.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+        </div>
+      </div>
+    </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../solutions/index.html">Solutions</a>
+          <button class="nav-link-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Show Solutions menu">
+            <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          
+    <div class="nav-mega-dropdown" role="region" aria-label="Solutions Submenu">
+      <div class="nav-mega-inner">
+        <!-- LEFT HIGHLIGHT PANEL -->
+        <div class="nav-mega-panel">
+          <div>
+            <span class="nav-mega-badge">SOLUTIONS</span>
+            <h3 class="nav-mega-heading">Intelligent Operational Intelligence</h3>
+            <p class="nav-mega-intro">Connect infrastructure data, operational visibility, and intelligent monitoring to support better decisions.</p>
+          </div>
+          
+            <div class="nav-mega-highlight">
+              <span class="nav-mega-highlight-badge">Predictive Control</span>
+              <strong class="nav-mega-highlight-title">Closed-Loop Optimization</strong>
+              <p class="nav-mega-highlight-desc">AI-driven telemetry correlation driving sustained PUE reduction without compromising service levels.</p>
+            </div>
+          
+          
+            <a class="nav-mega-cta" href="../solutions/index.html">
+              <span>Explore All Solutions</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+          
+        </div>
+
+        <!-- RIGHT MULTI-COLUMN MENU ITEMS -->
+        <div class="nav-mega-columns">
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../solutions/energy-optimization.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12.5 2 4 14h6l-1 8 8.5-12H12l1-8z"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Energy Optimization</span>
+                    <span class="nav-mega-item-desc">Granular power analytics, aisle containment, and continuous PUE reduction.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../solutions/infrastructure-monitoring.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="4" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M12 6v5m0 0-6 5m6-5 6 5"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Infrastructure Monitoring</span>
+                    <span class="nav-mega-item-desc">Real-time telemetry and cross-domain sensor visibility across physical tiers.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../solutions/predictive-maintenance.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 3l8 3v6c0 5-3.5 7.8-8 9-4.5-1.2-8-4-8-9V6l8-3z"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Predictive Maintenance</span>
+                    <span class="nav-mega-item-desc">Machine learning anomaly detection, vibration telemetry, and early warnings.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../solutions/capacity-planning.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.66 3.58 3 8 3s8-1.34 8-3v-13"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Capacity Planning</span>
+                    <span class="nav-mega-item-desc">Predictive runway modeling across space, power, and cooling reserves.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../solutions/sustainability-analytics.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Sustainability Analytics</span>
+                    <span class="nav-mega-item-desc">Automated continuous CUE, WUE, and renewable carbon accounting.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../solutions/operational-automation.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Operational Automation</span>
+                    <span class="nav-mega-item-desc">Policy-governed facility adjustments and automated incident dispatching.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+        </div>
+      </div>
+    </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../industries/index.html">Industries</a>
+          <button class="nav-link-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Show Industries menu">
+            <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          
+    <div class="nav-mega-dropdown" role="region" aria-label="Industries Submenu">
+      <div class="nav-mega-inner">
+        <!-- LEFT HIGHLIGHT PANEL -->
+        <div class="nav-mega-panel">
+          <div>
+            <span class="nav-mega-badge">INDUSTRIES</span>
+            <h3 class="nav-mega-heading">Tailored Enterprise Sector Architectures</h3>
+            <p class="nav-mega-intro">Mission-critical infrastructure architectures tailored to the stringent compliance and performance needs of key sectors.</p>
+          </div>
+          
+            <div class="nav-mega-highlight">
+              <span class="nav-mega-highlight-badge">Mission-Critical</span>
+              <strong class="nav-mega-highlight-title">Zero-Tolerance Resilience</strong>
+              <p class="nav-mega-highlight-desc">Sub-millisecond transaction routing, compliant PACS archives, and ruggedized shop-floor edge hubs.</p>
+            </div>
+          
+          
+            <a class="nav-mega-cta" href="../industries/index.html">
+              <span>View All Industries</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+          
+        </div>
+
+        <!-- RIGHT MULTI-COLUMN MENU ITEMS -->
+        <div class="nav-mega-columns">
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../industries/healthcare.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 20s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 5.5 5.5 5.5 0 0 1 21.5 11c-2.5 4.65-9.5 9-9.5 9z"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Healthcare & Life Sciences</span>
+                    <span class="nav-mega-item-desc">Compliant compute partitions, imaging archive infrastructure, and clinical networks.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../industries/finance.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M3 10h18M5 10v9M19 10v9M9 10v9M15 10v9M2 19h20M12 3 2 8h20L12 3z"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Banking & Financial Services</span>
+                    <span class="nav-mega-item-desc">Deterministic low-latency networks, segregated security tiers, and transaction processing.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../industries/manufacturing.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M3 21V10l6 4v-4l6 4V6l6 4v11z"/><path d="M3 21h18"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Manufacturing</span>
+                    <span class="nav-mega-item-desc">Edge aggregation hubs, real-time telemetry processing, and industrial AI.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../industries/technology.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">IT & Technology</span>
+                    <span class="nav-mega-item-desc">Elastic 40kW–80kW rack densities, carrier-neutral fabrics, and GPU dev clusters.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../industries/education.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M2 9 12 4l10 5-10 5-10-5z"/><path d="M6 11.5V17c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5"/><path d="M22 9v6"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Education & Research</span>
+                    <span class="nav-mega-item-desc">High-performance computing (HPC) nodes, InfiniBand fabrics, and scientific storage.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../industries/enterprise.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Enterprise & Cloud Services</span>
+                    <span class="nav-mega-item-desc">Hybrid multi-region replication corridors, centralized NOC control, and compliance.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+        </div>
+      </div>
+    </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../locations/index.html">Locations</a>
+          <button class="nav-link-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Show Locations menu">
+            <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          
+    <div class="nav-mega-dropdown" role="region" aria-label="Locations Submenu">
+      <div class="nav-mega-inner">
+        <!-- LEFT HIGHLIGHT PANEL -->
+        <div class="nav-mega-panel">
+          <div>
+            <span class="nav-mega-badge">REGIONAL CORRIDORS</span>
+            <h3 class="nav-mega-heading">Target Service Locations across South India</h3>
+            <p class="nav-mega-intro">Strategic regional focus delivering low-latency digital infrastructure and disaster recovery diversity across key industrial corridors.</p>
+          </div>
+          
+            <div class="nav-mega-highlight">
+              <span class="nav-mega-highlight-badge">Regional Focus</span>
+              <strong class="nav-mega-highlight-title">Target Service Locations</strong>
+              <p class="nav-mega-highlight-desc">Verified regional corridors with strong grid access, land scalability, and connectivity backbones.</p>
+            </div>
+          
+          
+            <a class="nav-mega-cta" href="../locations/index.html">
+              <span>View All Locations</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+          
+        </div>
+
+        <!-- RIGHT MULTI-COLUMN MENU ITEMS -->
+        <div class="nav-mega-columns">
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../locations/madurai.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Madurai</span>
+                    <span class="nav-mega-item-desc">Southern Technology Corridor Hub with high-capacity electrical grid access.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../locations/coimbatore.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Coimbatore</span>
+                    <span class="nav-mega-item-desc">Industrial & Technology Center demanding high-density AI cluster infrastructure.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../locations/trichy.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Trichy</span>
+                    <span class="nav-mega-item-desc">Central Infrastructure Corridor with strategic multi-route replication.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../locations/mangalore.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Mangalore</span>
+                    <span class="nav-mega-item-desc">Coastal Connectivity Gateway with international submarine cable landing point proximity.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+        </div>
+      </div>
+    </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../analytics.html">Intelligence</a>
+          <button class="nav-link-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Show Intelligence menu">
+            <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          
+    <div class="nav-mega-dropdown" role="region" aria-label="Intelligence Submenu">
+      <div class="nav-mega-inner">
+        <!-- LEFT HIGHLIGHT PANEL -->
+        <div class="nav-mega-panel">
+          <div>
+            <span class="nav-mega-badge">INFRASTRUCTURE INTELLIGENCE</span>
+            <h3 class="nav-mega-heading">Validated Telemetry & KPI Engine</h3>
+            <p class="nav-mega-intro">Empowering engineering teams with continuous telemetry, verified KPI calculations, and predictive operational visibility.</p>
+          </div>
+          
+            <div class="nav-mega-highlight">
+              <span class="nav-mega-highlight-badge">10 Core KPIs</span>
+              <strong class="nav-mega-highlight-title">Unified Operations Dashboard</strong>
+              <p class="nav-mega-highlight-desc">Real-time telemetry tracking PUE, availability, CER, WUE, and renewable power factors.</p>
+            </div>
+          
+          
+            <a class="nav-mega-cta" href="../analytics.html">
+              <span>Open Telemetry Dashboard</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+          
+        </div>
+
+        <!-- RIGHT MULTI-COLUMN MENU ITEMS -->
+        <div class="nav-mega-columns">
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../analytics.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.66 3.58 3 8 3s8-1.34 8-3v-13"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Infrastructure KPI Dashboard</span>
+                    <span class="nav-mega-item-desc">Live telemetry console monitoring 10 core facility and environmental KPIs.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../intelligence/energy-intelligence.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12.5 2 4 14h6l-1 8 8.5-12H12l1-8z"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Energy Intelligence</span>
+                    <span class="nav-mega-item-desc">Sub-second electrical telemetry, branch-circuit loss detection, and power tuning.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../intelligence/capacity-analytics.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="4" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M12 6v5m0 0-6 5m6-5 6 5"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Capacity Analytics</span>
+                    <span class="nav-mega-item-desc">Predictive runway forecasting across power, floor weight, and cooling headroom.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../intelligence/sustainability-reporting.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Sustainability Reporting</span>
+                    <span class="nav-mega-item-desc">Automated ESG accounting tracking CUE, WUE, and renewable power offsets.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../intelligence/infrastructure-performance.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 3l8 3v6c0 5-3.5 7.8-8 9-4.5-1.2-8-4-8-9V6l8-3z"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Infrastructure Performance</span>
+                    <span class="nav-mega-item-desc">Continuous Mean Time to Repair (MTTR), IT utilization, and SLA verification.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+        </div>
+      </div>
+    </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../about.html">About</a>
+          <button class="nav-link-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Show About menu">
+            <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          
+    <div class="nav-mega-dropdown" role="region" aria-label="About Submenu">
+      <div class="nav-mega-inner">
+        <!-- LEFT HIGHLIGHT PANEL -->
+        <div class="nav-mega-panel">
+          <div>
+            <span class="nav-mega-badge">ABOUT GREENNEXT</span>
+            <h3 class="nav-mega-heading">Powering Intelligence. Engineering Tomorrow.</h3>
+            <p class="nav-mega-intro">Bridging high-performance computing, smart energy management, and intelligent automation into one unified architecture.</p>
+          </div>
+          
+            <div class="nav-mega-highlight">
+              <span class="nav-mega-highlight-badge">Sustainable Engineering</span>
+              <strong class="nav-mega-highlight-title">Purpose-Built Resilience</strong>
+              <p class="nav-mega-highlight-desc">Sustainable, AI-ready data center facilities engineered for operational longevity and resource efficiency.</p>
+            </div>
+          
+          
+            <a class="nav-mega-cta" href="../about.html">
+              <span>Read Company Overview</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+          
+        </div>
+
+        <!-- RIGHT MULTI-COLUMN MENU ITEMS -->
+        <div class="nav-mega-columns">
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../about.html#company-overview">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Company Overview</span>
+                    <span class="nav-mega-item-desc">Our mission, executive leadership principles, and regional vision for South India.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../technology.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Technology & Engineering</span>
+                    <span class="nav-mega-item-desc">Layer-one facility engineering, modular architectural blueprints, and thermal research.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../sustainability.html">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12.5 2 4 14h6l-1 8 8.5-12H12l1-8z"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Sustainability Approach</span>
+                    <span class="nav-mega-item-desc">Net-zero roadmap, renewable microgrids, and water-free cooling architectures.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+        </div>
+      </div>
+    </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../contact.html">Contact</a>
+          <button class="nav-link-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Show Contact menu">
+            <svg class="nav-link-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          
+    <div class="nav-mega-dropdown" role="region" aria-label="Contact Submenu">
+      <div class="nav-mega-inner">
+        <!-- LEFT HIGHLIGHT PANEL -->
+        <div class="nav-mega-panel">
+          <div>
+            <span class="nav-mega-badge">CONNECT WITH US</span>
+            <h3 class="nav-mega-heading">Let’s Plan Your Infrastructure</h3>
+            <p class="nav-mega-intro">Discuss your compute density, workload scale, cooling targets, or regional deployment timeline with GreenNext architects.</p>
+          </div>
+          
+            <div class="nav-mega-highlight">
+              <span class="nav-mega-highlight-badge">Direct Architect Access</span>
+              <strong class="nav-mega-highlight-title">Confidential Technical Review</strong>
+              <p class="nav-mega-highlight-desc">Collaborate directly with senior infrastructure specialists on your facility roadmap.</p>
+            </div>
+          
+          
+            <a class="nav-mega-cta" href="../contact.html">
+              <span>Plan Your Infrastructure</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+          
+        </div>
+
+        <!-- RIGHT MULTI-COLUMN MENU ITEMS -->
+        <div class="nav-mega-columns">
+          
+            <div class="nav-mega-col">
+              
+                <a class="nav-mega-item" href="../contact.html#contact-info">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Contact Information</span>
+                    <span class="nav-mega-item-desc">Direct enterprise channels, verified contact desks, and advisory teams.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../contact.html#consultation">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Consultation Booking</span>
+                    <span class="nav-mega-item-desc">Schedule a dedicated video conference or technical whiteboard session.</span>
+                  </div>
+                </a>
+              
+                <a class="nav-mega-item" href="../contact.html#quick-enquiry">
+                  <span class="nav-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></svg></span></span>
+                  <div class="nav-mega-item-text">
+                    <span class="nav-mega-item-title">Business Enquiries</span>
+                    <span class="nav-mega-item-desc">Facility colocation requests, energy audit inquiries, and regional partnerships.</span>
+                  </div>
+                </a>
+              
+            </div>
+          
+        </div>
+      </div>
+    </div>
+        </li></ul>
+      </nav>
+      <div class="nav-right">
+        <a class="nav-whatsapp-btn" href="#" data-whatsapp="true" aria-label="Chat with GreenNext on WhatsApp" title="Chat on WhatsApp">
+          <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.3 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3.9.9-3.2-.2-.3a8.2 8.2 0 1 1 7.3 4z"/></svg></span>
+        </a>
+        <a class="nav-cta" href="../contact.html" data-open-lead-modal="true">Plan Your Infrastructure <span class="btn-arrow">&rarr;</span></a>
+        <button class="nav-hamburger" id="gn-hamburger" aria-label="Open menu" aria-expanded="false">
+          <span class="hamburger-bar"></span><span class="hamburger-bar"></span><span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="nav-mobile-drawer" id="gn-mobile-drawer">
+    <a class="mobile-nav-item" href="../index.html">Home</a>
+        <div class="mobile-nav-section">
+          <button class="mobile-accordion-trigger" data-accordion="mob-1" aria-expanded="false">
+            <span>Infrastructure</span>
+            <svg class="mobile-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="mobile-accordion-content" id="mob-1">
+            <div class="mobile-mega-intro-box">
+              <span class="mobile-mega-badge">INFRASTRUCTURE</span>
+              <p class="mobile-mega-intro">Explore the infrastructure capabilities that support scalable, efficient, and reliable digital operations.</p>
+              <a class="mobile-accordion-link mobile-accordion-link--all" href="../capabilities/index.html">View All Infrastructure &rarr;</a>
+            </div>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../capabilities/ai-infrastructure.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><circle cx="7" cy="7" r="0.9" fill="currentColor" stroke="none"/><circle cx="7" cy="17" r="0.9" fill="currentColor" stroke="none"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">AI Data Centers</span>
+                  <span class="mobile-mega-desc">Purpose-engineered compute clusters, high-bandwidth fabrics, and thermal headroom.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../capabilities/data-center-solutions.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.66 3.58 3 8 3s8-1.34 8-3v-13"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Data Center Engineering</span>
+                  <span class="mobile-mega-desc">Facility master planning, precision power topologies, and structural resilience.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../capabilities/power-infrastructure.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12.5 2 4 14h6l-1 8 8.5-12H12l1-8z"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Power Infrastructure</span>
+                  <span class="mobile-mega-desc">Dual-feed distribution, clean power conditioning, and tier-grade UPS topologies.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../capabilities/cooling-systems.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Cooling Systems</span>
+                  <span class="mobile-mega-desc">Variable liquid cooling loops, precision aisle containment, and water-free options.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../capabilities/intelligent-automation.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Intelligent Operations</span>
+                  <span class="mobile-mega-desc">Continuous telemetry capture, multi-layer event correlation, and closed-loop control.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../capabilities/infrastructure-monitoring.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="4" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M12 6v5m0 0-6 5m6-5 6 5"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Infrastructure Monitoring</span>
+                  <span class="mobile-mega-desc">Sub-second sensor streaming capturing power, thermal distribution, and air velocity.</span>
+                </div>
+              </a>
+            
+          </div>
+        </div>
+        <div class="mobile-nav-section">
+          <button class="mobile-accordion-trigger" data-accordion="mob-2" aria-expanded="false">
+            <span>Solutions</span>
+            <svg class="mobile-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="mobile-accordion-content" id="mob-2">
+            <div class="mobile-mega-intro-box">
+              <span class="mobile-mega-badge">SOLUTIONS</span>
+              <p class="mobile-mega-intro">Connect infrastructure data, operational visibility, and intelligent monitoring to support better decisions.</p>
+              <a class="mobile-accordion-link mobile-accordion-link--all" href="../solutions/index.html">Explore All Solutions &rarr;</a>
+            </div>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../solutions/energy-optimization.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12.5 2 4 14h6l-1 8 8.5-12H12l1-8z"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Energy Optimization</span>
+                  <span class="mobile-mega-desc">Granular power analytics, aisle containment, and continuous PUE reduction.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../solutions/infrastructure-monitoring.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="4" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M12 6v5m0 0-6 5m6-5 6 5"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Infrastructure Monitoring</span>
+                  <span class="mobile-mega-desc">Real-time telemetry and cross-domain sensor visibility across physical tiers.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../solutions/predictive-maintenance.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 3l8 3v6c0 5-3.5 7.8-8 9-4.5-1.2-8-4-8-9V6l8-3z"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Predictive Maintenance</span>
+                  <span class="mobile-mega-desc">Machine learning anomaly detection, vibration telemetry, and early warnings.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../solutions/capacity-planning.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.66 3.58 3 8 3s8-1.34 8-3v-13"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Capacity Planning</span>
+                  <span class="mobile-mega-desc">Predictive runway modeling across space, power, and cooling reserves.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../solutions/sustainability-analytics.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Sustainability Analytics</span>
+                  <span class="mobile-mega-desc">Automated continuous CUE, WUE, and renewable carbon accounting.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../solutions/operational-automation.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Operational Automation</span>
+                  <span class="mobile-mega-desc">Policy-governed facility adjustments and automated incident dispatching.</span>
+                </div>
+              </a>
+            
+          </div>
+        </div>
+        <div class="mobile-nav-section">
+          <button class="mobile-accordion-trigger" data-accordion="mob-3" aria-expanded="false">
+            <span>Industries</span>
+            <svg class="mobile-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="mobile-accordion-content" id="mob-3">
+            <div class="mobile-mega-intro-box">
+              <span class="mobile-mega-badge">INDUSTRIES</span>
+              <p class="mobile-mega-intro">Mission-critical infrastructure architectures tailored to the stringent compliance and performance needs of key sectors.</p>
+              <a class="mobile-accordion-link mobile-accordion-link--all" href="../industries/index.html">View All Industries &rarr;</a>
+            </div>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../industries/healthcare.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 20s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 5.5 5.5 5.5 0 0 1 21.5 11c-2.5 4.65-9.5 9-9.5 9z"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Healthcare & Life Sciences</span>
+                  <span class="mobile-mega-desc">Compliant compute partitions, imaging archive infrastructure, and clinical networks.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../industries/finance.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M3 10h18M5 10v9M19 10v9M9 10v9M15 10v9M2 19h20M12 3 2 8h20L12 3z"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Banking & Financial Services</span>
+                  <span class="mobile-mega-desc">Deterministic low-latency networks, segregated security tiers, and transaction processing.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../industries/manufacturing.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M3 21V10l6 4v-4l6 4V6l6 4v11z"/><path d="M3 21h18"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Manufacturing</span>
+                  <span class="mobile-mega-desc">Edge aggregation hubs, real-time telemetry processing, and industrial AI.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../industries/technology.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">IT & Technology</span>
+                  <span class="mobile-mega-desc">Elastic 40kW–80kW rack densities, carrier-neutral fabrics, and GPU dev clusters.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../industries/education.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M2 9 12 4l10 5-10 5-10-5z"/><path d="M6 11.5V17c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5"/><path d="M22 9v6"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Education & Research</span>
+                  <span class="mobile-mega-desc">High-performance computing (HPC) nodes, InfiniBand fabrics, and scientific storage.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../industries/enterprise.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Enterprise & Cloud Services</span>
+                  <span class="mobile-mega-desc">Hybrid multi-region replication corridors, centralized NOC control, and compliance.</span>
+                </div>
+              </a>
+            
+          </div>
+        </div>
+        <div class="mobile-nav-section">
+          <button class="mobile-accordion-trigger" data-accordion="mob-4" aria-expanded="false">
+            <span>Locations</span>
+            <svg class="mobile-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="mobile-accordion-content" id="mob-4">
+            <div class="mobile-mega-intro-box">
+              <span class="mobile-mega-badge">REGIONAL CORRIDORS</span>
+              <p class="mobile-mega-intro">Strategic regional focus delivering low-latency digital infrastructure and disaster recovery diversity across key industrial corridors.</p>
+              <a class="mobile-accordion-link mobile-accordion-link--all" href="../locations/index.html">View All Locations &rarr;</a>
+            </div>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../locations/madurai.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Madurai</span>
+                  <span class="mobile-mega-desc">Southern Technology Corridor Hub with high-capacity electrical grid access.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../locations/coimbatore.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Coimbatore</span>
+                  <span class="mobile-mega-desc">Industrial & Technology Center demanding high-density AI cluster infrastructure.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../locations/trichy.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Trichy</span>
+                  <span class="mobile-mega-desc">Central Infrastructure Corridor with strategic multi-route replication.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../locations/mangalore.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Mangalore</span>
+                  <span class="mobile-mega-desc">Coastal Connectivity Gateway with international submarine cable landing point proximity.</span>
+                </div>
+              </a>
+            
+          </div>
+        </div>
+        <div class="mobile-nav-section">
+          <button class="mobile-accordion-trigger" data-accordion="mob-5" aria-expanded="false">
+            <span>Intelligence</span>
+            <svg class="mobile-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="mobile-accordion-content" id="mob-5">
+            <div class="mobile-mega-intro-box">
+              <span class="mobile-mega-badge">INFRASTRUCTURE INTELLIGENCE</span>
+              <p class="mobile-mega-intro">Empowering engineering teams with continuous telemetry, verified KPI calculations, and predictive operational visibility.</p>
+              <a class="mobile-accordion-link mobile-accordion-link--all" href="../analytics.html">Open Telemetry Dashboard &rarr;</a>
+            </div>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../analytics.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.66 3.58 3 8 3s8-1.34 8-3v-13"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Infrastructure KPI Dashboard</span>
+                  <span class="mobile-mega-desc">Live telemetry console monitoring 10 core facility and environmental KPIs.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../intelligence/energy-intelligence.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12.5 2 4 14h6l-1 8 8.5-12H12l1-8z"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Energy Intelligence</span>
+                  <span class="mobile-mega-desc">Sub-second electrical telemetry, branch-circuit loss detection, and power tuning.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../intelligence/capacity-analytics.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="4" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M12 6v5m0 0-6 5m6-5 6 5"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Capacity Analytics</span>
+                  <span class="mobile-mega-desc">Predictive runway forecasting across power, floor weight, and cooling headroom.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../intelligence/sustainability-reporting.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Sustainability Reporting</span>
+                  <span class="mobile-mega-desc">Automated ESG accounting tracking CUE, WUE, and renewable power offsets.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../intelligence/infrastructure-performance.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 3l8 3v6c0 5-3.5 7.8-8 9-4.5-1.2-8-4-8-9V6l8-3z"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Infrastructure Performance</span>
+                  <span class="mobile-mega-desc">Continuous Mean Time to Repair (MTTR), IT utilization, and SLA verification.</span>
+                </div>
+              </a>
+            
+          </div>
+        </div>
+        <div class="mobile-nav-section">
+          <button class="mobile-accordion-trigger" data-accordion="mob-6" aria-expanded="false">
+            <span>About</span>
+            <svg class="mobile-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="mobile-accordion-content" id="mob-6">
+            <div class="mobile-mega-intro-box">
+              <span class="mobile-mega-badge">ABOUT GREENNEXT</span>
+              <p class="mobile-mega-intro">Bridging high-performance computing, smart energy management, and intelligent automation into one unified architecture.</p>
+              <a class="mobile-accordion-link mobile-accordion-link--all" href="../about.html">Read Company Overview &rarr;</a>
+            </div>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../about.html#company-overview">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Company Overview</span>
+                  <span class="mobile-mega-desc">Our mission, executive leadership principles, and regional vision for South India.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../technology.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Technology & Engineering</span>
+                  <span class="mobile-mega-desc">Layer-one facility engineering, modular architectural blueprints, and thermal research.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../sustainability.html">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12.5 2 4 14h6l-1 8 8.5-12H12l1-8z"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Sustainability Approach</span>
+                  <span class="mobile-mega-desc">Net-zero roadmap, renewable microgrids, and water-free cooling architectures.</span>
+                </div>
+              </a>
+            
+          </div>
+        </div>
+        <div class="mobile-nav-section">
+          <button class="mobile-accordion-trigger" data-accordion="mob-7" aria-expanded="false">
+            <span>Contact</span>
+            <svg class="mobile-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="mobile-accordion-content" id="mob-7">
+            <div class="mobile-mega-intro-box">
+              <span class="mobile-mega-badge">CONNECT WITH US</span>
+              <p class="mobile-mega-intro">Discuss your compute density, workload scale, cooling targets, or regional deployment timeline with GreenNext architects.</p>
+              <a class="mobile-accordion-link mobile-accordion-link--all" href="../contact.html">Plan Your Infrastructure &rarr;</a>
+            </div>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../contact.html#contact-info">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Contact Information</span>
+                  <span class="mobile-mega-desc">Direct enterprise channels, verified contact desks, and advisory teams.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../contact.html#consultation">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Consultation Booking</span>
+                  <span class="mobile-mega-desc">Schedule a dedicated video conference or technical whiteboard session.</span>
+                </div>
+              </a>
+            
+              <a class="mobile-accordion-link mobile-mega-sublink" href="../contact.html#quick-enquiry">
+                <span class="mobile-mega-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></svg></span></span>
+                <div class="mobile-mega-text">
+                  <span class="mobile-mega-label">Business Enquiries</span>
+                  <span class="mobile-mega-desc">Facility colocation requests, energy audit inquiries, and regional partnerships.</span>
+                </div>
+              </a>
+            
+          </div>
+        </div>
+    <div class="mobile-nav-divider"></div>
+    <a class="mobile-nav-whatsapp" href="#" data-whatsapp="true" style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);color:#25D366;font-weight:600;text-decoration:none;">
+      <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.3 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3.9.9-3.2-.2-.3a8.2 8.2 0 1 1 7.3 4z"/></svg></span> Chat on WhatsApp
+    </a>
+    <a class="mobile-nav-cta" href="../contact.html" data-open-lead-modal="true">Plan Your Infrastructure &rarr;</a>
+  </div>
+<main class="page-transition">
+
+<div class="container breadcrumb-bar"><div class="breadcrumb"><a href="../index.html">Home</a><span class="breadcrumb-sep">/</span> <a href="../capabilities/index.html">Capabilities</a><span class="breadcrumb-sep">/</span> <span>Intelligent Operations</span></div></div>
+
+  <section class="hero hero--dark hero--compact hero--has-bg" style="background-image:url('../assets/img/control-room.webp');">
+    <div class="hero-photo-overlay"></div>
+    <div class="hero-bg-grid"></div>
+    <div class="container">
+      <div class="hero-content reveal" style="max-width:760px;">
+        <span class="hero-eyebrow">AUTONOMOUS OPERATIONS FRAMEWORK</span>
+        <h1 class="display-lg hero-title">Shift From Reactive Alerting to Closed-Loop Intelligent Automation</h1>
+        <p class="hero-description">Transform complex infrastructure management with machine learning algorithms that observe signals, predict failures, and dynamically optimize operations.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary btn-lg" href="#enquiry" data-open-lead-modal="true"><span>Talk to an Expert</span><span class="btn-arrow">&rarr;</span></a>
+          <a class="btn btn-ghost btn-lg" href="#quick-enquiry"><span>Quick Enquiry</span><span class="btn-arrow">&rarr;</span></a>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">Business Benefits</span>
+        <h2 class="heading-xl">Engineered for Performance, Reliability & TCO</h2>
+        
+      </div>
+      <div class="benefits-grid">
+        
+          <div class="benefit-card reveal reveal-delay-1">
+            <div class="benefit-card-header">
+              <div class="benefit-card-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span></div>
+              <span class="benefit-card-metric">Closed-Loop Control</span>
+            </div>
+            <h3 class="benefit-card-title">Proactive Fault Remediation</h3>
+            <p class="benefit-card-desc">Detects component degradation—such as bearing vibration or power ripple—weeks before catastrophic hardware failure.</p>
+          </div>
+          <div class="benefit-card reveal reveal-delay-2">
+            <div class="benefit-card-header">
+              <div class="benefit-card-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></div>
+              <span class="benefit-card-metric">Zero Alert Fatigue</span>
+            </div>
+            <h3 class="benefit-card-title">Intelligent Noise Reduction</h3>
+            <p class="benefit-card-desc">Correlates related cascading alerts into a single actionable incident, eliminating alarm storms during power or network shifts.</p>
+          </div>
+          <div class="benefit-card reveal reveal-delay-3">
+            <div class="benefit-card-header">
+              <div class="benefit-card-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12.5 2 4 14h6l-1 8 8.5-12H12l1-8z"/></svg></span></div>
+              <span class="benefit-card-metric">Continuous Tuning</span>
+            </div>
+            <h3 class="benefit-card-title">Dynamic Resource Optimization</h3>
+            <p class="benefit-card-desc">Continuously tunes chiller setpoints, variable fan speeds, and server power states to match changing real-time workload loads.</p>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container deep-dive-grid">
+      <div class="reveal reveal-left">
+        <span class="section-label">Operational Intelligence</span>
+        <h2 class="heading-xl" style="margin-bottom:var(--space-4);">The Six-Stage Autonomous Loop: Monitor, Detect, Analyze, Decide, Automate, Report</h2>
+        <p class="text-base text-muted" style="margin-bottom:var(--space-4);line-height:1.7;">Traditional infrastructure management relies on static alert thresholds that overwhelm operations teams with false alarms while missing subtle multi-variable anomalies. GreenNext implements an explainable six-stage operational loop. By synthesizing millions of environmental, electrical, and network data points in real time, our architecture isolates root causes and triggers verified responses before service disruption occurs.</p>
+        
+          <div class="deep-dive-bullets">
+            
+              <div class="deep-dive-bullet">
+                <span class="deep-dive-bullet-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                <span>Universal telemetry ingestion capturing voltage fluctuations, fan speeds, and packet jitter</span>
+              </div>
+              <div class="deep-dive-bullet">
+                <span class="deep-dive-bullet-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                <span>Machine-learned baseline profiles that filter environmental noise and detect true anomalies</span>
+              </div>
+              <div class="deep-dive-bullet">
+                <span class="deep-dive-bullet-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                <span>Contextual decision-support engines presenting clear, auditable operational options</span>
+              </div>
+              <div class="deep-dive-bullet">
+                <span class="deep-dive-bullet-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                <span>Configurable automated responses with granular safety bounds and instant manual override</span>
+              </div>
+          </div>
+        
+          <div style="margin-top:var(--space-6);display:flex;gap:var(--space-4);flex-wrap:wrap;align-items:center;">
+            <a class="btn btn-primary btn-md" href="../contact.html"><span>Explore Automation Workflow</span><span class="btn-arrow">&rarr;</span></a>
+            <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:11px 18px;font-size:var(--font-size-sm);">
+              <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.3 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3.9.9-3.2-.2-.3a8.2 8.2 0 1 1 7.3 4z"/></svg></span> <span>WhatsApp</span>
+            </a>
+          </div>
+      </div>
+      <div class="reveal reveal-right">
+        <div class="deep-dive-visual">
+          <img src="../assets/img/control-room.webp" alt="Multi-screen enterprise operations command center monitoring telemetry and intelligent automation alerts" loading="lazy">
+          <div class="deep-dive-caption">Continuous cross-layer telemetry feeding the six-stage autonomous operational workflow.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-soft">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">Enterprise Use Cases</span>
+        <h2 class="heading-xl">Practical Deployments Across Modern Workloads</h2>
+        
+      </div>
+      <div class="use-cases-grid">
+        
+          <div class="use-case-card reveal reveal-delay-1">
+            <span class="use-case-badge">Thermal Management</span>
+            <h3 class="use-case-title">Automated Micro-Climate Thermal Balancing</h3>
+            <p class="use-case-desc">Preventing server throttling during sudden computing bursts by dynamically adjusting floor damper actuators and fan wall speeds.</p>
+            
+              <ul class="use-case-points">
+                
+                  <li class="use-case-point">
+                    <span class="use-case-point-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                    <span>Rack-level differential temperature sensing mapped against real-time CPU utilization</span>
+                  </li>
+                  <li class="use-case-point">
+                    <span class="use-case-point-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                    <span>Predictive airflow routing compensating for hot-air recirculation before alarms trigger</span>
+                  </li>
+                  <li class="use-case-point">
+                    <span class="use-case-point-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                    <span>Automated thermal telemetry logging proving compliance with equipment operating ranges</span>
+                  </li>
+              </ul>
+            <div class="use-case-impact"><span>Outcome:</span> Stable operating temperatures across all server racks with reduced overall fan motor consumption.</div>
+          </div>
+          <div class="use-case-card reveal reveal-delay-2">
+            <span class="use-case-badge">Power Conditioning</span>
+            <h3 class="use-case-title">Intelligent Phase Balancing and Peak Load Shaving</h3>
+            <p class="use-case-desc">Managing power distribution units (PDUs) to prevent single-phase overload and maximize generator switchover efficiency.</p>
+            
+              <ul class="use-case-points">
+                
+                  <li class="use-case-point">
+                    <span class="use-case-point-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                    <span>Continuous phase current monitoring identifying unbalanced server power supplies</span>
+                  </li>
+                  <li class="use-case-point">
+                    <span class="use-case-point-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                    <span>Automated non-critical workload throttling during municipal power grid fluctuations</span>
+                  </li>
+                  <li class="use-case-point">
+                    <span class="use-case-point-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                    <span>Battery health diagnostics tracking impedance shifts during routine float cycles</span>
+                  </li>
+              </ul>
+            <div class="use-case-impact"><span>Outcome:</span> Maximized electrical distribution head-room and extended backup battery operational lifespan.</div>
+          </div>
+          <div class="use-case-card reveal reveal-delay-3">
+            <span class="use-case-badge">Network Resilience</span>
+            <h3 class="use-case-title">Automated Routing Around Congested Regional Links</h3>
+            <p class="use-case-desc">Maintaining inter-data-center replication speeds between coastal and inland regional nodes during fiber disruptions.</p>
+            
+              <ul class="use-case-points">
+                
+                  <li class="use-case-point">
+                    <span class="use-case-point-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                    <span>Continuous packet loss and jitter threshold monitoring across redundant WAN carriers</span>
+                  </li>
+                  <li class="use-case-point">
+                    <span class="use-case-point-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                    <span>Autonomous BGP route adjustment shifting critical replication traffic to optimal paths</span>
+                  </li>
+                  <li class="use-case-point">
+                    <span class="use-case-point-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></span>
+                    <span>Post-incident forensic reporting documenting carrier latency metrics</span>
+                  </li>
+              </ul>
+            <div class="use-case-impact"><span>Outcome:</span> Undisrupted cross-regional database replication without requiring manual network engineering triage.</div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid-3">
+        
+          <div class="feature-card reveal reveal-delay-1">
+            <div class="feature-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span></div>
+            <h3 class="feature-title">Real-Time Telemetry Mesh</h3>
+            <p class="feature-desc">Sub-second sensor streaming capturing power, thermal distribution, and air velocity across every rack.</p>
+          </div>
+          <div class="feature-card reveal reveal-delay-2">
+            <div class="feature-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span></div>
+            <h3 class="feature-title">Cross-Domain Correlation</h3>
+            <p class="feature-desc">Identify root-cause linkages between compute workload bursts and localized thermal rise in real time.</p>
+          </div>
+          <div class="feature-card reveal reveal-delay-3">
+            <div class="feature-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 3l8 3v6c0 5-3.5 7.8-8 9-4.5-1.2-8-4-8-9V6l8-3z"/></svg></span></div>
+            <h3 class="feature-title">Closed-Loop Optimization</h3>
+            <p class="feature-desc">Trigger verified corrective cooling and workload rebalancing within policy-governed safety margins.</p>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header section-header--center">
+        <span class="section-label">Autonomous Workflow</span>
+        <h2 class="heading-xl">From Continuous Telemetry to Closed-Loop Optimization</h2>
+      </div>
+      
+  <div class="process-flow" id="flow">
+    
+      <div class="process-step reveal reveal-delay-1">
+        <div class="process-step-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span><span class="process-step-num">1</span></div>
+        <h4 class="process-step-title">Monitor</h4>
+        <p class="process-step-desc">Continuously observe infrastructure signals across compute, energy, cooling, and network.</p>
+      </div>
+      <div class="process-connector"><span class="process-connector-dot"></span></div>
+    
+      <div class="process-step reveal reveal-delay-2">
+        <div class="process-step-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span><span class="process-step-num">2</span></div>
+        <h4 class="process-step-title">Detect</h4>
+        <p class="process-step-desc">Recognize when observed telemetry falls outside expected operational patterns.</p>
+      </div>
+      <div class="process-connector"><span class="process-connector-dot"></span></div>
+    
+      <div class="process-step reveal reveal-delay-3">
+        <div class="process-step-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12 3l8 3v6c0 5-3.5 7.8-8 9-4.5-1.2-8-4-8-9V6l8-3z"/></svg></span><span class="process-step-num">3</span></div>
+        <h4 class="process-step-title">Analyze</h4>
+        <p class="process-step-desc">Isolate root causes and assess the multi-layer impact of emerging events.</p>
+      </div>
+      <div class="process-connector"><span class="process-connector-dot"></span></div>
+    
+      <div class="process-step reveal reveal-delay-4">
+        <div class="process-step-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12.5 2 4 14h6l-1 8 8.5-12H12l1-8z"/></svg></span><span class="process-step-num">4</span></div>
+        <h4 class="process-step-title">Decide</h4>
+        <p class="process-step-desc">Synthesize optimal response options with clear explainable operational logic.</p>
+      </div>
+      <div class="process-connector"><span class="process-connector-dot"></span></div>
+    
+      <div class="process-step reveal reveal-delay-5">
+        <div class="process-step-icon"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><circle cx="7" cy="7" r="0.9" fill="currentColor" stroke="none"/><circle cx="7" cy="17" r="0.9" fill="currentColor" stroke="none"/></svg></span><span class="process-step-num">5</span></div>
+        <h4 class="process-step-title">Automate</h4>
+        <p class="process-step-desc">Trigger verified closed-loop actions within granular safety boundaries.</p>
+      </div>
+      
+    
+  </div>
+    </div>
+  </section>
+
+  <section class="section section-faq">
+    <div class="container faq-wrap">
+      <div class="section-header section-header--center">
+        <span class="section-label">Frequently Asked Questions</span>
+        <h2 class="heading-xl">Technical & Operational Clarity: Intelligent Operations</h2>
+      </div>
+      <div class="faq-list">
+        
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span>Does GreenNext intelligent automation remove human operators from the decision loop?</span>
+              <span class="faq-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </span>
+            </summary>
+            <div class="faq-answer">
+              <p>No. Our framework follows a human-in-the-loop philosophy. High-confidence routine remediations can be automated, while critical operational shifts provide structured recommendations for human approval.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span>How does the automation system handle false positive sensor readings?</span>
+              <span class="faq-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </span>
+            </summary>
+            <div class="faq-answer">
+              <p>The system correlates signals across multiple independent sensor types (e.g., verifying a temperature spike against fan speed and CPU load) before confirming an anomaly.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span>Can this automation integrate with our existing DCIM and BMS platforms?</span>
+              <span class="faq-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </span>
+            </summary>
+            <div class="faq-answer">
+              <p>Yes. Our architecture communicates via open enterprise protocols including SNMP, BACnet, Modbus, MQTT, and RESTful APIs, unifying disparate building and IT monitoring systems.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span>Is audit logging maintained for all automated actions taken?</span>
+              <span class="faq-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </span>
+            </summary>
+            <div class="faq-answer">
+              <p>Every detection, decision, and automated execution is recorded in an immutable, timestamped audit log for compliance, safety review, and continual model refinement.</p>
+            </div>
+          </details>
+      </div>
+    </div>
+  </section>
+<section class="section bg-soft" id="quick-enquiry" style="padding-top:var(--space-12);">
+  <div class="container" style="max-width:900px;">
+    
+  <div class="quick-enquiry-card reveal">
+    <div class="quick-enquiry-panel">
+      <div class="quick-enquiry-header">
+        <h3 class="quick-enquiry-title">Quick Enquiry — Intelligent Operations</h3>
+        <p class="quick-enquiry-sub">Have a specific question regarding rack density, power availability, or facility readiness?</p>
+      </div>
+      <form class="quick-enquiry-form" novalidate>
+        <div class="form-field">
+          <label for="qe_name">Name *</label>
+          <input type="text" id="qe_name" name="name" placeholder="Your full name" required>
+        </div>
+        <div class="form-field">
+          <label for="qe_contact">Work Email or Phone *</label>
+          <input type="text" id="qe_contact" name="contact" placeholder="email@company.com or +91..." required>
+        </div>
+        <div class="form-field">
+          <label for="qe_interest">Area of Interest *</label>
+          <select id="qe_interest" name="area_of_interest" required>
+            <option value="" disabled selected>Select Area of Interest</option>
+            <option value="AI Data Centers">AI Data Centers</option>
+            <option value="AI Infrastructure">AI Infrastructure</option>
+            <option value="Energy Efficiency">Energy Efficiency</option>
+            <option value="Intelligent Automation">Intelligent Automation</option>
+            <option value="Digital Infrastructure">Digital Infrastructure</option>
+            <option value="Regional Facilities">Regional Facilities (Madurai, Coimbatore, Trichy, Mangalore)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm"><span>Submit Enquiry</span><span class="btn-arrow">&rarr;</span></button>
+      </form>
+    </div>
+    <div class="form-success">
+      <div class="form-success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h3 class="heading-sm">Enquiry Received</h3>
+      <p class="text-sm text-muted">Thank you. Our solutions team will get in touch with you shortly.</p>
+    </div>
+  </div>
+  </div>
+</section>
+<div id="enquiry">
+  
+  <section class="section bg-soft" id="enquiry">
+    <div class="container">
+      <div class="lead-form-card reveal">
+        <div class="lead-form-panel">
+          <div class="section-header" style="margin-bottom:var(--space-6);">
+            <div class="demo-mode-badge">
+              <span>⚡ Enterprise Consultation Request • Confidential Advisory</span>
+            </div>
+            <h2 class="heading-lg">Let's Engineer Your Next Infrastructure Milestone</h2>
+            <p class="text-base text-muted">Discuss your compute density, workload scale, cooling targets, or regional deployment timeline with a GreenNext enterprise architect.</p>
+          </div>
+          <form class="lead-form" novalidate>
+            <div class="form-grid">
+              
+    <div class="form-field">
+      <label for="full_name">Full Name *</label>
+      <input type="text" id="full_name" name="full_name" placeholder="e.g. John Doe" required>
+    </div>
+    <div class="form-field">
+      <label for="business_email">Business Email *</label>
+      <input type="email" id="business_email" name="business_email" placeholder="e.g. name@enterprise.com" required>
+    </div>
+    <div class="form-field">
+      <label for="company_name">Company Name *</label>
+      <input type="text" id="company_name" name="company_name" placeholder="e.g. Acme Corp" required>
+    </div>
+    <div class="form-field">
+      <label for="phone">Phone Number *</label>
+      <input type="tel" id="phone" name="phone" placeholder="e.g. +91 98765 43210" required>
+    </div>
+    <div class="form-field">
+      <label for="location">Location / City *</label>
+      <input type="text" id="location" name="location" placeholder="e.g. Madurai, Coimbatore, Bangalore" required>
+    </div>
+      <div class="form-field">
+        <label for="area_of_interest">Area of Interest *</label>
+        <select id="area_of_interest" name="area_of_interest" required>
+          <option value="" disabled selected>Select Area of Interest</option>
+          <option value="AI Data Centers">AI Data Centers</option><option value="AI Infrastructure">AI Infrastructure</option><option value="Energy Efficiency & Cooling">Energy Efficiency & Cooling</option><option value="Intelligent Automation">Intelligent Automation</option><option value="Digital Infrastructure">Digital Infrastructure</option><option value="Regional Corridors (Madurai, Coimbatore, Trichy, Mangalore)">Regional Corridors (Madurai, Coimbatore, Trichy, Mangalore)</option><option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-field form-field--full">
+        <label for="project_requirements">Project Requirements / Workload Scope *</label>
+        <textarea id="project_requirements" name="project_requirements" rows="4" placeholder="Outline your compute density, workload scale, cooling targets, or regional deployment timeline..." required></textarea>
+      </div>
+              <div class="form-field--consent">
+                <input type="checkbox" id="consent_general" name="consent" required>
+                <label for="consent_general">
+                  I agree to the processing of my contact information in accordance with GreenNext’s <a href="../privacy-policy.html" target="_blank">Privacy Policy</a>. *
+                </label>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <span>Submit Consultation Request</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+              <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:10px 18px;">
+                <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.3 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3.9.9-3.2-.2-.3a8.2 8.2 0 1 1 7.3 4z"/></svg></span> <span>Prefer WhatsApp? Chat Directly</span>
+              </a>
+            </div>
+          </form>
+        </div>
+        <div class="form-success">
+          <div class="form-success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <h3 class="heading-md">Thank you for reaching out to GreenNext.</h3>
+          <p class="text-base text-muted">Your enquiry has been received. Our infrastructure team will get in touch with you shortly.</p>
+          <a class="btn btn-secondary btn-lg" href="../index.html"><span>Back to Home</span><span class="btn-arrow">&rarr;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+  <section class="container" style="padding-bottom:var(--space-8);">
+    <div class="related-nav-bar">
+      <div class="related-nav-title">
+        <span class="nav-logo-icon" style="width:20px;height:20px;"><span class="icon-wrap"><svg class="gn-leaf-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="GreenNext Logo Leaf"><defs><linearGradient id="gn-leaf-grad" x1="4" y1="32" x2="32" y2="4" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00FF66"/><stop offset="100%" stop-color="#39FF14"/></linearGradient><filter id="gn-leaf-glow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="1.8" flood-color="#00FF66" flood-opacity="0.7"/></filter></defs><path d="M7 29 C4.5 21 6.5 12 13 6 C18 1.5 25 1.5 31 3 C31.5 9 31.5 16 26.5 22.5 C20.5 29 13.5 30.5 7 29 Z" fill="rgba(0, 255, 102, 0.10)" stroke="url(#gn-leaf-grad)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" filter="url(#gn-leaf-glow)"/><path d="M7 29 C12 25 18 19 24.5 10" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round" filter="url(#gn-leaf-glow)"/><path d="M18 17 L25.5 14" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="25.5" cy="14" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M14 21 L8.5 18" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="8.5" cy="18" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M10.5 25.5 L17 24.5" stroke="#00FF66" stroke-width="1.3" stroke-linecap="round"/><circle cx="17" cy="24.5" r="1.2" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><circle cx="31" cy="3" r="1.4" fill="#FFFFFF" stroke="#39FF14" stroke-width="0.8"/><path d="M7 29 C5 31.5 3.5 33 2.5 34" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round"/></svg></span></span>
+        <span>Related Solutions &amp; Infrastructure:</span>
+      </div>
+      <div class="related-nav-pills">
+        <a class="related-nav-pill" href="../capabilities/ai-infrastructure.html">AI Infrastructure &rarr;</a><a class="related-nav-pill" href="../capabilities/energy-efficiency.html">Energy Efficiency &rarr;</a><a class="related-nav-pill" href="../capabilities/digital-infrastructure.html">Digital Infrastructure &rarr;</a><a class="related-nav-pill" href="../solutions/automation-solutions.html">Automation Solutions &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="cta-section-title reveal">Let’s Engineer Your Next Infrastructure Milestone</h2>
+      <p class="cta-section-desc reveal">Talk with our senior engineering team about your infrastructure priorities, compute density goals, and long-term technology roadmap.</p>
+      <div class="cta-section-actions reveal">
+        <a class="btn btn-primary btn-lg" href="../contact.html" data-open-lead-modal="true"><span>Schedule a Consultation</span><span class="btn-arrow">&rarr;</span></a>
+        <a class="btn btn-ghost btn-lg" href="../contact.html#quick-enquiry"><span>Send an Enquiry</span><span class="btn-arrow">&rarr;</span></a>
+        <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:14px 22px;font-size:var(--font-size-base);">
+          <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.3 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3.9.9-3.2-.2-.3a8.2 8.2 0 1 1 7.3 4z"/></svg></span> <span>Chat on WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+  <footer class="site-footer">
+    <div class="footer-cta-bar">
+      <div class="container footer-cta-inner">
+        <div>
+          <span class="heading-sm" style="color:white;display:block;">Ready to build smarter infrastructure?</span>
+          <span class="text-sm" style="color:rgba(255,255,255,0.7);">Connect with GreenNext infrastructure architects across Madurai, Coimbatore, Trichy, and Mangalore.</span>
+        </div>
+        <div class="footer-cta-actions">
+          <a class="btn btn-primary" href="../contact.html" data-open-lead-modal="true"><span>Talk to an Expert</span><span class="btn-arrow">&rarr;</span></a>
+          <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:10px 18px;">
+            <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.3 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3.9.9-3.2-.2-.3a8.2 8.2 0 1 1 7.3 4z"/></svg></span> <span>WhatsApp Us</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-main">
+      <div class="footer-brand">
+        <a class="nav-logo" href="../index.html">
+          <span class="nav-logo-icon"><span class="icon-wrap"><svg class="gn-leaf-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="GreenNext Logo Leaf"><defs><linearGradient id="gn-leaf-grad" x1="4" y1="32" x2="32" y2="4" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00FF66"/><stop offset="100%" stop-color="#39FF14"/></linearGradient><filter id="gn-leaf-glow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="1.8" flood-color="#00FF66" flood-opacity="0.7"/></filter></defs><path d="M7 29 C4.5 21 6.5 12 13 6 C18 1.5 25 1.5 31 3 C31.5 9 31.5 16 26.5 22.5 C20.5 29 13.5 30.5 7 29 Z" fill="rgba(0, 255, 102, 0.10)" stroke="url(#gn-leaf-grad)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" filter="url(#gn-leaf-glow)"/><path d="M7 29 C12 25 18 19 24.5 10" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round" filter="url(#gn-leaf-glow)"/><path d="M18 17 L25.5 14" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="25.5" cy="14" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M14 21 L8.5 18" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="8.5" cy="18" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M10.5 25.5 L17 24.5" stroke="#00FF66" stroke-width="1.3" stroke-linecap="round"/><circle cx="17" cy="24.5" r="1.2" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><circle cx="31" cy="3" r="1.4" fill="#FFFFFF" stroke="#39FF14" stroke-width="0.8"/><path d="M7 29 C5 31.5 3.5 33 2.5 34" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round"/></svg></span></span>
+          <span class="nav-logo-text-wrap">
+            <span class="nav-logo-text" style="color:white;">Green<span>Next</span></span>
+            <span class="nav-logo-tagline">Powering Intelligence. Engineering Tomorrow.</span>
+          </span>
+        </a>
+        <p class="footer-brand-desc">AI-driven infrastructure, data centers, and intelligent automation engineered for enterprise performance and sustainability.</p>
+        <div class="footer-socials">
+          <a class="footer-social-link" href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="GreenNext on LinkedIn" title="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 1 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.4 9.74v-8.37H5.06v8.37h2.8z"/></svg>
+          </a>
+          <a class="footer-social-link" href="#" data-whatsapp="true" aria-label="GreenNext WhatsApp Chat" title="WhatsApp">
+            <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.3 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3.9.9-3.2-.2-.3a8.2 8.2 0 1 1 7.3 4z"/></svg></span>
+          </a>
+        </div>
+      </div>
+      
+        <div class="footer-col">
+          <h4 class="footer-col-title">Company</h4>
+          <ul class="footer-links">
+            <li><a href="../about.html#company-overview">Company Overview</a></li><li><a href="../technology.html">Technology & Engineering</a></li><li><a href="../sustainability.html">Sustainability Approach</a></li><li><a href="../about.html#why-greennext">Core Principles</a></li><li><a href="../careers.html">Careers Portal</a></li><li><a href="../contact.html">Contact Advisory</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Infrastructure</h4>
+          <ul class="footer-links">
+            <li><a href="../capabilities/ai-infrastructure.html">AI Data Centers</a></li><li><a href="../capabilities/data-center-solutions.html">Data Center Engineering</a></li><li><a href="../capabilities/power-infrastructure.html">Power Infrastructure</a></li><li><a href="../capabilities/cooling-systems.html">Cooling Systems</a></li><li><a href="../capabilities/intelligent-automation.html">Intelligent Operations</a></li><li><a href="../capabilities/infrastructure-monitoring.html">Infrastructure Monitoring</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Solutions</h4>
+          <ul class="footer-links">
+            <li><a href="../solutions/energy-optimization.html">Energy Optimization</a></li><li><a href="../solutions/infrastructure-monitoring.html">Infrastructure Monitoring</a></li><li><a href="../solutions/predictive-maintenance.html">Predictive Maintenance</a></li><li><a href="../solutions/capacity-planning.html">Capacity Planning</a></li><li><a href="../solutions/sustainability-analytics.html">Sustainability Analytics</a></li><li><a href="../solutions/operational-automation.html">Operational Automation</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Locations</h4>
+          <ul class="footer-links">
+            <li><a href="../locations/madurai.html">Madurai Hub</a></li><li><a href="../locations/coimbatore.html">Coimbatore Hub</a></li><li><a href="../locations/trichy.html">Trichy Hub</a></li><li><a href="../locations/mangalore.html">Mangalore Hub</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Intelligence</h4>
+          <ul class="footer-links">
+            <li><a href="../analytics.html">KPI Dashboard</a></li><li><a href="../intelligence/energy-intelligence.html">Energy Intelligence</a></li><li><a href="../intelligence/capacity-analytics.html">Capacity Analytics</a></li><li><a href="../intelligence/sustainability-reporting.html">Sustainability Reporting</a></li><li><a href="../intelligence/infrastructure-performance.html">Infrastructure Performance</a></li>
+          </ul>
+        </div>
+      <div class="footer-col">
+        <h4 class="footer-col-title">Contact &amp; Advisory</h4>
+        <ul class="footer-links">
+          <li><a href="../contact.html#schedule-consultation">Schedule Consultation &rarr;</a></li>
+          <li><a href="../contact.html#enquiry">Infrastructure Enquiry &rarr;</a></li>
+          <li><a class="footer-whatsapp-link" href="#" data-whatsapp="true"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.3 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3.9.9-3.2-.2-.3a8.2 8.2 0 1 1 7.3 4z"/></svg></span> Chat on WhatsApp</a></li>
+          <li><a href="../about.html">About GreenNext</a></li>
+          <li><a href="../privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="../terms-and-conditions.html">Terms &amp; Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&copy; <span id="gn-footer-year">2026</span> GreenNext. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="../privacy-policy.html">Privacy Policy</a>
+        <a href="../terms-and-conditions.html">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="gn-modal-backdrop" id="gn-welcome-modal" role="dialog" aria-modal="true" aria-labelledby="welcome-modal-title" aria-hidden="true">
+    <div class="gn-modal gn-modal--welcome">
+      <button class="gn-modal-close" data-dismiss="modal" aria-label="Close welcome modal">&times;</button>
+      <div class="gn-modal-header">
+        <div class="gn-modal-badge">
+          <span class="gn-modal-badge-dot"></span>
+          <span class="gn-welcome-badge-text">Welcome to GreenNext</span>
+        </div>
+        <h2 class="gn-modal-title gn-welcome-title" id="welcome-modal-title">Welcome to GreenNext</h2>
+      </div>
+      <p class="gn-modal-body gn-welcome-body-text">
+        Discover intelligent infrastructure designed for a smarter, more sustainable future.
+      </p>
+      <div class="gn-modal-tags">
+        <span class="gn-modal-tag"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><circle cx="7" cy="7" r="0.9" fill="currentColor" stroke="none"/><circle cx="7" cy="17" r="0.9" fill="currentColor" stroke="none"/></svg></span> AI Infrastructure</span>
+        <span class="gn-modal-tag"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><path d="M12.5 2 4 14h6l-1 8 8.5-12H12l1-8z"/></svg></span> Energy Optimization</span>
+        <span class="gn-modal-tag"><span class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg></span> Intelligent Automation</span>
+      </div>
+      <div class="gn-modal-actions">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a class="btn btn-ghost" href="../solutions/index.html">Explore GreenNext</a>
+        <a class="btn btn-primary" href="../contact.html"><span>Talk to an Expert</span><span class="btn-arrow">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="gn-modal-backdrop" id="gn-exit-modal" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title" aria-hidden="true">
+    <div class="gn-modal gn-modal--exit">
+      <button class="gn-modal-close" data-dismiss="modal" aria-label="Close exit modal">&times;</button>
+      <div class="gn-modal-icon-circle">
+        <span class="icon-wrap"><svg class="gn-leaf-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="GreenNext Logo Leaf"><defs><linearGradient id="gn-leaf-grad" x1="4" y1="32" x2="32" y2="4" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00FF66"/><stop offset="100%" stop-color="#39FF14"/></linearGradient><filter id="gn-leaf-glow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="1.8" flood-color="#00FF66" flood-opacity="0.7"/></filter></defs><path d="M7 29 C4.5 21 6.5 12 13 6 C18 1.5 25 1.5 31 3 C31.5 9 31.5 16 26.5 22.5 C20.5 29 13.5 30.5 7 29 Z" fill="rgba(0, 255, 102, 0.10)" stroke="url(#gn-leaf-grad)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" filter="url(#gn-leaf-glow)"/><path d="M7 29 C12 25 18 19 24.5 10" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round" filter="url(#gn-leaf-glow)"/><path d="M18 17 L25.5 14" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="25.5" cy="14" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M14 21 L8.5 18" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="8.5" cy="18" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M10.5 25.5 L17 24.5" stroke="#00FF66" stroke-width="1.3" stroke-linecap="round"/><circle cx="17" cy="24.5" r="1.2" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><circle cx="31" cy="3" r="1.4" fill="#FFFFFF" stroke="#39FF14" stroke-width="0.8"/><path d="M7 29 C5 31.5 3.5 33 2.5 34" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      </div>
+      <div class="gn-modal-header">
+        <h2 class="gn-modal-title" id="exit-modal-title">Thank You for Visiting GreenNext</h2>
+      </div>
+      <p class="gn-modal-body">
+        We appreciate your interest in intelligent, sustainable infrastructure. We look forward to connecting with you.
+      </p>
+      <div class="gn-modal-actions">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Continue Exploring</button>
+        <a class="btn btn-primary" href="../contact.html"><span>Contact Our Team</span><span class="btn-arrow">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="gn-modal-backdrop" id="gn-thankyou-modal" role="dialog" aria-modal="true" aria-labelledby="thankyou-modal-title" aria-hidden="true">
+    <div class="gn-modal gn-modal--thankyou">
+      <button class="gn-modal-close" data-dismiss="modal" aria-label="Close thank you modal">&times;</button>
+      <div class="gn-modal-icon-circle" style="width:52px;height:52px;border-radius:var(--radius-xl);background:var(--color-primary);color:white;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-4);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:26px;height:26px;"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <div class="gn-modal-header">
+        <span class="gn-modal-badge"><span class="gn-modal-badge-dot"></span> Request Confirmed</span>
+        <h2 class="gn-modal-title" id="thankyou-modal-title">Thank You, <span class="gn-thankyou-name">Valued Visitor</span>!</h2>
+      </div>
+      <p class="gn-modal-body">
+        We appreciate your interest in GreenNext infrastructure solutions. Our enterprise solutions team has received your enquiry and will connect with you shortly.
+      </p>
+      <div class="demo-mode-badge" style="display:flex;margin-bottom:var(--space-6);padding:10px 14px;background:var(--color-bg-soft);border:1px solid var(--color-border);border-radius:var(--radius-md);font-size:12px;color:var(--color-text-muted);">
+        <span>ℹ️ Demo Mode: Submission validated locally. To dispatch live webhooks/emails, configure API_ENDPOINT in js/config.js.</span>
+      </div>
+      <div class="gn-modal-actions">
+        <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:10px 16px;">
+          <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.3 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3.9.9-3.2-.2-.3a8.2 8.2 0 1 1 7.3 4z"/></svg></span> <span>Chat on WhatsApp</span>
+        </a>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gn-modal-backdrop" id="gn-floating-lead-modal" role="dialog" aria-modal="true" aria-labelledby="floating-lead-title" aria-hidden="true">
+    <div class="gn-modal gn-modal--lead">
+      <button class="gn-modal-close" data-dismiss="modal" aria-label="Close modal">&times;</button>
+      <div class="gn-modal-header" style="margin-bottom:var(--space-4);">
+        <div class="gn-modal-badge">
+          <span class="gn-modal-badge-dot"></span> ⚡ Priority Consultation
+        </div>
+        <h2 class="gn-modal-title" id="floating-lead-title">Request Infrastructure Consultation</h2>
+        <p class="gn-modal-subtitle" style="font-size:var(--font-size-sm);color:var(--color-text-muted);margin:0;">
+          Speak with an enterprise architect regarding AI clusters, thermal efficiency, or regional deployments.
+        </p>
+      </div>
+      <form class="floating-lead-form lead-form" novalidate>
+        <!-- Hidden Metadata Fields -->
+        <input type="hidden" name="form_type" value="Floating Lead Form">
+        <input type="hidden" name="page_url" value="">
+        <input type="hidden" name="page_title" value="">
+        <input type="hidden" name="referrer" value="">
+        <input type="hidden" name="utm_source" value="">
+        <input type="hidden" name="utm_medium" value="">
+        <input type="hidden" name="utm_campaign" value="">
+        <input type="hidden" name="utm_term" value="">
+        <input type="hidden" name="utm_content" value="">
+
+        <div class="form-grid" style="grid-template-columns:1fr 1fr;gap:var(--space-3);">
+          <div class="form-field" style="margin-bottom:0;">
+            <label for="fl_name">Full Name *</label>
+            <input type="text" id="fl_name" name="full_name" placeholder="e.g. Alex Rivera" required>
+          </div>
+          <div class="form-field" style="margin-bottom:0;">
+            <label for="fl_email">Work Email *</label>
+            <input type="email" id="fl_email" name="business_email" placeholder="name@enterprise.com" required>
+          </div>
+          <div class="form-field" style="margin-bottom:0;">
+            <label for="fl_phone">Phone Number *</label>
+            <input type="tel" id="fl_phone" name="phone" placeholder="+91 98765 43210" required>
+          </div>
+          <div class="form-field" style="margin-bottom:0;">
+            <label for="fl_interest">Requirement / Service *</label>
+            <select id="fl_interest" name="area_of_interest" required>
+              <option value="" disabled selected>Select Requirement / Service</option>
+              <option value="AI Data Centers">AI Data Centers</option>
+              <option value="AI Infrastructure">AI Infrastructure</option>
+              <option value="Energy Efficiency">Energy Efficiency & Cooling</option>
+              <option value="Intelligent Automation">Intelligent Automation</option>
+              <option value="Digital Infrastructure">Digital Infrastructure</option>
+              <option value="Regional Facilities">Regional Facilities (Madurai, Coimbatore, Trichy, Mangalore)</option>
+              <option value="General Enterprise Consultation">General Enterprise Consultation</option>
+            </select>
+          </div>
+          <div class="form-field form-field--full" style="grid-column:span 2;margin-bottom:0;">
+            <label for="fl_reqs">Brief Requirements (Optional)</label>
+            <textarea id="fl_reqs" name="project_requirements" rows="2" placeholder="Compute scale, target racks, regional timeline, or key technical goals..."></textarea>
+          </div>
+          <div class="form-field--consent" style="grid-column:span 2;margin-top:var(--space-1);margin-bottom:var(--space-1);display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--color-text-muted);">
+            <input type="checkbox" id="consent_floating" name="consent" required style="margin-top:3px;">
+            <label for="consent_floating">
+              I agree to the processing of my contact information in accordance with GreenNext’s <a href="../privacy-policy.html" target="_blank">Privacy Policy</a>. *
+            </label>
+          </div>
+        </div>
+        <div class="form-actions" style="margin-top:var(--space-4);display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;">
+          <button type="submit" class="btn btn-primary btn-md">
+            <span>Submit Consultation Request</span>
+            <span class="btn-arrow">&rarr;</span>
+          </button>
+          <a class="hero-whatsapp-btn" href="#" data-whatsapp="true" style="padding:8px 14px;font-size:var(--font-size-xs);">
+            <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.3 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3.9.9-3.2-.2-.3a8.2 8.2 0 1 1 7.3 4z"/></svg></span> <span>Prefer WhatsApp?</span>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating WhatsApp (Bottom Left - Dedicated Quick Connect) -->
+  <aside class="floating-whatsapp-container" id="gn-floating-whatsapp" aria-label="WhatsApp Quick Connect">
+    <div class="floating-action-item">
+      <a class="floating-whatsapp-btn" id="floating-whatsapp" href="#" data-whatsapp="true" aria-label="Chat with GreenNext on WhatsApp" title="Chat on WhatsApp">
+        <span class="icon-wrap"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1s-.8 1-.9 1.2c-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5s-.7-1.7-1-2.3c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.3 2.4 3.7 5.9 5.2.8.4 1.5.6 2 .7.8.3 1.6.2 2.2.1.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3.9.9-3.2-.2-.3a8.2 8.2 0 1 1 7.3 4z"/></svg></span>
+      </a>
+      <span class="floating-whatsapp-tooltip">Chat on WhatsApp</span>
+    </div>
+  </aside>
+
+  <!-- Floating Consultation Request (Bottom Right - Stacked Above AI Assistant) -->
+  <aside class="floating-actions-container" id="gn-floating-actions" aria-label="Infrastructure Consultation Request">
+    <div class="floating-action-item">
+      <span class="floating-action-tooltip">Request Consultation</span>
+      <button type="button" class="floating-lead-btn" id="floating-lead-trigger" data-open-lead-modal="true" aria-label="Request Infrastructure Consultation">
+        <span class="icon-wrap"><svg class="gn-leaf-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="GreenNext Logo Leaf"><defs><linearGradient id="gn-leaf-grad" x1="4" y1="32" x2="32" y2="4" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00FF66"/><stop offset="100%" stop-color="#39FF14"/></linearGradient><filter id="gn-leaf-glow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="1.8" flood-color="#00FF66" flood-opacity="0.7"/></filter></defs><path d="M7 29 C4.5 21 6.5 12 13 6 C18 1.5 25 1.5 31 3 C31.5 9 31.5 16 26.5 22.5 C20.5 29 13.5 30.5 7 29 Z" fill="rgba(0, 255, 102, 0.10)" stroke="url(#gn-leaf-grad)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" filter="url(#gn-leaf-glow)"/><path d="M7 29 C12 25 18 19 24.5 10" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round" filter="url(#gn-leaf-glow)"/><path d="M18 17 L25.5 14" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="25.5" cy="14" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M14 21 L8.5 18" stroke="#00FF66" stroke-width="1.4" stroke-linecap="round"/><circle cx="8.5" cy="18" r="1.4" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><path d="M10.5 25.5 L17 24.5" stroke="#00FF66" stroke-width="1.3" stroke-linecap="round"/><circle cx="17" cy="24.5" r="1.2" fill="#FFFFFF" stroke="#00FF66" stroke-width="0.8"/><circle cx="31" cy="3" r="1.4" fill="#FFFFFF" stroke="#39FF14" stroke-width="0.8"/><path d="M7 29 C5 31.5 3.5 33 2.5 34" stroke="url(#gn-leaf-grad)" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+        <span class="floating-lead-btn-label">Consultation</span>
+      </button>
+    </div>
+  </aside>
+<script>
+(function(){
+  function dismissPreloader(){
+    var p = document.getElementById('gn-preloader');
+    if(p && !p.classList.contains('loaded')){
+      p.classList.add('loaded');
+      setTimeout(function(){ if(p && p.parentNode) p.parentNode.removeChild(p); }, 400);
+    }
+  }
+  if(document.readyState === 'complete'){
+    dismissPreloader();
+  } else {
+    window.addEventListener('load', dismissPreloader);
+    setTimeout(dismissPreloader, 350);
+  }
+})();
+</script>
+<script src="../js/config.js" defer></script>
+<script src="../js/analytics.js" defer></script>
+<script src="../js/nav.js" defer></script>
+<script src="../js/reveal.js" defer></script>
+<script src="../js/forms.js" defer></script>
+<script src="../js/motion.js" defer></script>
+<script src="../js/slider.js" defer></script>
+<script src="../js/modals.js" defer></script>
+<script src="../js/chatbot.js" defer></script>
+
+</body>
+</html>

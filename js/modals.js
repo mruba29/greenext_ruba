@@ -66,13 +66,13 @@
     var bodyEl = modalBackdrop.querySelector('.gn-welcome-body-text');
 
     if (hasVisitedBefore) {
-      if (titleEl) titleEl.textContent = 'Welcome Back to GreenNext! 🌿';
+      if (titleEl) titleEl.textContent = 'Welcome Back to GreenNext';
       if (badgeEl) badgeEl.textContent = greetingData.greeting + ' • Returning Visitor';
       if (bodyEl) {
         bodyEl.textContent = 'Ready to explore smarter infrastructure? Continue reviewing our AI-ready regional facilities across Madurai, Coimbatore, Trichy, and Mangalore.';
       }
     } else {
-      if (titleEl) titleEl.textContent = greetingData.greeting + ' Welcome to GreenNext 🌿';
+      if (titleEl) titleEl.textContent = greetingData.greeting + ' Welcome to GreenNext';
       if (badgeEl) badgeEl.textContent = greetingData.greeting + ' (' + greetingData.formattedTime + ')';
       if (bodyEl) {
         bodyEl.textContent = 'Discover intelligent infrastructure designed for a smarter, more sustainable future.';

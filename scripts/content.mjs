@@ -1862,6 +1862,14 @@ export const contactContent = {
       actionText: 'Chat on WhatsApp',
       actionHref: '#',
       isWhatsApp: true
+    },
+    {
+      icon: 'bot',
+      title: 'AI Infrastructure Assistant',
+      desc: 'Instant interactive guidance on uptime SLAs, cooling architectures, regional corridors, and infrastructure scoping.',
+      actionText: 'Launch AI Assistant',
+      actionHref: '#',
+      isChatbot: true
     }
   ],
   faqs: [
@@ -1876,6 +1884,48 @@ export const contactContent = {
     {
       q: 'Is our initial consultation confidential?',
       a: 'Yes. All project specifications, commercial requirements, and architectural roadmaps discussed are handled under strict enterprise confidentiality.'
+    }
+  ],
+  regionalOffices: [
+    {
+      city: 'Madurai',
+      badge: 'Southern Technology Hub',
+      title: 'Madurai Regional Office & AI Compute Center',
+      address: 'GreenNext Regional Tech Park, Ring Road IT Corridor, Mattuthavani, Madurai, Tamil Nadu 625020',
+      phone: '+91 452 290 8820',
+      email: 'madurai@greennext.io',
+      impact: 'Focus: IT Growth Corridor, Regional Software Ecosystems, Diagnostic Healthcare AI',
+      hours: 'Mon - Fri: 8:30 AM - 6:30 PM IST (24/7 Operations NOC)'
+    },
+    {
+      city: 'Coimbatore',
+      badge: 'Industrial Automation Heartland',
+      title: 'Coimbatore Regional Hub & Advanced Engineering Center',
+      address: 'Level 5, GreenTech Innovation Tower, Avinashi Road, Peelamedu, Coimbatore, Tamil Nadu 641004',
+      phone: '+91 422 490 8820',
+      email: 'coimbatore@greennext.io',
+      impact: 'Focus: Smart Manufacturing, Robotics Clusters, Industrial IoT & Predictive Maintenance',
+      hours: 'Mon - Fri: 8:30 AM - 6:30 PM IST (24/7 Operations NOC)'
+    },
+    {
+      city: 'Trichy',
+      badge: 'Academic & Research Corridor',
+      title: 'Trichy Regional Center & Scientific Computing Lab',
+      address: 'Block B, Innovation Hub, Navalpattu IT Park SEZ, Tiruchirappalli, Tamil Nadu 620026',
+      phone: '+91 431 290 8820',
+      email: 'trichy@greennext.io',
+      impact: 'Focus: Higher Education HPC, Research Supercomputing & Central Corridor Failover',
+      hours: 'Mon - Fri: 8:30 AM - 6:30 PM IST (24/7 Operations NOC)'
+    },
+    {
+      city: 'Mangalore',
+      badge: 'Coastal Trade & Maritime Gateway',
+      title: 'Mangalore Regional Office & Coastal Telemetry Hub',
+      address: 'Suite 302, Harbor View Business Complex, Bejai Main Road, Mangalore, Karnataka 575004',
+      phone: '+91 824 290 8820',
+      email: 'mangalore@greennext.io',
+      impact: 'Focus: Maritime Trade Logistics, Port Automation & Subsea Cable Landing Connectivity',
+      hours: 'Mon - Fri: 8:30 AM - 6:30 PM IST (24/7 Operations NOC)'
     }
   ]
 };

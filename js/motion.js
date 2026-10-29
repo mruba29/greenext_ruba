@@ -39,4 +39,40 @@
       });
     }
   }
+
+  // Impact Metrics Counter Animation
+  var counters = document.querySelectorAll('.impact-counter');
+  if (counters.length && !prefersReduced && 'IntersectionObserver' in window) {
+    function animateCounter(el) {
+      var target = parseFloat(el.getAttribute('data-target'));
+      var suffix = el.getAttribute('data-suffix') || '';
+      var duration = 2000;
+      var start = null;
+      var isDecimal = target % 1 !== 0;
+
+      function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+
+      function step(ts) {
+        if (!start) start = ts;
+        var progress = Math.min((ts - start) / duration, 1);
+        var eased = easeOutQuart(progress);
+        var current = target * eased;
+        el.textContent = (isDecimal ? current.toFixed(2) : Math.floor(current)) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = (isDecimal ? target.toFixed(2) : target) + suffix;
+      }
+      requestAnimationFrame(step);
+    }
+
+    var counterObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          counterObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    counters.forEach(function(c) { counterObs.observe(c); });
+  }
 })();

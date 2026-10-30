@@ -1045,6 +1045,15 @@ ${hero({
         </div>
         <div style="margin-top:var(--space-4);"><a class="location-card-link" href="infrastructure-performance.html">Explore Performance &rarr;</a></div>
       </div>
+
+      <div class="card reveal" style="padding:var(--space-6);background:rgba(11,18,32,0.85);border:1px solid rgba(0,255,102,0.25);border-radius:var(--radius-xl);display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <div class="card-icon" style="width:36px;height:36px;border-radius:8px;background:rgba(0,255,102,0.12);color:#00FF66;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-3);">${icon('server')}</div>
+          <h3 class="heading-sm" style="color:#FFFFFF;margin-bottom:var(--space-2);">Communication Templates</h3>
+          <p class="text-xs" style="color:#AAB7CB;line-height:1.5;">Enterprise email communication templates with live variable preview, editor, and test email dispatch.</p>
+        </div>
+        <div style="margin-top:var(--space-4);"><a class="location-card-link" href="../templates.html">Open Templates &rarr;</a></div>
+      </div>
     </div>
   </div>
 </section>

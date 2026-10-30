@@ -1047,6 +1047,179 @@
     }
 
     /* Responsive */
+    /* Dashboard Shell & Sidebar for Templates */
+    .dashboard-admin-shell {
+      display: flex;
+      min-height: calc(100vh - 61px);
+      width: 100%;
+    }
+
+    .dashboard-sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: rgba(11, 18, 32, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid var(--tpl-border);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: sticky;
+      top: 61px;
+      height: calc(100vh - 61px);
+      overflow-y: auto;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 90;
+    }
+
+    .dashboard-sidebar-section-title {
+      font-size: 0.675rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--tpl-text-dim);
+      padding: 0 0.75rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .dashboard-sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .dashboard-sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      color: var(--tpl-text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      position: relative;
+    }
+
+    .dashboard-sidebar-link:hover {
+      background: var(--tpl-surface-elevated);
+      color: #FFFFFF;
+      border-color: var(--tpl-border-subtle);
+      transform: translateX(2px);
+    }
+
+    .dashboard-sidebar-link.active {
+      background: rgba(0, 255, 102, 0.15);
+      border-color: rgba(0, 255, 102, 0.35);
+      color: var(--tpl-electric-green);
+      font-weight: 700;
+    }
+
+    .dashboard-sidebar-link.active svg {
+      color: var(--tpl-electric-green);
+    }
+
+    .sidebar-badge-pill {
+      margin-left: auto;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      background: rgba(0, 255, 102, 0.15);
+      border: 1px solid rgba(0, 255, 102, 0.3);
+      color: var(--tpl-electric-green);
+    }
+
+    /* Top Sub-Nav Module Switcher Tabs */
+    .dashboard-module-tabs {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--tpl-border-subtle);
+      border-radius: 10px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .module-tab-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 7px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--tpl-text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .module-tab-item:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .module-tab-item.active {
+      background: var(--tpl-surface-elevated);
+      color: #FFFFFF;
+      border: 1px solid var(--tpl-border);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .module-tab-item.tab-templates {
+      color: var(--tpl-electric-green);
+      font-weight: 700;
+    }
+
+    .module-tab-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(0, 255, 102, 0.2);
+      color: var(--tpl-electric-green);
+      border: 1px solid rgba(0, 255, 102, 0.4);
+    }
+
+    .sidebar-toggle-btn {
+      display: none;
+      background: var(--tpl-surface-elevated);
+      border: 1px solid var(--tpl-border);
+      color: #fff;
+      padding: 0.45rem 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.825rem;
+    }
+
+    @media (max-width: 992px) {
+      .dashboard-sidebar {
+        position: fixed;
+        left: 0;
+        top: 61px;
+        bottom: 0;
+        transform: translateX(-100%);
+        box-shadow: 10px 0 30px rgba(0,0,0,0.6);
+      }
+      .dashboard-sidebar.open {
+        transform: translateX(0);
+      }
+      .sidebar-toggle-btn {
+        display: inline-flex;
+      }
+      .dashboard-module-tabs {
+        display: none;
+      }
+    }
+
     @media (max-width: 768px) {
       .templates-header {
         flex-direction: column;
@@ -1073,10 +1246,27 @@
   <!-- Top Navigation -->
   <header class="templates-nav">
     <div class="brand-wrap">
+      <button class="sidebar-toggle-btn" id="btn-toggle-sidebar" aria-label="Toggle Navigation Sidebar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <span>Menu</span>
+      </button>
       <a href="index.html" class="brand-logo">
         <div class="brand-logo-text">Green<span>Next</span></div>
       </a>
       <span class="module-badge">Communication Templates</span>
+
+      <!-- Primary Top Module Switcher Tabs -->
+      <nav class="dashboard-module-tabs" aria-label="Dashboard Modules">
+        <a href="analytics.html" class="module-tab-item" title="Traffic & Session Intelligence">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+          <span>Traffic Intelligence</span>
+        </a>
+        <a href="templates.html" class="module-tab-item active tab-templates" title="Email & Communication Templates">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <span>Templates</span>
+          <span class="module-tab-badge">Active</span>
+        </a>
+      </nav>
     </div>
 
     <div class="nav-links">
@@ -1086,7 +1276,7 @@
       </div>
       <a href="analytics.html" class="nav-btn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
-        <span>Analytics Dashboard</span>
+        <span>Analytics</span>
       </a>
       <button class="nav-btn nav-btn-primary" id="btn-create-top">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
@@ -1098,7 +1288,63 @@
     </div>
   </header>
 
-  <main class="templates-container">
+  <div class="dashboard-admin-shell">
+    <!-- DASHBOARD SIDEBAR -->
+    <aside class="dashboard-sidebar" id="dashboard-sidebar">
+      <div>
+        <div class="dashboard-sidebar-section-title">ADMIN MODULES</div>
+        <div class="dashboard-sidebar-menu">
+          <a href="analytics.html" class="dashboard-sidebar-link" title="Traffic & Session Intelligence">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+            <span>Traffic Intelligence</span>
+            <span class="sidebar-badge-pill" style="background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.3);color:#60A5FA;">Console</span>
+          </a>
+          <a href="templates.html" class="dashboard-sidebar-link active" title="Email & Communication Templates">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span>Templates</span>
+            <span class="sidebar-badge-pill">Active</span>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="dashboard-sidebar-section-title">FACILITY INTELLIGENCE</div>
+        <div class="dashboard-sidebar-menu">
+          <a href="intelligence/energy-intelligence.html" class="dashboard-sidebar-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>Energy Intelligence</span>
+          </a>
+          <a href="intelligence/capacity-analytics.html" class="dashboard-sidebar-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            <span>Capacity Analytics</span>
+          </a>
+          <a href="intelligence/sustainability-reporting.html" class="dashboard-sidebar-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <span>Sustainability & ESG</span>
+          </a>
+          <a href="intelligence/infrastructure-performance.html" class="dashboard-sidebar-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Performance & SLA</span>
+          </a>
+        </div>
+      </div>
+
+      <div style="margin-top:auto;">
+        <div class="dashboard-sidebar-section-title">NAVIGATION</div>
+        <div class="dashboard-sidebar-menu">
+          <a href="index.html" class="dashboard-sidebar-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Main Website</span>
+          </a>
+          <a href="contact.html" class="dashboard-sidebar-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>Plan Infrastructure</span>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="templates-container" style="flex:1; min-width:0;">
 
     <!-- Header Section -->
     <section class="templates-header">
@@ -1163,6 +1409,7 @@
     </section>
 
   </main>
+  </div>
 
   <!-- ===================================================================== -->
   <!-- MODAL: Template Editor (Create / Edit)                                 -->
@@ -2219,6 +2466,15 @@
           [editorModal, previewModal, testEmailModal, deleteModal].forEach(m => closeModal(m));
         }
       });
+
+      // Sidebar toggle for mobile
+      const toggleSidebarBtn = document.getElementById('btn-toggle-sidebar');
+      const sidebarEl = document.getElementById('dashboard-sidebar');
+      if (toggleSidebarBtn && sidebarEl) {
+        toggleSidebarBtn.addEventListener('click', () => {
+          sidebarEl.classList.toggle('open');
+        });
+      }
 
       // Initial Fetch
       fetchTemplates();

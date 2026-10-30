@@ -1601,6 +1601,78 @@
       "conversion_status": "Converted",
       "session_start_ts": 1793286424047,
       "client_ts": 1793286439047
+    },
+    {
+      "event_type": "page_view",
+      "session_id": "gns_test_1793369027832",
+      "page_url": "/capabilities/ai-infrastructure.html",
+      "page_title": "AI Infrastructure | GreenNext",
+      "referrer_source": "Organic Search",
+      "utm_source": "google",
+      "utm_medium": "cpc",
+      "utm_campaign": "green_ai_q4",
+      "device_category": "Desktop",
+      "browser_category": "Chrome",
+      "landing_page": "/capabilities/ai-infrastructure.html",
+      "cta_name": "",
+      "form_type": "",
+      "conversion_status": "",
+      "session_start_ts": 1793369027832,
+      "client_ts": 1793369027832
+    },
+    {
+      "event_type": "whatsapp_cta_click",
+      "session_id": "gns_test_1793369027832",
+      "page_url": "/capabilities/ai-infrastructure.html",
+      "page_title": "",
+      "referrer_source": "",
+      "utm_source": "",
+      "utm_medium": "",
+      "utm_campaign": "",
+      "device_category": "Desktop",
+      "browser_category": "",
+      "landing_page": "",
+      "cta_name": "WhatsApp Quick Consultation",
+      "form_type": "",
+      "conversion_status": "",
+      "session_start_ts": 1793369027832,
+      "client_ts": 1793369032832
+    },
+    {
+      "event_type": "cta_click",
+      "session_id": "'=1+1;cmd",
+      "page_url": "",
+      "page_title": "",
+      "referrer_source": "",
+      "utm_source": "",
+      "utm_medium": "",
+      "utm_campaign": "'-malicious_cmd",
+      "device_category": "",
+      "browser_category": "",
+      "landing_page": "",
+      "cta_name": "'@SUM(A1:A10)",
+      "form_type": "",
+      "conversion_status": "",
+      "session_start_ts": 1793369033864,
+      "client_ts": 1793369033864
+    },
+    {
+      "event_type": "form_submission_success",
+      "session_id": "gns_test_1793369027832",
+      "page_url": "",
+      "page_title": "",
+      "referrer_source": "",
+      "utm_source": "",
+      "utm_medium": "",
+      "utm_campaign": "",
+      "device_category": "",
+      "browser_category": "",
+      "landing_page": "",
+      "cta_name": "Form Submitted: Long Form",
+      "form_type": "Long Form",
+      "conversion_status": "Converted",
+      "session_start_ts": 1793369038145,
+      "client_ts": 1793369053145
     }
   ],
   "sessions": {
@@ -1619,7 +1691,7 @@
       "start": 1792337848784,
       "landing": "",
       "pages": [],
-      "ctas": 15,
+      "ctas": 16,
       "converted": false
     },
     "gns_mvdzrm5f_ufevr2": {
@@ -1768,6 +1840,16 @@
     "gns_test_1793286417285": {
       "id": "gns_test_1793286417285",
       "start": 1793286417285,
+      "landing": "/capabilities/ai-infrastructure.html",
+      "pages": [
+        "/capabilities/ai-infrastructure.html"
+      ],
+      "ctas": 1,
+      "converted": true
+    },
+    "gns_test_1793369027832": {
+      "id": "gns_test_1793369027832",
+      "start": 1793369027832,
       "landing": "/capabilities/ai-infrastructure.html",
       "pages": [
         "/capabilities/ai-infrastructure.html"

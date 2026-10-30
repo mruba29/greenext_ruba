@@ -1015,6 +1015,7 @@ export const nav = {
           [
             { label: 'Sustainability Reporting', href: 'intelligence/sustainability-reporting.html', icon: 'spark', desc: 'Automated ESG accounting tracking CUE, WUE, and renewable power offsets.' },
             { label: 'Infrastructure Performance', href: 'intelligence/infrastructure-performance.html', icon: 'shield', desc: 'Continuous Mean Time to Repair (MTTR), IT utilization, and SLA verification.' },
+            { label: 'Templates Module', href: 'templates.html', icon: 'server', desc: 'Email and communication templates with live preview, variable substitution, and test dispatch.' },
           ],
         ],
       },
@@ -1118,6 +1119,7 @@ export const footerData = {
         { label: 'Capacity Analytics', href: 'intelligence/capacity-analytics.html' },
         { label: 'Sustainability Reporting', href: 'intelligence/sustainability-reporting.html' },
         { label: 'Infrastructure Performance', href: 'intelligence/infrastructure-performance.html' },
+        { label: 'Templates Module', href: 'templates.html' },
       ],
     },
   ],

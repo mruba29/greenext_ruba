@@ -45,7 +45,7 @@ export const DEFAULT_TEMPLATES = [
     name: "Client Welcome & Solutions Overview",
     category: "Welcome Emails",
     status: "Active",
-    subject: "Welcome to GreenNext",
+    subject: "Welcome to GreenNext!",
     body: "<p>Hello {{customer_name}},</p>\n\n<p>Welcome to <strong>GreenNext</strong>. We are thrilled to partner with you as you explore next-generation digital infrastructure tailored for advanced AI workloads.</p>\n\n<p>At GreenNext, we engineer high-density, energy-efficient AI data centers designed specifically for compute-intensive workloads. Our core capabilities include:</p>\n\n<ul>\n  <li><strong>AI-Ready Compute Architecture:</strong> High-density rack layouts engineered for GPU clusters and deep learning accelerators.</li>\n  <li><strong>Direct-to-Chip & Liquid Immersion Cooling:</strong> Advanced thermal management delivering industry-leading sub-1.15 PUE.</li>\n  <li><strong>Intelligent Operations:</strong> Autonomous telemetry, predictive maintenance, and real-time power optimization.</li>\n  <li><strong>Sustainable Microgrids:</strong> Renewable energy integration with 24/7 carbon-intelligent workload orchestration.</li>\n</ul>\n\n<p>Our solutions architecture team is prepared to help you design an infrastructure ecosystem tailored to {{company_name}}'s strategic roadmap.</p>\n\n<div style=\"text-align: center; margin: 30px 0;\">\n  <a href=\"https://greennext.in/solutions/\" class=\"cta-button\" style=\"background-color: #00FF66; color: #0B1220; padding: 12px 24px; text-decoration: none; font-weight: 700; border-radius: 6px; display: inline-block;\">Explore Our Solutions</a>\n</div>\n\n<p>If you have any questions or wish to discuss an upcoming deployment, please reach out directly at <a href=\"mailto:contact@greennext.in\" style=\"color: #00FF66;\">contact@greennext.in</a> or call us at +91 98765 43210.</p>\n\n<p>Best regards,<br>\n<strong>GreenNext Engineering Team</strong><br>\n<span style=\"font-size: 0.85em; color: #8AA497;\">AI Data Center Digital Infrastructure</span></p>",
     placeholders: ["customer_name", "company_name"],
     createdAt: "2026-10-29T20:00:00.000Z",
@@ -200,9 +200,24 @@ export function wrapInBrandedEmailShell(htmlContent, subject = '') {
           
           <!-- Footer -->
           <tr>
-            <td style="background-color: #070B14; padding: 24px 32px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: #8AA497; text-align: center;">
-              <p style="margin: 0 0 8px 0;">GreenNext Digital Infrastructure Private Limited &bull; AI Infrastructure & Compute Engineering</p>
-              <p style="margin: 0; color: #547063;">Bangalore &bull; Coimbatore &bull; Singapore &bull; <a href="https://greennext.in" style="color: #00FF66; text-decoration: none;">greennext.in</a></p>
+            <td style="background-color: #070B14; padding: 24px 32px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: #8AA497; text-align: center; line-height: 1.6;">
+              <p style="margin: 0 0 6px 0; font-weight: 700; color: #E8EDF5;">GreenNext Digital Infrastructure Private Limited</p>
+              <p style="margin: 0 0 10px 0; color: #8AA497;">AI Data Center Architecture &bull; Direct Liquid Cooling &bull; Autonomous Infrastructure</p>
+              <p style="margin: 0 0 12px 0; color: #547063;">
+                Bangalore &bull; Coimbatore &bull; Singapore &bull; 
+                <a href="mailto:contact@greennext.in" style="color: #00FF66; text-decoration: none;">contact@greennext.in</a> &bull; 
+                <a href="tel:+919876543210" style="color: #00FF66; text-decoration: none;">+91 98765 43210</a>
+              </p>
+              <!-- Social & Web Links -->
+              <p style="margin: 0 0 10px 0; font-size: 11px;">
+                <a href="https://greennext.in" style="color: #00FF66; text-decoration: none; margin: 0 6px;">Website</a> &bull;
+                <a href="https://linkedin.com/company/greennext-infra" style="color: #00FF66; text-decoration: none; margin: 0 6px;">LinkedIn</a> &bull;
+                <a href="https://x.com/greennext_ai" style="color: #00FF66; text-decoration: none; margin: 0 6px;">X (Twitter)</a> &bull;
+                <a href="https://github.com/mruba29/greenext_ruba" style="color: #00FF66; text-decoration: none; margin: 0 6px;">GitHub</a>
+              </p>
+              <p style="margin: 0; font-size: 10px; color: #547063;">
+                &copy; 2026 GreenNext. All rights reserved. Confidential enterprise communication.
+              </p>
             </td>
           </tr>
         </table>
